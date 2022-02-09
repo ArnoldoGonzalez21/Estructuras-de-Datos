@@ -1,0 +1,14 @@
+{
+	"Cliente1":{
+		"id_cliente":"1",
+		"nombre_cliente":"Andres Lopez",
+		"img_color":"3",
+		"img_bw":"2"
+	},
+	"Cliente2":{
+		"id_cliente":"2",
+		"nombre_cliente":"Rodrigo Perez",
+		"img_color":"4",
+		"img_bw":"0"
+	}
+}

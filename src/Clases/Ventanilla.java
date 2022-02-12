@@ -1,19 +1,25 @@
 package Clases;
 
+import edd_fase_1.Pila;
+
 /**
  *
  * @author Arnoldo González
  */
 public class Ventanilla {
-    
-    private int id_cliente; 
+
+    private int id_cliente;
     private int numVentanilla;
     private boolean ocupada;
+    Pila pila;
+    private Ventanilla siguiente;
 
     public Ventanilla(int id_cliente, int numVentanilla, boolean ocupada) {
         this.id_cliente = id_cliente;
         this.numVentanilla = numVentanilla;
         this.ocupada = ocupada;
+        pila = null;
+        this.siguiente = null;
     }
 
     /**
@@ -56,5 +62,19 @@ public class Ventanilla {
      */
     public void setOcupada(boolean ocupada) {
         this.ocupada = ocupada;
-    }  
+    }
+
+    /**
+     * @return the siguiente
+     */
+    public Ventanilla getSiguiente() {
+        return siguiente;
+    }
+
+    /**
+     * @param siguiente the siguiente to set
+     */
+    public void setSiguiente(Ventanilla siguiente) {
+        this.siguiente = siguiente;
+    }
 }

@@ -7,9 +7,9 @@ package Clases;
  */
 public class Impresora {
     
-    private boolean tipoImpresora;
+    private boolean tipoImpresora; /*Color -> true - Byn -> false*/
     private boolean ocupada;
-    private boolean tipoImagen;
+    private boolean tipoImagen; /*Color -> true - Byn -> false*/
 
     public Impresora(boolean tipoImpresora, boolean ocupada, boolean tipoImagen) {
         this.tipoImpresora = tipoImpresora;

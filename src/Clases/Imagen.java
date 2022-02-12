@@ -7,12 +7,13 @@ package Clases;
 public class Imagen {
    
     private int idCliente;
-    private int tipoImpresion;
+    private boolean tipoImpresion; //Color -> true    ByN -> false
     private Imagen siguiente;
     
-    public Imagen(int idCliente, int tipoImpresion) {
+    public Imagen(int idCliente, boolean tipoImpresion) {
         this.idCliente = idCliente;
         this.tipoImpresion = tipoImpresion;
+        this.siguiente = null;
     }
 
     /**
@@ -32,14 +33,14 @@ public class Imagen {
     /**
      * @return the tipoImpresion
      */
-    public int getTipoImpresion() {
+    public boolean isTipoImpresion() {
         return tipoImpresion;
     }
 
     /**
      * @param tipoImpresion the tipoImpresion to set
      */
-    public void setTipoImpresion(int tipoImpresion) {
+    public void setTipoImpresion(boolean tipoImpresion) {
         this.tipoImpresion = tipoImpresion;
     }
 

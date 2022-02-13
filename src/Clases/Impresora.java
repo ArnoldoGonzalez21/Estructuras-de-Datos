@@ -1,20 +1,21 @@
-
 package Clases;
+
+import edd_fase_1.Cola;
 
 /**
  *
  * @author Arnoldo González
  */
 public class Impresora {
-    
-    private boolean tipoImpresora; /*Color -> true - Byn -> false*/
-    private boolean ocupada;
-    private boolean tipoImagen; /*Color -> true - Byn -> false*/
 
-    public Impresora(boolean tipoImpresora, boolean ocupada, boolean tipoImagen) {
+    private boolean tipoImpresora;/*Color -> true - Byn -> false*/
+    private boolean ocupada;
+    private Cola colaImagen;
+
+    public Impresora(boolean tipoImpresora, boolean ocupada) {
         this.tipoImpresora = tipoImpresora;
         this.ocupada = ocupada;
-        this.tipoImagen = tipoImagen;
+        this.colaImagen = new Cola();
     }
 
     /**
@@ -46,17 +47,16 @@ public class Impresora {
     }
 
     /**
-     * @return the tipoImagen
+     * @return the colaImagen
      */
-    public boolean isTipoImagen() {
-        return tipoImagen;
+    public Cola getColaImagen() {
+        return colaImagen;
     }
 
     /**
-     * @param tipoImagen the tipoImagen to set
+     * @param colaImagen the colaImagen to set
      */
-    public void setTipoImagen(boolean tipoImagen) {
-        this.tipoImagen = tipoImagen;
+    public void setColaImagen(Cola colaImagen) {
+        this.colaImagen = colaImagen;
     }
-    
 }

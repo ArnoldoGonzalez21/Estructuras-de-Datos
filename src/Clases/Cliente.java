@@ -185,5 +185,4 @@ public class Cliente {
     public void setAtendido(boolean atendido) {
         this.atendido = atendido;
     }
-
 }

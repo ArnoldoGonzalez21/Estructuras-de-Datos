@@ -49,7 +49,6 @@ public class app {
                     clientes.generarClientesRandom();
                     break;
                 case 4:
-
                     ventanillas.mostrarDatosV();
                     break;
                 case 5:
@@ -102,7 +101,7 @@ public class app {
         Scanner lector = new Scanner(System.in);
         int numeroVentanillas = lector.nextInt();
         ventanillas.insertarVentanilla(numeroVentanillas);
-        ventanillas.mostrarDatosV();
+//        ventanillas.mostrarDatosV();
     }
 
     public boolean cargaMasivaJson() {
@@ -111,7 +110,6 @@ public class app {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(Jsontxt); // Convertir el texto a JsonElement
         JsonObject obj = element.getAsJsonObject(); //JsonElement a JsonObject
-        //System.out.println("Objeto: " + obj);
         Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
 
         for (Map.Entry<String, JsonElement> entry : entries) {
@@ -120,7 +118,7 @@ public class app {
             //System.out.println("value: " + entry.getValue());
             String valor = "[" + entry.getValue().toString(); //Informacin del cliente 
             valor += "]";
-            JsonArray gsonArr = parser.parse(valor).getAsJsonArray(); //Informacion a un arreglo
+            JsonArray gsonArr = parser.parse(valor).getAsJsonArray(); //Info -> JsonArray
             for (JsonElement objt : gsonArr) {
                 JsonObject gsonObj = objt.getAsJsonObject();
                 int id_cliente = gsonObj.get("id_cliente").getAsInt();
@@ -142,7 +140,6 @@ public class app {
         clientes.darImagen(ventanillas.getCabezaVen());
         clientes.pasarVentanilla(ventanillas.getCabezaVen());
         //ventanillas.mostrarDatosV();
-        //clientes.imagenes.mostrar();
         //clientes.generarClientesRandom();
         //clientes.mostrarDatos();
 

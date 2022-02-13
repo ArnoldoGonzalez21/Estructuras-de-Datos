@@ -7,15 +7,18 @@ import Clases.Imagen;
  * @author Arnoldo González
  */
 public class Pila {
-    
+
     private Imagen cabeza;
+    int size;
 
     public Pila() {
         this.cabeza = null;
+        this.size = 0;
     }
-    
+
     public void push(int idCliente, boolean tipoImpresion) {
         Imagen nuevo = new Imagen(idCliente, tipoImpresion);
+        this.size++;
         if (this.getCabeza() == null) {
             this.setCabeza(nuevo);
 
@@ -24,24 +27,18 @@ public class Pila {
             this.setCabeza(nuevo);
         }
     }
-    
-    public Imagen pop() {
+
+    public void borrar() {
         Imagen retorno = this.getCabeza();
         this.setCabeza(this.getCabeza().getSiguiente());
-        return retorno;
     }
-    
-    public void mostrar(){
+
+    public void mostrar() {
         Imagen actual;
         System.out.println("IMAGENES EN PILA");
         for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
-            System.out.println("id: " + actual.getIdCliente()+ " tipo: " + actual.isTipoImpresion());
+            System.out.println("id: " + actual.getIdCliente() + " tipo: " + actual.isTipoImpresion());
         }
-    }
-    
-    public Imagen enviarColaImpresion(){
-        Imagen imagenActual = getCabeza();
-        return imagenActual;
     }
 
     /**

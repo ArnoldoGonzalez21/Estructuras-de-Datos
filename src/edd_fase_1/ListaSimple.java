@@ -1,6 +1,7 @@
 package edd_fase_1;
 
 import Clases.Cliente;
+import Clases.Impresora;
 import Clases.Ventanilla;
 
 /**
@@ -11,11 +12,14 @@ public class ListaSimple {
 
     private Cliente cabeza;
     private Ventanilla cabezaVen;
-    Pila imagenes = new Pila();
+    Impresora cabezaImprColor;
+    Impresora cabezImprByN;
 
     public ListaSimple() {
         this.cabeza = null;
         this.cabezaVen = null;
+        this.cabezaImprColor = new Impresora(true, false);
+        this.cabezImprByN = new Impresora(false, false);
     }
 
     public void insertarCliente(String key_titulo, int id, String nombre, int color, int bYn) {
@@ -75,22 +79,25 @@ public class ListaSimple {
                 while (actual != null) {
                     if (actual.isEnVentanilla() && actual.getId() == actualV.getId_cliente()) {
                         if (actual.getColor() > 0 && actual.getColor() > actual.getEntregaColor()) {
-                            
-                            imagenes.push(actual.getId(), true);
+
+                            actualV.getPilaImagen().push(actual.getId(), true);
                             actual.setEntregaColor(actual.getEntregaColor() + 1);
                             System.out.println("Entrega imagen Color -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
                                     + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
                         } else if (actual.getbYn() > 0 && actual.getbYn() > actual.getEntregaByN()) {
-                            imagenes.push(actual.getId(), false);
+
+                            actualV.getPilaImagen().push(actual.getId(), false);
                             actual.setEntregaByN(actual.getEntregaByN() + 1);
-                            System.out.println("Entrega imagen Color -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
+                            System.out.println("Entrega imagen Byn -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
                                     + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
                         } else {
                             System.out.println("Retira de Ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
                                     + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
                             actual.setEnVentanilla(false);
                             actual.setEnEspera(true);
-                            actualV.setOcupada(false); //aqui se debe de enviar la pila de imagenes a la cola de impresion
+                            actualV.setOcupada(false);
+                            enviarColaImpresion(actualV.getPilaImagen());
+                            actualV.setPilaImagen(null);
                         }
                         break;
                     }
@@ -126,7 +133,31 @@ public class ListaSimple {
             System.out.println("Cliente" + (ultimoId + i) + " - " + (ultimoId + i) + " - " + nombres[nombreRandom] + " " + apellidos[apellidoRandom]
                     + " - " + cantidadColor + " - " + cantidadByN);
         }
+        todoOk();
+    }
 
+    public void enviarColaImpresion(Pila pilaImagen) {
+        Clases.Imagen imagenActual = pilaImagen.getCabeza();
+        System.out.println("*Enviando Pila de Imagenes a Cola de Impresión*");
+
+        while (imagenActual != null) {
+            if (imagenActual.isTipoImpresion()) {
+                System.out.println(imagenActual.getIdCliente() + " " + imagenActual.isTipoImpresion());
+                this.cabezaImprColor.getColaImagen().pushColor(imagenActual.getIdCliente(), true);
+            } else {
+                System.out.println(imagenActual.getIdCliente() + " " + imagenActual.isTipoImpresion());
+                this.cabezImprByN.getColaImagen().pushByN(imagenActual.getIdCliente(), false);
+            }
+            imagenActual = imagenActual.getSiguiente();
+        }
+
+        System.out.println("Size Color: " + this.cabezaImprColor.getColaImagen().sizeColor);
+        System.out.println("Size ByN: " + this.cabezImprByN.getColaImagen().sizeByN);
+    }
+
+    public void todoOk() {
+        System.out.println("Size Color: " + this.cabezaImprColor.getColaImagen().sizeColor);
+        System.out.println("Size ByN: " + this.cabezImprByN.getColaImagen().sizeByN);
     }
 
     public void mostrarDatos() {
@@ -141,7 +172,7 @@ public class ListaSimple {
         Ventanilla actual;
         for (actual = this.getCabezaVen(); actual != null; actual = actual.getSiguiente()) {
             System.out.println("id: " + actual.getId_cliente() + " numero: " + actual.getNumVentanilla()
-                    + " ocupada: " + actual.isOcupada());
+                    + " ocupada: " + actual.isOcupada() + " Tamano Pila: " + actual.getPilaImagen().size);
         }
     }
 

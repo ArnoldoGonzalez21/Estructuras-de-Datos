@@ -43,6 +43,92 @@ public class Cola {
         }
     }
 
+    public Imagen popColor() {
+        Imagen retorno = null;
+        if (this.getCabezaColor() != null) {
+            retorno = this.getCabezaColor();
+            if (this.getCabezaColor().getSiguiente() != null) {
+                this.setCabezaColor(retorno.getSiguiente());
+            } else {
+                this.setCabezaColor(null);
+            }
+            return retorno;
+        }
+        System.out.println("No tengo datos");
+        return retorno;
+    }
+
+    public Imagen popByN() {
+        Imagen retorno = null;
+        if (this.getCabezaByN() != null) {
+            retorno = this.getCabezaByN();
+            if (this.getCabezaByN().getSiguiente() != null) {
+                this.setCabezaByN(retorno.getSiguiente());
+            } else {
+                this.setCabezaByN(null);
+            }
+            return retorno;
+        }
+        System.out.println("No tengo datos");
+        return retorno;
+    }
+
+    public String graficaColaColor() {
+        mostrarColor();
+        int id = 1;
+        String contenido = "digraph L{\n"
+                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Cola Impresora Color\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "raiz[label = \"Impresora Color\" shape = folder]\n"
+                + "edge[dir = \"right\"]\n";
+        String nodos = "", apuntador_nodo = "", rank = "{rank = same;raiz";
+        Imagen actual = this.getCabezaColor();
+        if (actual != null) {
+            contenido += "raiz -> nodo" + id + ";\n";
+        }
+        for (actual = this.getCabezaColor(); actual != null; actual = actual.getSiguiente()) {
+            nodos += "nodo" + id + "[label = \"IMG Color \n Id Cliente: " + actual.getIdCliente() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
+            if (actual.getSiguiente() != null) {
+                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
+            }
+            rank += ";nodo" + id;
+            id++;
+        }
+        rank += "}\n";
+        contenido += nodos + apuntador_nodo + rank + "}\n}";
+        return contenido;
+    }
+
+    public String graficaColaByN() {
+        mostrarByN();
+        int id = 1;
+        String contenido = "digraph L{\n"
+                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Cola Impresora Blanco y Negro\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "raiz[label = \"Impresora Blanco Y Negro\" shape = folder]\n"
+                + "edge[dir = \"right\"]\n";
+        String nodos = "", apuntador_nodo = "", rank = "{rank = same;raiz";
+        Imagen actual = this.getCabezaByN();
+        if (actual != null) {
+            contenido += "raiz -> nodo" + id + ";\n";
+        }
+        for (actual = this.getCabezaByN(); actual != null; actual = actual.getSiguiente()) {
+            nodos += "nodo" + id + "[label = \"IMG Blanco y Negro \n Id Cliente: " + actual.getIdCliente() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
+            if (actual.getSiguiente() != null) {
+                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
+            }
+            rank += ";nodo" + id;
+            id++;
+        }
+        rank += "}\n";
+        contenido += nodos + apuntador_nodo + rank + "}\n}";
+        return contenido;
+    }
+
     public void mostrarColor() {
         Imagen actual;
         System.out.println("Cola Color");

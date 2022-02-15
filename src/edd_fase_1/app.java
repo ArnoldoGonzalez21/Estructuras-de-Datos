@@ -5,6 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,7 +19,12 @@ public class app {
 
     ListaSimple clientes = new ListaSimple();
     ListaSimple ventanillas = new ListaSimple();
+    ListaSimple imagenes = new ListaSimple();
+    ListaCircularDoble clientesEspera = new ListaCircularDoble();
+    Clases.Impresora cabezaImprColor = new Clases.Impresora(true, false);
+    Clases.Impresora cabezImprByN = new Clases.Impresora(false, false);
     int pasos = 1;
+    int contadorColor = 0;
 
     public app() {
         Menu();
@@ -49,7 +57,17 @@ public class app {
                     clientes.generarClientesRandom();
                     break;
                 case 4:
-                    ventanillas.mostrarDatosV();
+                    if (this.clientes != null) {
+                        crearGrafico(this.clientes.graficaClienteRecepcion(), "ByN");
+                    }
+                    if (this.cabezaImprColor.getColaImagen() != null) {
+                        crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
+                    }
+                    if (this.cabezImprByN.getColaImagen() != null) {
+                        crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
+                    }
+                    //System.out.println("Clientes espera: " + clientesEspera.size);
+                    //clientesEspera.mostrarClienteEspera();
                     break;
                 case 5:
                     DatosEstudiante();
@@ -89,6 +107,15 @@ public class app {
         }
     }
 
+    public void s() {
+        System.out.println("Ventanilla");
+        ventanillas.mostrarDatosV();
+        System.out.println("Clientes en total");
+        clientes.mostrarDatos();
+        System.out.println("Clientes Espera");
+        clientesEspera.mostrarClienteEspera();
+    }
+
     private void DatosEstudiante() {
         System.out.println("\n>>> Arnoldo Luis Antonio González Camey");
         System.out.println(">>> Carné: 20170148");
@@ -97,15 +124,12 @@ public class app {
     }
 
     private void cantidadVentanilla() {
-
         Scanner lector = new Scanner(System.in);
         int numeroVentanillas = lector.nextInt();
         ventanillas.insertarVentanilla(numeroVentanillas);
-//        ventanillas.mostrarDatosV();
     }
 
     public boolean cargaMasivaJson() {
-
         String Jsontxt = Archivo.leerArchivoJson();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(Jsontxt); // Convertir el texto a JsonElement
@@ -113,9 +137,7 @@ public class app {
         Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
 
         for (Map.Entry<String, JsonElement> entry : entries) {
-            //System.out.println(entry.getKey());
             String key = entry.getKey(); //Claves del Json 
-            //System.out.println("value: " + entry.getValue());
             String valor = "[" + entry.getValue().toString(); //Informacin del cliente 
             valor += "]";
             JsonArray gsonArr = parser.parse(valor).getAsJsonArray(); //Info -> JsonArray
@@ -130,18 +152,39 @@ public class app {
             }
         }
         clientes.mostrarDatos();
-        //https://stackoverflow.com/questions/31094305/java-gson-getting-the-list-of-all-keys-under-a-jsonobject
         return true;
     }
 
     private void ejecutarPaso() {
         System.out.println("NO. PASO -> " + pasos);
         pasos++;
-        clientes.darImagen(ventanillas.getCabezaVen());
+        clientes.terminarCliente(this.clientesEspera);
+        Clases.Imagen imagenColor = this.cabezaImprColor.getColaImagen().popColor();
+        if (imagenColor != null) {
+            this.clientesEspera.entregarImagen(imagenColor);
+        }
+        Clases.Imagen imagenByN = this.cabezImprByN.getColaImagen().popByN();
+        if (imagenByN != null) {
+            this.clientesEspera.entregarImagen(imagenByN);
+        }
+        clientes.darImagen(ventanillas.getCabezaVen(), this.cabezaImprColor, this.cabezImprByN, clientesEspera);
         clientes.pasarVentanilla(ventanillas.getCabezaVen());
-        //ventanillas.mostrarDatosV();
         //clientes.generarClientesRandom();
-        //clientes.mostrarDatos();
+        s();
+    }
 
+    public void crearGrafico(String contenidoGrafica, String nombre) {
+        try {
+            FileWriter archivo = new FileWriter(nombre + ".dot", false);
+            PrintWriter pw = new PrintWriter(archivo);
+            pw.write(contenidoGrafica);
+            pw.close();
+            archivo.close();
+            Runtime.getRuntime().exec("dot -Tpng " + nombre + ".dot -o " + nombre + ".png");
+            System.out.println("Gráfica generada exitosamente");
+
+        } catch (IOException e) {
+            System.out.println("Error Archivo: " + e.getMessage());
+        }
     }
 }

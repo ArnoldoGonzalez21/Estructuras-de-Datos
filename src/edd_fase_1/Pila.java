@@ -28,11 +28,6 @@ public class Pila {
         }
     }
 
-    public void borrar() {
-        Imagen retorno = this.getCabeza();
-        this.setCabeza(this.getCabeza().getSiguiente());
-    }
-
     public void mostrar() {
         Imagen actual;
         System.out.println("IMAGENES EN PILA");

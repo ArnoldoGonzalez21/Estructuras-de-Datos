@@ -1,5 +1,7 @@
 package Clases;
 
+import edd_fase_1.ListaSimple;
+
 /**
  *
  * @author Arnoldo González
@@ -10,26 +12,46 @@ public class Cliente {
     private int id;
     private String nombre;
     private int color;
-    private int bYn;
+    private int ByN;
     private boolean enVentanilla;
     private int entregaColor;
     private int entregaByN;
     private boolean enEspera;
     private boolean atendido;
     private Cliente siguiente;
+    private Cliente siguienteDoble;
+    private Cliente anteriorDoble;
+    private ListaSimple listaImagenes;
+    private int numImg;
 
     public Cliente(String key_titulo, int id, String nombre, int color, int bYn, boolean enVentanilla, int entregaColor, int entregaByN, boolean enEspera, boolean atendido) {
         this.key_titulo = key_titulo;
         this.id = id;
         this.nombre = nombre;
         this.color = color;
-        this.bYn = bYn;
+        this.ByN = bYn;
         this.enVentanilla = enVentanilla;
         this.entregaColor = entregaColor;
         this.entregaByN = entregaByN;
         this.enEspera = enEspera;
         this.atendido = atendido;
         this.siguiente = null;
+        this.siguienteDoble = this;
+        this.anteriorDoble = null;
+    }
+
+    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, boolean enEspera, boolean atendido) {
+        this.key_titulo = key_titulo;
+        this.id = id;
+        this.nombre = nombre;
+        this.color = color;
+        this.ByN = bYn;
+        this.enEspera = enEspera;
+        this.atendido = atendido;
+        this.siguienteDoble = this;
+        this.anteriorDoble = null;
+        this.listaImagenes = new ListaSimple();
+        this.numImg = 0;
     }
 
     /**
@@ -75,17 +97,17 @@ public class Cliente {
     }
 
     /**
-     * @return the bYn
+     * @return the ByN
      */
-    public int getbYn() {
-        return bYn;
+    public int getByN() {
+        return ByN;
     }
 
     /**
-     * @param bYn the bYn to set
+     * @param ByN the ByN to set
      */
-    public void setbYn(int bYn) {
-        this.bYn = bYn;
+    public void setByN(int ByN) {
+        this.ByN = ByN;
     }
 
     /**
@@ -184,5 +206,61 @@ public class Cliente {
      */
     public void setAtendido(boolean atendido) {
         this.atendido = atendido;
+    }
+
+    /**
+     * @return the siguienteDoble
+     */
+    public Cliente getSiguienteDoble() {
+        return siguienteDoble;
+    }
+
+    /**
+     * @param siguienteDoble the siguienteDoble to set
+     */
+    public void setSiguienteDoble(Cliente siguienteDoble) {
+        this.siguienteDoble = siguienteDoble;
+    }
+
+    /**
+     * @return the anteriorDoble
+     */
+    public Cliente getAnteriorDoble() {
+        return anteriorDoble;
+    }
+
+    /**
+     * @param anteriorDoble the anteriorDoble to set
+     */
+    public void setAnteriorDoble(Cliente anteriorDoble) {
+        this.anteriorDoble = anteriorDoble;
+    }
+
+    /**
+     * @return the listaImagenes
+     */
+    public ListaSimple getListaImagenes() {
+        return listaImagenes;
+    }
+
+    /**
+     * @param listaImagenes the listaImagenes to set
+     */
+    public void setListaImagenes(ListaSimple listaImagenes) {
+        this.listaImagenes = listaImagenes;
+    }
+
+    /**
+     * @return the numImg
+     */
+    public int getNumImg() {
+        return numImg;
+    }
+
+    /**
+     * @param numImg the numImg to set
+     */
+    public void setNumImg(int numImg) {
+        this.numImg = numImg;
     }
 }

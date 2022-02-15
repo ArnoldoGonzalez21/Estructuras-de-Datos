@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class app {
 
-    ListaSimple clientes = new ListaSimple();
+    Cola clientes = new Cola();
     ListaSimple ventanillas = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
     ListaCircularDoble clientesEspera = new ListaCircularDoble();
@@ -58,7 +58,7 @@ public class app {
                     break;
                 case 4:
                     if (this.clientes != null) {
-                        crearGrafico(this.clientes.graficaClienteRecepcion(), "ByN");
+                        crearGrafico(this.clientes.graficaClienteRecepcion(), "ColaClientes");
                     }
                     if (this.cabezaImprColor.getColaImagen() != null) {
                         crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
@@ -167,8 +167,8 @@ public class app {
         if (imagenByN != null) {
             this.clientesEspera.entregarImagen(imagenByN);
         }
-        clientes.darImagen(ventanillas.getCabezaVen(), this.cabezaImprColor, this.cabezImprByN, clientesEspera);
-        clientes.pasarVentanilla(ventanillas.getCabezaVen());
+        ventanillas.darImagen(clientes, this.cabezaImprColor, this.cabezImprByN, clientesEspera);
+        ventanillas.pasarVentanilla(clientes);
         //clientes.generarClientesRandom();
         s();
     }

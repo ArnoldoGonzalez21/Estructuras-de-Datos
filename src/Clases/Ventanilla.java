@@ -12,6 +12,7 @@ public class Ventanilla {
     private int numVentanilla;
     private boolean ocupada;
     private Pila pilaImagen;
+    private Cliente cliente;
     private Ventanilla siguiente;
 
     public Ventanilla(int id_cliente, int numVentanilla, boolean ocupada) {
@@ -19,6 +20,7 @@ public class Ventanilla {
         this.numVentanilla = numVentanilla;
         this.ocupada = ocupada;
         this.pilaImagen = new Pila();
+        this.cliente = null;
         this.siguiente = null;
     }
 
@@ -90,5 +92,19 @@ public class Ventanilla {
      */
     public void setPilaImagen(Pila pilaImagen) {
         this.pilaImagen = pilaImagen;
+    }
+
+    /**
+     * @return the cliente
+     */
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    /**
+     * @param cliente the cliente to set
+     */
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

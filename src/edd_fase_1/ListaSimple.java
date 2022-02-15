@@ -10,28 +10,16 @@ import Clases.Ventanilla;
  * @author Arnoldo González
  */
 public class ListaSimple {
-
-    private Cliente cabeza;
+ //quizas un tipo Cliente en Ventanilla y que ese sea la raiz para la grafica
+    //entonces ese cliente que paso a ventanilla ya le puedo hacer un pop de la cola
+    //y cuando salga de ventanilla ya lo mando a la de espera, nunca estaria duplicado en algun lugar
+    //cambiar la logica de los id en las ventanillas para que sea el id del cliente que esta actualmente y no recorrer toda la cola
     private Ventanilla cabezaVen;
     private Imagen cabezaImg;
 
     public ListaSimple() {
-        this.cabeza = null;
         this.cabezaVen = null;
         this.cabezaImg = null;
-    }
-
-    public void insertarCliente(String key_titulo, int id, String nombre, int color, int bYn) {
-        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, false, 0, 0, false, false);
-        if (this.getCabeza() == null) {
-            this.setCabeza(nuevo);
-        } else {
-            Cliente actual = this.getCabeza();
-            while (actual.getSiguiente() != null) {
-                actual = actual.getSiguiente();
-            }
-            actual.setSiguiente(nuevo);
-        }
     }
 
     public void insertarVentanilla(int cantidad) {
@@ -64,10 +52,11 @@ public class ListaSimple {
         }
     }
 
-    public void pasarVentanilla(Ventanilla actualV) {
+    public void pasarVentanilla(Cola colaCliente) {
+        Ventanilla actualV = this.getCabezaVen();
         while (actualV != null) {
             if (!actualV.isOcupada()) {
-                Cliente actual = this.getCabeza();
+                Cliente actual = colaCliente.getCabeza();
                 while (actual != null) {
                     if (!actual.isEnVentanilla() && !actual.isEnEspera() && !actual.isAtendido()) {
                         System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
@@ -75,6 +64,7 @@ public class ListaSimple {
                         actualV.setOcupada(true);
                         actualV.setId_cliente(actual.getId());
                         actual.setEnVentanilla(true);
+                        colaCliente.popCliente();
                         break;
                     }
                     actual = actual.getSiguiente();
@@ -84,10 +74,11 @@ public class ListaSimple {
         }
     }
 
-    public void darImagen(Ventanilla actualV, Impresora cabezaImprColor, Impresora cabezaImprByN, ListaCircularDoble clienteEspera) {
+    public void darImagen(Cola colaCliente, Impresora cabezaImprColor, Impresora cabezaImprByN, ListaCircularDoble clienteEspera) {
+        Ventanilla actualV = this.getCabezaVen();
         while (actualV != null) {
             if (actualV.isOcupada()) {
-                Cliente actual = this.getCabeza();
+                Cliente actual = colaCliente.getCabeza();
                 while (actual != null) {
                     if (actual.isEnVentanilla() && actual.getId() == actualV.getId_cliente()) {
                         if (actual.getColor() > 0 && actual.getColor() > actual.getEntregaColor()) {
@@ -123,33 +114,6 @@ public class ListaSimple {
         }
     }
 
-    public void generarClientesRandom() {
-        String nombres[] = {"Rossmery", "Ronald", "Daniel", "Oscar", "Samuel", "Eric", "Sergio", "Nicolas", "Gabriela",
-            "Stephany", "Emiliano", "Karla", "Angel", "Rebeca", "Lionel", "Guillermo", "Raul", "David", "Lucia", "Emma"};
-        String apellidos[] = {"Castillo", "Hernandez", "Lopez", "Martinez", "Rodriguez", "Gonzalez", "Garcia", "Silva", "Ruiz",
-            "Fernandez", "Sanchez", "Perez", "Diaz", "Gomez", "Morales", "Suarez", "Santos", "Marquez", "Reyes", "Mora"};
-        int ultimoId = 0;
-        Cliente actual = this.getCabeza();
-        while (actual != null) {
-            if (actual.getSiguiente() == null) {
-                ultimoId = actual.getId() + 1;
-            }
-            actual = actual.getSiguiente();
-        }
-        int cantidadClientes = (int) (Math.random() * (3 - 0 + 1) + 0);
-        System.out.println("Cantidad nuevos clientes: " + cantidadClientes);
-        for (int i = 0; i < cantidadClientes; i++) {
-            int nombreRandom = (int) (Math.random() * (19 - 0 + 1) + 0);
-            int apellidoRandom = (int) (Math.random() * (19 - 0 + 1) + 0);
-            int cantidadColor = (int) (Math.random() * (4 - 0 + 1) + 0);
-            int cantidadByN = (int) (Math.random() * (4 - 0 + 1) + 0);
-            insertarCliente("Cliente" + (ultimoId + i), (ultimoId + i), nombres[nombreRandom] + " " + apellidos[apellidoRandom],
-                    cantidadColor, cantidadByN);
-            System.out.println("Cliente" + (ultimoId + i) + " - " + (ultimoId + i) + " - " + nombres[nombreRandom] + " " + apellidos[apellidoRandom]
-                    + " - " + cantidadColor + " - " + cantidadByN);
-        }
-    }
-
     public void enviarColaImpresion(Pila pilaImagen, Impresora cabezaImprColor, Impresora cabezImprByN) {
         Clases.Imagen imagenActual = pilaImagen.getCabeza();
         System.out.println("*Enviando Pila de Imagenes a Cola de Impresión*");
@@ -166,89 +130,9 @@ public class ListaSimple {
         System.out.println("Tamaño en Impresora ByN: " + cabezImprByN.getColaImagen().sizeByN);
     }
 
-    public void terminarCliente(ListaCircularDoble clienteEspera) {
-        Cliente clienteListo = clienteEspera.terminarClienteEspera();
-        if (clienteListo != null) {
-            Cliente actual = this.getCabeza();
-            while (actual != null) {
-                if (actual.getId() == clienteListo.getId()) {
-                    actual.setEnEspera(false);
-                    actual.setAtendido(true);
-                    terminarCliente(clienteEspera);
-                }
-                actual = actual.getSiguiente();
-            }
-        }
-    }
-
-    public String contenidoGrafica() {
-        int id = 1;
-        String inicio = "digraph L{\n"
-                + "node[shape = folder fillcolor = \"#F8DEA1\" style = filled]\n"
-                + "subgraph cluster_p{\n"
-                + "label = \"Graphviz Carné\"\n"
-                + "bgcolor = \"#398D9C\"\n"
-                + "raiz[label = \"Cabeza\"]\n"
-                + "edge[dir = \"right\"]\n"
-                + "raiz -> nodo" + id + ";\n";
-        String nodos = "", apuntador_nodo = "", rank = "{rank = same;raiz";
-        Cliente actual;
-//        for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
-//            nodos += "nodo" + id + "[label = \"" + actual.getNumero() + "\", fillcolor = green, group = " + (id + 1) + "]\n";
-//            if (actual.getSiguiente() != null) {
-//                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
-//                System.out.println("siguiente: " + actual.getSiguiente().getNumero() + "\n");
-//            }
-//            rank += ";nodo" + id;
-//            id++;
-//        }
-        rank += "}\n";
-        String finalGraph = "}\n}";
-        String contenidoGrafo = inicio + nodos + apuntador_nodo + rank + finalGraph;
-        System.out.println(inicio + nodos + apuntador_nodo + rank + finalGraph);
-        return contenidoGrafo;
-    }
-
-    public String graficaClienteRecepcion() {
-        int id = 1;
-        String contenido = "digraph L{\n"
-                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
-                + "subgraph cluster_p{\n"
-                + "label = \"Cola Impresora Color\"\n"
-                + "bgcolor = \"#8ECBE5\"\n"
-                + "raiz[label = \"Impresora Color\" shape = folder]\n"
-                + "edge[dir = \"right\"]\n";
-        String nodos = "", apuntador_nodo = "", rank = "{rank = same;raiz";
-        Cliente actual = this.getCabeza();
-        if (actual != null) {
-            contenido += "raiz -> nodo" + id + ";\n";
-        }
-        for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
-            nodos += "nodo" + id + "[label = \"" + actual.getKey_titulo() + "\nIMG Color: " + actual.getColor()
-                    + "\nIMG ByN: " + actual.getByN() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
-            if (actual.getSiguiente() != null) {
-                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
-            }
-            rank += ";nodo" + id;
-            id++;
-        }
-        rank += "}\n";
-        contenido += nodos + apuntador_nodo + rank + "}\n}";
-        return contenido;
-    }
-
     public void todoOk(Impresora cabezaImprColor, Impresora cabezImprByN) {
         System.out.println("Tamaño en Impresora Color: " + cabezaImprColor.getColaImagen().sizeColor);
         System.out.println("Tamaño en Impresora ByN: " + cabezImprByN.getColaImagen().sizeByN);
-    }
-
-    public void mostrarDatos() {
-        Cliente actual;
-        for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
-            System.out.println("key: " + actual.getKey_titulo() + " id: " + actual.getId()
-                    + " nombre: " + actual.getNombre() + " color: " + actual.getColor() + " byn: " + actual.getByN()
-                    + " espera: " + actual.isEnEspera() + " atendido: " + actual.isAtendido());
-        }
     }
 
     public void mostrarDatosV() {
@@ -257,20 +141,6 @@ public class ListaSimple {
             System.out.println("id: " + actual.getId_cliente() + " numero: " + actual.getNumVentanilla()
                     + " ocupada: " + actual.isOcupada());
         }
-    }
-
-    /**
-     * @return the cabeza
-     */
-    public Cliente getCabeza() {
-        return cabeza;
-    }
-
-    /**
-     * @param cabeza the cabeza to set
-     */
-    public void setCabeza(Cliente cabeza) {
-        this.cabeza = cabeza;
     }
 
     /**

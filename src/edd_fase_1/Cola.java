@@ -22,7 +22,7 @@ public class Cola {
     }
 
     public void insertarCliente(String key_titulo, int id, String nombre, int color, int bYn) {
-        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, false, 0, 0, false, false);
+        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0);
         if (this.getCabeza() == null) {
             this.setCabeza(nuevo);
         } else {
@@ -76,7 +76,7 @@ public class Cola {
             }
             return retorno;
         }
-        System.out.println("No tengo datos");
+        //System.out.println("No tengo datos");
         return retorno;
     }
 
@@ -91,7 +91,16 @@ public class Cola {
             }
             return retorno;
         }
-        System.out.println("No tengo datos");
+        //System.out.println("No tengo datos");
+        return retorno;
+    }
+
+    public Imagen existeColor() {
+        Imagen retorno = null;
+        if (this.getCabezaColor() != null) {
+            retorno = this.getCabezaColor();
+            return retorno;
+        }
         return retorno;
     }
 
@@ -106,7 +115,7 @@ public class Cola {
             }
             return retorno;
         }
-        System.out.println("No tengo datos");
+        //System.out.println("No tengo datos");
         return retorno;
     }
 
@@ -137,21 +146,6 @@ public class Cola {
         }
     }
 
-    public void terminarCliente(ListaCircularDoble clienteEspera) {
-        Cliente clienteListo = clienteEspera.terminarClienteEspera();
-        if (clienteListo != null) {
-            Cliente actual = this.getCabeza();
-            while (actual != null) {
-                if (actual.getId() == clienteListo.getId()) {
-                    actual.setEnEspera(false);
-                    actual.setAtendido(true);
-                    terminarCliente(clienteEspera);
-                }
-                actual = actual.getSiguiente();
-            }
-        }
-    }
-
     public String graficaClienteRecepcion() {
         int id = 1;
         String contenido = "digraph L{\n"
@@ -167,15 +161,14 @@ public class Cola {
             contenido += "raiz -> nodo" + id + ";\n";
         }
         for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
-            if (!actual.isEnVentanilla() && !actual.isEnEspera() && !actual.isAtendido()) {
-                nodos += "nodo" + id + "[label = \"" + actual.getKey_titulo() + "\nIMG Color: " + actual.getColor()
-                        + "\nIMG ByN: " + actual.getByN() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
-                if (actual.getSiguiente() != null) {
-                    apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
-                }
-                rank += ";nodo" + id;
-                id++;
+            nodos += "nodo" + id + "[label = \"" + actual.getKey_titulo() + "\nIMG Color: " + actual.getColor()
+                    + "\nIMG ByN: " + actual.getByN() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
+            if (actual.getSiguiente() != null) {
+                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
             }
+            rank += ";nodo" + id;
+            id++;
+
         }
         rank += "}\n";
         contenido += nodos + apuntador_nodo + rank + "}\n}";
@@ -242,8 +235,7 @@ public class Cola {
         Cliente actual;
         for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
             System.out.println("key: " + actual.getKey_titulo() + " id: " + actual.getId()
-                    + " nombre: " + actual.getNombre() + " color: " + actual.getColor() + " byn: " + actual.getByN()
-                    + " espera: " + actual.isEnEspera() + " atendido: " + actual.isAtendido());
+                    + " nombre: " + actual.getNombre() + " color: " + actual.getColor() + " byn: " + actual.getByN());
         }
     }
 
@@ -251,7 +243,7 @@ public class Cola {
         Imagen actual;
         System.out.println("Cola Color");
         for (actual = this.getCabezaColor(); actual != null; actual = actual.getSiguiente()) {
-            System.out.println("Id: " + actual.getIdCliente() + " tipo: " + actual.isTipoImpresion());
+            System.out.println("Id: " + actual.getIdCliente() + " tipo: " + actual.isTipoImpresion() + " num paso: " + actual.getNumPaso());
         }
     }
 

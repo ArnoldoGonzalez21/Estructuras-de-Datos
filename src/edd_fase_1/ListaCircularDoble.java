@@ -17,7 +17,7 @@ public class ListaCircularDoble {
 
     public void insertar(Cliente clienteEspera) {
         Cliente nuevo = new Cliente(clienteEspera.getKey_titulo(), clienteEspera.getId(),
-                clienteEspera.getNombre(), clienteEspera.getColor(), clienteEspera.getByN(), true, false);
+                clienteEspera.getNombre(), clienteEspera.getColor(), clienteEspera.getByN());
         this.size++;
         if (this.getCabezaDoble() != null) {
             nuevo.setSiguienteDoble(this.getCabezaDoble().getSiguienteDoble());
@@ -31,20 +31,21 @@ public class ListaCircularDoble {
     public void entregarImagen(Clases.Imagen imagen) {
         Cliente actual = this.getCabezaDoble();
         for (int i = 0; i < size; i++) {
+            System.out.println("Entre! " + imagen.getIdCliente() + " Tipo: " + imagen.isTipoImpresion());
+            System.out.println("Id actual: " + actual.getId());
             if (imagen.getIdCliente() == actual.getId()) {
                 actual.setNumImg(actual.getNumImg() + 1);
                 actual.getListaImagenes().insertarImagen(imagen);
                 return;
             }
+            actual = actual.getSiguienteDoble();
         }
     }
 
     public Cliente terminarClienteEspera() {
         Cliente actual = this.getCabezaDoble();
         for (int i = 0; i < size; i++) {
-            if (actual.getNumImg() == (actual.getColor() + actual.getByN()) && actual.isEnEspera()) {
-                actual.setEnEspera(false);
-                actual.setAtendido(true);
+            if (actual.getNumImg() == (actual.getColor() + actual.getByN())) {
                 Cliente auxAtendido = actual;
                 Cliente aux = actual.getAnteriorDoble();
                 aux.setSiguienteDoble(actual.getSiguienteDoble());
@@ -63,8 +64,7 @@ public class ListaCircularDoble {
         Cliente actual = this.getCabezaDoble();
         System.out.println("Size: " + this.size);
         for (int i = 0; i < size; i++) {
-            System.out.println("Id: " + actual.getId() + " - Nombre: " + actual.getNombre() + " - NumImg: " + actual.getNumImg()
-                    + " - Espera: " + actual.isEnEspera() + " - Atendido: " + actual.isAtendido());
+            System.out.println("Id: " + actual.getId() + " - Nombre: " + actual.getNombre() + " - NumImg: " + actual.getNumImg());
             actual = actual.getSiguienteDoble();
         }
     }

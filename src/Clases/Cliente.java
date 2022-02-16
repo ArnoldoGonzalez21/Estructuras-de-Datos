@@ -13,41 +13,33 @@ public class Cliente {
     private String nombre;
     private int color;
     private int ByN;
-    private boolean enVentanilla;
     private int entregaColor;
     private int entregaByN;
-    private boolean enEspera;
-    private boolean atendido;
     private Cliente siguiente;
     private Cliente siguienteDoble;
     private Cliente anteriorDoble;
     private ListaSimple listaImagenes;
     private int numImg;
 
-    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, boolean enVentanilla, int entregaColor, int entregaByN, boolean enEspera, boolean atendido) {
+    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, int entregaColor, int entregaByN) {
         this.key_titulo = key_titulo;
         this.id = id;
         this.nombre = nombre;
         this.color = color;
         this.ByN = bYn;
-        this.enVentanilla = enVentanilla;
         this.entregaColor = entregaColor;
         this.entregaByN = entregaByN;
-        this.enEspera = enEspera;
-        this.atendido = atendido;
         this.siguiente = null;
         this.siguienteDoble = this;
         this.anteriorDoble = null;
     }
 
-    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, boolean enEspera, boolean atendido) {
+    public Cliente(String key_titulo, int id, String nombre, int color, int bYn) {
         this.key_titulo = key_titulo;
         this.id = id;
         this.nombre = nombre;
         this.color = color;
         this.ByN = bYn;
-        this.enEspera = enEspera;
-        this.atendido = atendido;
         this.siguienteDoble = this;
         this.anteriorDoble = null;
         this.listaImagenes = new ListaSimple();
@@ -139,20 +131,6 @@ public class Cliente {
     }
 
     /**
-     * @return the enVentanilla
-     */
-    public boolean isEnVentanilla() {
-        return enVentanilla;
-    }
-
-    /**
-     * @param enVentanilla the enVentanilla to set
-     */
-    public void setEnVentanilla(boolean enVentanilla) {
-        this.enVentanilla = enVentanilla;
-    }
-
-    /**
      * @return the entregaColor
      */
     public int getEntregaColor() {
@@ -178,34 +156,6 @@ public class Cliente {
      */
     public void setEntregaByN(int entregaByN) {
         this.entregaByN = entregaByN;
-    }
-
-    /**
-     * @return the enEspera
-     */
-    public boolean isEnEspera() {
-        return enEspera;
-    }
-
-    /**
-     * @param enEspera the enEspera to set
-     */
-    public void setEnEspera(boolean enEspera) {
-        this.enEspera = enEspera;
-    }
-
-    /**
-     * @return the atendido
-     */
-    public boolean isAtendido() {
-        return atendido;
-    }
-
-    /**
-     * @param atendido the atendido to set
-     */
-    public void setAtendido(boolean atendido) {
-        this.atendido = atendido;
     }
 
     /**

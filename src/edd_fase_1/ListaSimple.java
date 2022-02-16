@@ -10,16 +10,28 @@ import Clases.Ventanilla;
  * @author Arnoldo González
  */
 public class ListaSimple {
- //quizas un tipo Cliente en Ventanilla y que ese sea la raiz para la grafica
-    //entonces ese cliente que paso a ventanilla ya le puedo hacer un pop de la cola
-    //y cuando salga de ventanilla ya lo mando a la de espera, nunca estaria duplicado en algun lugar
-    //cambiar la logica de los id en las ventanillas para que sea el id del cliente que esta actualmente y no recorrer toda la cola
+
+    private Cliente cabezaCliente;
     private Ventanilla cabezaVen;
     private Imagen cabezaImg;
 
     public ListaSimple() {
+        this.cabezaCliente = null;
         this.cabezaVen = null;
         this.cabezaImg = null;
+    }
+
+    public void insertarClienteAtendido(String key_titulo, int id, String nombre, int color, int bYn) {
+        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0);
+        if (this.getCabezaCliente() == null) {
+            this.setCabezaCliente(nuevo);
+        } else {
+            Cliente actual = this.getCabezaCliente();
+            while (actual.getSiguiente() != null) {
+                actual = actual.getSiguiente();
+            }
+            actual.setSiguiente(nuevo);
+        }
     }
 
     public void insertarVentanilla(int cantidad) {
@@ -57,57 +69,43 @@ public class ListaSimple {
         while (actualV != null) {
             if (!actualV.isOcupada()) {
                 Cliente actual = colaCliente.getCabeza();
-                while (actual != null) {
-                    if (!actual.isEnVentanilla() && !actual.isEnEspera() && !actual.isAtendido()) {
-                        System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                                + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
-                        actualV.setOcupada(true);
-                        actualV.setId_cliente(actual.getId());
-                        actual.setEnVentanilla(true);
-                        colaCliente.popCliente();
-                        break;
-                    }
-                    actual = actual.getSiguiente();
+                if (actual != null) {
+                    System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
+                            + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
+                    actualV.setOcupada(true);
+                    actualV.setId_cliente(actual.getId());
+                    colaCliente.popCliente();
+                    actualV.setCliente(actual);
                 }
             }
             actualV = actualV.getSiguiente();
         }
     }
 
-    public void darImagen(Cola colaCliente, Impresora cabezaImprColor, Impresora cabezaImprByN, ListaCircularDoble clienteEspera) {
+    public void darImagen(Impresora cabezaImprColor, Impresora cabezaImprByN, ListaCircularDoble clienteEspera) {
         Ventanilla actualV = this.getCabezaVen();
         while (actualV != null) {
-            if (actualV.isOcupada()) {
-                Cliente actual = colaCliente.getCabeza();
-                while (actual != null) {
-                    if (actual.isEnVentanilla() && actual.getId() == actualV.getId_cliente()) {
-                        if (actual.getColor() > 0 && actual.getColor() > actual.getEntregaColor()) {
-
-                            actualV.getPilaImagen().push(actual.getId(), true);
-                            actual.setEntregaColor(actual.getEntregaColor() + 1);
-                            System.out.println("Entrega imagen Color -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                                    + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
-                        } else if (actual.getByN() > 0 && actual.getByN() > actual.getEntregaByN()) {
-
-                            actualV.getPilaImagen().push(actual.getId(), false);
-                            actual.setEntregaByN(actual.getEntregaByN() + 1);
-                            System.out.println("Entrega imagen Byn -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                                    + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
-                        } else {
-                            System.out.println("Retira de Ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                                    + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
-                            actual.setEntregaByN(0);
-                            actual.setEntregaColor(0);
-                            actual.setEnVentanilla(false);
-                            actual.setEnEspera(true);
-                            actualV.setOcupada(false);
-                            enviarColaImpresion(actualV.getPilaImagen(), cabezaImprColor, cabezaImprByN);
-                            actualV.setPilaImagen(null);
-                            clienteEspera.insertar(actual);
-                        }
-                        break;
-                    }
-                    actual = actual.getSiguiente();
+            if (actualV.isOcupada() && actualV.getCliente() != null) {
+                if (actualV.getCliente().getColor() > 0 && actualV.getCliente().getColor() > actualV.getCliente().getEntregaColor()) {
+                    actualV.getPilaImagen().push(actualV.getCliente().getId(), true);
+                    actualV.getCliente().setEntregaColor(actualV.getCliente().getEntregaColor() + 1);
+                    System.out.println("Entrega imagen Color -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
+                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                } else if (actualV.getCliente().getByN() > 0 && actualV.getCliente().getByN() > actualV.getCliente().getEntregaByN()) {
+                    actualV.getPilaImagen().push(actualV.getCliente().getId(), false);
+                    actualV.getCliente().setEntregaByN(actualV.getCliente().getEntregaByN() + 1);
+                    System.out.println("Entrega imagen Byn -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
+                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                } else {
+                    System.out.println("Retira de Ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
+                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                    actualV.getCliente().setEntregaByN(0);
+                    actualV.getCliente().setEntregaColor(0);
+                    actualV.setOcupada(false);
+                    actualV.setId_cliente(0);
+                    enviarColaImpresion(actualV.getPilaImagen(), cabezaImprColor, cabezaImprByN);
+                    actualV.setPilaImagen(new Pila());
+                    clienteEspera.insertar(actualV.getCliente());
                 }
             }
             actualV = actualV.getSiguiente();
@@ -126,20 +124,92 @@ public class ListaSimple {
             System.out.println("Id enviado: " + imagenActual.getIdCliente() + " Tipo: " + imagenActual.isTipoImpresion());
             imagenActual = imagenActual.getSiguiente();
         }
-        System.out.println("Tamaño en Impresora Color: " + cabezaImprColor.getColaImagen().sizeColor);
-        System.out.println("Tamaño en Impresora ByN: " + cabezImprByN.getColaImagen().sizeByN);
     }
 
-    public void todoOk(Impresora cabezaImprColor, Impresora cabezImprByN) {
-        System.out.println("Tamaño en Impresora Color: " + cabezaImprColor.getColaImagen().sizeColor);
-        System.out.println("Tamaño en Impresora ByN: " + cabezImprByN.getColaImagen().sizeByN);
+    public String graficaListaVentanilla() {
+        int id = 1;
+        String nodoCliente = "", nodoImagen = "", filas = "", apuntador = "", apuntadorCliente = "", apuntadorImagen = "", rank = "{rank = same";
+        String contenido = "digraph L{\n"
+                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Lista de Ventanillas\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "edge[dir = \"right\"]\n";
+
+        Ventanilla actual = this.getCabezaVen();
+        for (actual = this.getCabezaVen(); actual != null; actual = actual.getSiguiente()) {
+
+            Boolean primeraImagen = false;
+            filas += "Ventanilla" + actual.getNumVentanilla() + "[label = \"Ventanilla " + actual.getNumVentanilla() + "\", fillcolor = \"#F8DEA1\" shape = folder];\n";
+
+            if (actual.getCliente() != null && actual.isOcupada()) {
+                nodoCliente += actual.getCliente().getKey_titulo() + "[label = \"Cliente " + actual.getId_cliente() + "\nIMG Color: " + actual.getCliente().getColor()
+                        + "\nIMG ByN: " + actual.getCliente().getByN() + "\", fillcolor = \"#FCF8F7\"]\n";
+            }
+
+            if (actual.getCliente() != null && actual.isOcupada()) {
+                apuntadorCliente += actual.getCliente().getKey_titulo() + " -> " + " Ventanilla" + actual.getNumVentanilla() + ";\n";
+            }
+
+            if (actual.getPilaImagen() != null) {
+                Imagen actualImg = actual.getPilaImagen().getCabeza();
+                while (actualImg != null) {
+                    if (actualImg.isTipoImpresion()) {
+                        nodoImagen += "nodo" + id + "[label = \"IMG Color\", fillcolor = \"#FCF8F7\"]\n";
+                    } else {
+                        nodoImagen += "nodo" + id + "[label = \"IMG ByN\", fillcolor = \"#FCF8F7\"]\n";
+                    }
+                    if (!primeraImagen) {
+                        apuntadorImagen += " Ventanilla" + actual.getNumVentanilla() + " -> " + " nodo" + id + ";\n";
+                        rank += ";Ventanilla" + actual.getNumVentanilla() + ";" + actual.getCliente().getKey_titulo();
+                        primeraImagen = true;
+                    }
+                    if (actualImg.getSiguiente() != null) {
+                        apuntadorImagen += " nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
+                    }
+                    rank += ";nodo" + id;
+                    id++;
+                    actualImg = actualImg.getSiguiente();
+                }
+                rank += "}\n";
+            }
+
+            if (actual.getSiguiente() != null) {
+                apuntador += "Ventanilla" + actual.getNumVentanilla() + " -> " + " Ventanilla" + actual.getSiguiente().getNumVentanilla() + ";\n";
+                rank += "{rank = same";
+            }
+        }
+        contenido += filas + apuntador + nodoCliente + apuntadorCliente + nodoImagen + apuntadorImagen + rank + "}\n}";
+        return contenido;
+    }
+
+    public void terminarCliente(ListaCircularDoble clienteEspera) {
+        Cliente clienteListo = clienteEspera.terminarClienteEspera();
+        if (clienteListo != null) {
+            insertarClienteAtendido(clienteListo.getKey_titulo(), clienteListo.getId(), clienteListo.getNombre(),
+                    clienteListo.getColor(), clienteListo.getByN());
+        }
+    }
+
+    public void topImgColor() {
+        Cliente actual = this.getCabezaCliente();
+        while (actual != null) {
+            System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: "
+                    + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
+            actual = actual.getSiguiente();
+        }
     }
 
     public void mostrarDatosV() {
         Ventanilla actual;
         for (actual = this.getCabezaVen(); actual != null; actual = actual.getSiguiente()) {
-            System.out.println("id: " + actual.getId_cliente() + " numero: " + actual.getNumVentanilla()
-                    + " ocupada: " + actual.isOcupada());
+            if (actual.getCliente() != null) {
+                System.out.println("id: " + actual.getId_cliente() + " numero: " + actual.getNumVentanilla()
+                        + " ocupada: " + actual.isOcupada() + " Cliente: " + actual.getCliente().getNombre());
+            } else {
+                System.out.println("id: " + actual.getId_cliente() + " numero: " + actual.getNumVentanilla()
+                        + " ocupada: " + actual.isOcupada());
+            }
         }
     }
 
@@ -169,5 +239,19 @@ public class ListaSimple {
      */
     public void setCabezaImg(Imagen cabezaImg) {
         this.cabezaImg = cabezaImg;
+    }
+
+    /**
+     * @return the cabezaCliente
+     */
+    public Cliente getCabezaCliente() {
+        return cabezaCliente;
+    }
+
+    /**
+     * @param cabezaCliente the cabezaCliente to set
+     */
+    public void setCabezaCliente(Cliente cabezaCliente) {
+        this.cabezaCliente = cabezaCliente;
     }
 }

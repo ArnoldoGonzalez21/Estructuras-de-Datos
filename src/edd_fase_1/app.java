@@ -20,11 +20,11 @@ public class app {
     Cola clientes = new Cola();
     ListaSimple ventanillas = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
+    ListaSimple clientesAtendidos = new ListaSimple();
     ListaCircularDoble clientesEspera = new ListaCircularDoble();
     Clases.Impresora cabezaImprColor = new Clases.Impresora(true, false);
     Clases.Impresora cabezImprByN = new Clases.Impresora(false, false);
     int pasos = 1;
-    int contadorColor = 0;
 
     public app() {
         Menu();
@@ -66,6 +66,8 @@ public class app {
                     if (this.cabezImprByN.getColaImagen() != null) {
                         crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
                     }
+                    crearGrafico(this.ventanillas.graficaListaVentanilla(), "ListaVentanilla");
+
                     //System.out.println("Clientes espera: " + clientesEspera.size);
                     //clientesEspera.mostrarClienteEspera();
                     break;
@@ -108,12 +110,19 @@ public class app {
     }
 
     public void s() {
-        System.out.println("Ventanilla");
-        ventanillas.mostrarDatosV();
-        System.out.println("Clientes en total");
+//        System.out.println("Ventanilla");
+//        ventanillas.mostrarDatosV();
+        System.out.println("Clientes en Recepción");
         clientes.mostrarDatos();
         System.out.println("Clientes Espera");
         clientesEspera.mostrarClienteEspera();
+        System.out.println("Imagenes Impresora:");
+        if (cabezaImprColor.getColaImagen() != null) {
+            cabezaImprColor.getColaImagen().mostrarColor();
+        }
+        if (cabezImprByN.getColaImagen() != null) {
+            cabezImprByN.getColaImagen().mostrarByN();
+        }
     }
 
     private void DatosEstudiante() {
@@ -147,7 +156,6 @@ public class app {
                 String nombre_cliente = gsonObj.get("nombre_cliente").getAsString();
                 int img_color = gsonObj.get("img_color").getAsInt();
                 int img_bw = gsonObj.get("img_bw").getAsInt();
-                //System.out.println(key + id_cliente + nombre_cliente + img_color + img_bw);
                 clientes.insertarCliente(key, id_cliente, nombre_cliente, img_color, img_bw);
             }
         }
@@ -158,16 +166,23 @@ public class app {
     private void ejecutarPaso() {
         System.out.println("NO. PASO -> " + pasos);
         pasos++;
-        clientes.terminarCliente(this.clientesEspera);
-        Clases.Imagen imagenColor = this.cabezaImprColor.getColaImagen().popColor();
-        if (imagenColor != null) {
-            this.clientesEspera.entregarImagen(imagenColor);
+        clientesAtendidos.terminarCliente(this.clientesEspera);
+
+        Clases.Imagen imagenColorExiste = this.cabezaImprColor.getColaImagen().existeColor();
+        if (imagenColorExiste != null) {
+            if (imagenColorExiste.getNumPaso() >= 1) {
+                Clases.Imagen imagenColor = this.cabezaImprColor.getColaImagen().popColor();
+                this.clientesEspera.entregarImagen(imagenColor);
+            } else {
+                imagenColorExiste.setNumPaso(imagenColorExiste.getNumPaso() + 1);
+            }
         }
+
         Clases.Imagen imagenByN = this.cabezImprByN.getColaImagen().popByN();
         if (imagenByN != null) {
             this.clientesEspera.entregarImagen(imagenByN);
         }
-        ventanillas.darImagen(clientes, this.cabezaImprColor, this.cabezImprByN, clientesEspera);
+        ventanillas.darImagen(this.cabezaImprColor, this.cabezImprByN, clientesEspera);
         ventanillas.pasarVentanilla(clientes);
         //clientes.generarClientesRandom();
         s();

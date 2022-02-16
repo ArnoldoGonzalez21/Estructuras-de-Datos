@@ -5,14 +5,16 @@ package Clases;
  * @author Arnoldo González
  */
 public class Imagen {
-   
+
     private int idCliente;
     private boolean tipoImpresion; //Color -> true    ByN -> false
+    private int numPaso;
     private Imagen siguiente;
-    
+
     public Imagen(int idCliente, boolean tipoImpresion) {
         this.idCliente = idCliente;
         this.tipoImpresion = tipoImpresion;
+        this.numPaso = 0;
         this.siguiente = null;
     }
 
@@ -56,5 +58,19 @@ public class Imagen {
      */
     public void setSiguiente(Imagen siguiente) {
         this.siguiente = siguiente;
+    }
+
+    /**
+     * @return the numPaso
+     */
+    public int getNumPaso() {
+        return numPaso;
+    }
+
+    /**
+     * @param numPaso the numPaso to set
+     */
+    public void setNumPaso(int numPaso) {
+        this.numPaso = numPaso;
     }
 }

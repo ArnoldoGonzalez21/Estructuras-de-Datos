@@ -30,7 +30,7 @@ public class Pila {
 
     public void mostrar() {
         Imagen actual;
-        System.out.println("IMAGENES EN PILA");
+        System.out.println("Imagenes en Pila");
         for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
             System.out.println("id: " + actual.getIdCliente() + " tipo: " + actual.isTipoImpresion());
         }

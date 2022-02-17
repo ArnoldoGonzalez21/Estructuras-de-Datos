@@ -22,14 +22,13 @@ public class Cola {
     }
 
     public void insertarCliente(String key_titulo, int id, String nombre, int color, int bYn) {
-        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0);
+        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0, 0);
         if (this.getCabeza() == null) {
             this.setCabeza(nuevo);
         } else {
             Cliente actual = this.getCabeza();
             while (actual.getSiguiente() != null) {
                 actual = actual.getSiguiente();
-
             }
             actual.setSiguiente(nuevo);
         }
@@ -76,7 +75,6 @@ public class Cola {
             }
             return retorno;
         }
-        //System.out.println("No tengo datos");
         return retorno;
     }
 
@@ -91,7 +89,6 @@ public class Cola {
             }
             return retorno;
         }
-        //System.out.println("No tengo datos");
         return retorno;
     }
 
@@ -115,7 +112,6 @@ public class Cola {
             }
             return retorno;
         }
-        //System.out.println("No tengo datos");
         return retorno;
     }
 
@@ -133,7 +129,7 @@ public class Cola {
             actual = actual.getSiguiente();
         }
         int cantidadClientes = (int) (Math.random() * (3 - 0 + 1) + 0);
-        System.out.println("Cantidad nuevos clientes: " + cantidadClientes);
+        System.out.println("\nHan ingresado " + cantidadClientes + " nuevos Clientes");
         for (int i = 0; i < cantidadClientes; i++) {
             int nombreRandom = (int) (Math.random() * (19 - 0 + 1) + 0);
             int apellidoRandom = (int) (Math.random() * (19 - 0 + 1) + 0);
@@ -141,8 +137,8 @@ public class Cola {
             int cantidadByN = (int) (Math.random() * (4 - 0 + 1) + 0);
             insertarCliente("Cliente" + (ultimoId + i), (ultimoId + i), nombres[nombreRandom] + " " + apellidos[apellidoRandom],
                     cantidadColor, cantidadByN);
-            System.out.println("Cliente" + (ultimoId + i) + " - " + (ultimoId + i) + " - " + nombres[nombreRandom] + " " + apellidos[apellidoRandom]
-                    + " - " + cantidadColor + " - " + cantidadByN);
+//            System.out.println("Cliente" + (ultimoId + i) + " - " + (ultimoId + i) + " - " + nombres[nombreRandom] + " " + apellidos[apellidoRandom]
+//                    + " - " + cantidadColor + " - " + cantidadByN);
         }
     }
 
@@ -233,6 +229,7 @@ public class Cola {
 
     public void mostrarDatos() {
         Cliente actual;
+        System.out.println("Cola Cliente");
         for (actual = this.getCabeza(); actual != null; actual = actual.getSiguiente()) {
             System.out.println("key: " + actual.getKey_titulo() + " id: " + actual.getId()
                     + " nombre: " + actual.getNombre() + " color: " + actual.getColor() + " byn: " + actual.getByN());

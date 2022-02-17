@@ -21,8 +21,8 @@ public class ListaSimple {
         this.cabezaImg = null;
     }
 
-    public void insertarClienteAtendido(String key_titulo, int id, String nombre, int color, int bYn) {
-        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0);
+    public void insertarClienteAtendido(String key_titulo, int id, String nombre, int color, int bYn, int cantidadPasos) {
+        Cliente nuevo = new Cliente(key_titulo, id, nombre, color, bYn, 0, 0, cantidadPasos);
         if (this.getCabezaCliente() == null) {
             this.setCabezaCliente(nuevo);
         } else {
@@ -70,8 +70,9 @@ public class ListaSimple {
             if (!actualV.isOcupada()) {
                 Cliente actual = colaCliente.getCabeza();
                 if (actual != null) {
-                    System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                            + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
+                    System.out.println("Ingresa a ventanilla " + actualV.getNumVentanilla()
+                            + " el Cliente " + actual.getNombre() + " con Id No. " + actual.getId());
+                    actual.setCantidadPasos(actual.getCantidadPasos() + 1);
                     actualV.setOcupada(true);
                     actualV.setId_cliente(actual.getId());
                     colaCliente.popCliente();
@@ -89,16 +90,21 @@ public class ListaSimple {
                 if (actualV.getCliente().getColor() > 0 && actualV.getCliente().getColor() > actualV.getCliente().getEntregaColor()) {
                     actualV.getPilaImagen().push(actualV.getCliente().getId(), true);
                     actualV.getCliente().setEntregaColor(actualV.getCliente().getEntregaColor() + 1);
-                    System.out.println("Entrega imagen Color -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                    actualV.getCliente().setCantidadPasos(actualV.getCliente().getCantidadPasos() + 1);
+                    System.out.println("No. Ventanilla: " + actualV.getNumVentanilla() + " - Recibe imagen a Color del Cliente "
+                            + actualV.getCliente().getNombre() + " con Id No. " + actualV.getCliente().getId());
+
                 } else if (actualV.getCliente().getByN() > 0 && actualV.getCliente().getByN() > actualV.getCliente().getEntregaByN()) {
                     actualV.getPilaImagen().push(actualV.getCliente().getId(), false);
                     actualV.getCliente().setEntregaByN(actualV.getCliente().getEntregaByN() + 1);
-                    System.out.println("Entrega imagen Byn -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                    actualV.getCliente().setCantidadPasos(actualV.getCliente().getCantidadPasos() + 1);
+                    System.out.println("No. Ventanilla: " + actualV.getNumVentanilla() + " - Recibe imagen a Blanco y Negro del Cliente "
+                            + actualV.getCliente().getNombre() + " con Id No. " + actualV.getCliente().getId());
+
                 } else {
-                    System.out.println("Retira de Ventanilla -> " + "No. Ventanilla: " + actualV.getNumVentanilla()
-                            + " Id Cliente: " + actualV.getCliente().getId() + " Nombre: " + actualV.getCliente().getNombre());
+                    System.out.println("\t*Se Retira de Ventanilla " + actualV.getNumVentanilla() + " el Cliente "
+                            + actualV.getCliente().getNombre() + " con Id No. " + actualV.getCliente().getId()+"*\n");
+                    actualV.getCliente().setCantidadPasos(actualV.getCliente().getCantidadPasos() + 1);
                     actualV.getCliente().setEntregaByN(0);
                     actualV.getCliente().setEntregaColor(0);
                     actualV.setOcupada(false);
@@ -114,14 +120,13 @@ public class ListaSimple {
 
     public void enviarColaImpresion(Pila pilaImagen, Impresora cabezaImprColor, Impresora cabezImprByN) {
         Clases.Imagen imagenActual = pilaImagen.getCabeza();
-        System.out.println("*Enviando Pila de Imagenes a Cola de Impresión*");
+        System.out.println("\t*Enviando Pila de Imagenes a Cola de Impresión*\n");
         while (imagenActual != null) {
             if (imagenActual.isTipoImpresion()) {
                 cabezaImprColor.getColaImagen().pushColor(imagenActual.getIdCliente(), true);
             } else {
                 cabezImprByN.getColaImagen().pushByN(imagenActual.getIdCliente(), false);
             }
-            System.out.println("Id enviado: " + imagenActual.getIdCliente() + " Tipo: " + imagenActual.isTipoImpresion());
             imagenActual = imagenActual.getSiguiente();
         }
     }
@@ -149,6 +154,7 @@ public class ListaSimple {
 
             if (actual.getCliente() != null && actual.isOcupada()) {
                 apuntadorCliente += actual.getCliente().getKey_titulo() + " -> " + " Ventanilla" + actual.getNumVentanilla() + ";\n";
+                rank += ";Ventanilla" + actual.getNumVentanilla() + ";" + actual.getCliente().getKey_titulo();
             }
 
             if (actual.getPilaImagen() != null) {
@@ -161,7 +167,6 @@ public class ListaSimple {
                     }
                     if (!primeraImagen) {
                         apuntadorImagen += " Ventanilla" + actual.getNumVentanilla() + " -> " + " nodo" + id + ";\n";
-                        rank += ";Ventanilla" + actual.getNumVentanilla() + ";" + actual.getCliente().getKey_titulo();
                         primeraImagen = true;
                     }
                     if (actualImg.getSiguiente() != null) {
@@ -183,21 +188,193 @@ public class ListaSimple {
         return contenido;
     }
 
+    public String graficaClienteAtendido() {
+        int id = 1;
+        String contenido = "digraph L{\n"
+                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Lista Clientes Atendidos\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "raiz[label = \"Atendidos\" shape = folder]\n"
+                + "edge[dir = \"right\"]\n";
+        String nodos = "", apuntador_nodo = "", rank = "{rank = same;raiz";
+        Cliente actual = this.getCabezaCliente();
+        if (actual != null) {
+            contenido += "raiz -> nodo" + id + ";\n";
+        }
+        for (actual = this.getCabezaCliente(); actual != null; actual = actual.getSiguiente()) {
+            nodos += "nodo" + id + "[label = \"Id: " + actual.getId() + "\nNombre: " + actual.getNombre() + "\nIMG Color: " + actual.getColor()
+                    + "\nIMG ByN: " + actual.getByN() + "\", fillcolor = \"#FCF8F7\", group = " + (id + 1) + "]\n";
+            if (actual.getSiguiente() != null) {
+                apuntador_nodo += "nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
+            }
+            rank += ";nodo" + id;
+            id++;
+        }
+        rank += "}\n";
+        contenido += nodos + apuntador_nodo + rank + "}\n}";
+        return contenido;
+    }
+
     public void terminarCliente(ListaCircularDoble clienteEspera) {
         Cliente clienteListo = clienteEspera.terminarClienteEspera();
         if (clienteListo != null) {
+            System.out.println("\t**El Cliente " + clienteListo.getNombre() + " con Id No. " + clienteListo.getId() + " se Retira con las Impresiones solicitadas**\n");
             insertarClienteAtendido(clienteListo.getKey_titulo(), clienteListo.getId(), clienteListo.getNombre(),
-                    clienteListo.getColor(), clienteListo.getByN());
+                    clienteListo.getColor(), clienteListo.getByN(), clienteListo.getCantidadPasos());
         }
     }
 
     public void topImgColor() {
+        this.BubbleSortColor();
+        int contador = 0;
         Cliente actual = this.getCabezaCliente();
         while (actual != null) {
-            System.out.println("Ingresa a ventanilla -> " + "No. Ventanilla: "
-                    + " Id Cliente: " + actual.getId() + " Nombre: " + actual.getNombre());
+            if (contador <= 5) {
+                System.out.println("Imágenes Color: " + actual.getColor() + " - Id Cliente: "
+                        + actual.getId() + " - Nombre: " + actual.getNombre());
+            } else {
+                return;
+            }
+            contador++;
             actual = actual.getSiguiente();
         }
+    }
+
+    public void BubbleSortColor() {
+        Cliente actual = this.getCabezaCliente();
+        while (true) {
+            actual = this.getCabezaCliente();
+            Cliente auxAnt = null;
+            Cliente auxSig = actual.getSiguiente();
+            Boolean cambio = false;
+            while (auxSig != null) {
+                if (actual.getColor() < auxSig.getColor()) {
+                    cambio = true;
+                    Cliente tmp = auxSig.getSiguiente();
+                    if (auxAnt != null) {
+                        auxAnt.setSiguiente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    } else {
+                        this.setCabezaCliente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    }
+                    auxAnt = auxSig;
+                    auxSig = actual.getSiguiente();
+                } else {
+                    auxAnt = actual;
+                    actual = auxSig;
+                    auxSig = auxSig.getSiguiente();
+                }
+            }
+            if (!cambio) {
+                break;
+            }
+        }
+    }
+
+    public void topImgByN() {
+        this.BubbleSortByN();
+        int contador = 0;
+        Cliente actual = this.getCabezaCliente();
+        while (actual != null) {
+            if (contador <= 5) {
+                System.out.println("Imágenes Blanco y Negro: " + actual.getByN() + " - Id Cliente: "
+                        + actual.getId() + " - Nombre: " + actual.getNombre());
+            } else {
+                return;
+            }
+            contador++;
+            actual = actual.getSiguiente();
+        }
+    }
+
+    public void BubbleSortByN() {
+        Cliente actual = this.getCabezaCliente();
+        while (true) {
+            actual = this.getCabezaCliente();
+            Cliente auxAnt = null;
+            Cliente auxSig = actual.getSiguiente();
+            Boolean cambio = false;
+            while (auxSig != null) {
+                if (actual.getByN() > auxSig.getByN()) {
+                    cambio = true;
+                    Cliente tmp = auxSig.getSiguiente();
+                    if (auxAnt != null) {
+                        auxAnt.setSiguiente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    } else {
+                        this.setCabezaCliente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    }
+                    auxAnt = auxSig;
+                    auxSig = actual.getSiguiente();
+                } else {
+                    auxAnt = actual;
+                    actual = auxSig;
+                    auxSig = auxSig.getSiguiente();
+                }
+            }
+            if (!cambio) {
+                break;
+            }
+        }
+    }
+
+    public void topClientePasos() {
+        this.BubbleSortPasos();
+        Cliente actual = getCabezaCliente();
+        System.out.println("\tId: " + actual.getId() + "\n\tNombre: " + actual.getNombre()
+                + "\n\tPasos: " + actual.getCantidadPasos());
+    }
+
+    public void BubbleSortPasos() {
+        Cliente actual = this.getCabezaCliente();
+        while (true) {
+            actual = this.getCabezaCliente();
+            Cliente auxAnt = null;
+            Cliente auxSig = actual.getSiguiente();
+            Boolean cambio = false;
+            while (auxSig != null) {
+                if (actual.getCantidadPasos() < auxSig.getCantidadPasos()) {
+                    cambio = true;
+                    Cliente tmp = auxSig.getSiguiente();
+                    if (auxAnt != null) {
+                        auxAnt.setSiguiente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    } else {
+                        this.setCabezaCliente(auxSig);
+                        auxSig.setSiguiente(actual);
+                        actual.setSiguiente(tmp);
+                    }
+                    auxAnt = auxSig;
+                    auxSig = actual.getSiguiente();
+                } else {
+                    auxAnt = actual;
+                    actual = auxSig;
+                    auxSig = auxSig.getSiguiente();
+                }
+            }
+            if (!cambio) {
+                break;
+            }
+        }
+    }
+
+    public Cliente solicitarInfoCliente(int idClienteSolicitado) {
+        Cliente actual = getCabezaCliente();
+        while (actual != null) {
+            if (actual.getId() == idClienteSolicitado) {
+                return actual;
+            }
+            actual = actual.getSiguiente();
+        }
+        return null;
     }
 
     public void mostrarDatosV() {

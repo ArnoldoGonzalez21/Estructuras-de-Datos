@@ -20,8 +20,9 @@ public class Cliente {
     private Cliente anteriorDoble;
     private ListaSimple listaImagenes;
     private int numImg;
+    private int cantidadPasos;
 
-    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, int entregaColor, int entregaByN) {
+    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, int entregaColor, int entregaByN, int cantidadPasos) {
         this.key_titulo = key_titulo;
         this.id = id;
         this.nombre = nombre;
@@ -29,12 +30,13 @@ public class Cliente {
         this.ByN = bYn;
         this.entregaColor = entregaColor;
         this.entregaByN = entregaByN;
+        this.cantidadPasos = cantidadPasos;
         this.siguiente = null;
         this.siguienteDoble = this;
         this.anteriorDoble = null;
     }
 
-    public Cliente(String key_titulo, int id, String nombre, int color, int bYn) {
+    public Cliente(String key_titulo, int id, String nombre, int color, int bYn, int cantidadPasos) {
         this.key_titulo = key_titulo;
         this.id = id;
         this.nombre = nombre;
@@ -44,6 +46,7 @@ public class Cliente {
         this.anteriorDoble = null;
         this.listaImagenes = new ListaSimple();
         this.numImg = 0;
+        this.cantidadPasos = cantidadPasos;
     }
 
     /**
@@ -212,5 +215,19 @@ public class Cliente {
      */
     public void setNumImg(int numImg) {
         this.numImg = numImg;
+    }
+
+    /**
+     * @return the cantidadPasos
+     */
+    public int getCantidadPasos() {
+        return cantidadPasos;
+    }
+
+    /**
+     * @param cantidadPasos the cantidadPasos to set
+     */
+    public void setCantidadPasos(int cantidadPasos) {
+        this.cantidadPasos = cantidadPasos;
     }
 }

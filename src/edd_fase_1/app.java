@@ -57,19 +57,7 @@ public class app {
                     clientes.generarClientesRandom();
                     break;
                 case 4:
-                    if (this.clientes != null) {
-                        crearGrafico(this.clientes.graficaClienteRecepcion(), "ColaClientes");
-                    }
-                    if (this.cabezaImprColor.getColaImagen() != null) {
-                        crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
-                    }
-                    if (this.cabezImprByN.getColaImagen() != null) {
-                        crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
-                    }
-                    crearGrafico(this.ventanillas.graficaListaVentanilla(), "ListaVentanilla");
-
-                    //System.out.println("Clientes espera: " + clientesEspera.size);
-                    //clientesEspera.mostrarClienteEspera();
+                    menuReportes();
                     break;
                 case 5:
                     DatosEstudiante();
@@ -109,22 +97,71 @@ public class app {
         }
     }
 
-    public void s() {
-//        System.out.println("Ventanilla");
-//        ventanillas.mostrarDatosV();
-        System.out.println("Clientes en Recepción");
-        clientes.mostrarDatos();
-        System.out.println("Clientes Espera");
-        clientesEspera.mostrarClienteEspera();
-        System.out.println("Imagenes Impresora:");
-        if (cabezaImprColor.getColaImagen() != null) {
-            cabezaImprColor.getColaImagen().mostrarColor();
-        }
-        if (cabezImprByN.getColaImagen() != null) {
-            cabezImprByN.getColaImagen().mostrarByN();
+    private void menuReportes() {
+        int opcion;
+        opcion = 0;
+        Scanner lector = new Scanner(System.in);
+        System.out.println("\n==============================================");
+        System.out.println("^        <<<<<<<<< REPORTES >>>>>>>>>        ^");
+        System.out.println("^  1) Top 5 clientes mayor Imagenes a Color  ^");
+        System.out.println("^  2) Top 5 clientes menor Imagenes B y n    ^");
+        System.out.println("^  3) Cliente con más pasos                  ^");
+        System.out.println("^  4) Datos de un cliente en específico      ^");
+        System.out.println("^  5) Generar Gráficas                       ^");
+        System.out.println("==============================================");
+        System.out.print("Escriba aquí: ");
+        opcion = lector.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("\n<<<<< Top 5 Clientes con mayor cantidad de Imágenes a Color >>>>>");
+                this.clientesAtendidos.topImgColor();
+                break;
+            case 2:
+                System.out.println("\n<<<<< Top 5 Clientes con menor cantidad de Imágenes Blanco y Negro >>>>>");
+                this.clientesAtendidos.topImgByN();
+                break;
+            case 3:
+                System.out.println("\n<<<<< Clientes con mayor cantidad de Pasos >>>>>");
+                clientesAtendidos.topClientePasos();
+                break;
+            case 4:
+                solicitarInfoCliente();
+                break;
+            case 5:
+                if (this.clientes != null) {
+                    crearGrafico(this.clientes.graficaClienteRecepcion(), "ColaClientes");
+                }
+                if (this.cabezaImprColor.getColaImagen() != null) {
+                    crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
+                }
+                if (this.cabezImprByN.getColaImagen() != null) {
+                    crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
+                }
+                crearGrafico(this.ventanillas.graficaListaVentanilla(), "ListaVentanilla");
+                crearGrafico(this.clientesEspera.graficaListaEspera(), "ListaEspera");
+                crearGrafico(this.clientesAtendidos.graficaClienteAtendido(), "ListaAtendido");
+                break;
+            default:
+                System.out.println("\n<<<<<<< Opción Inválida >>>>>>>");
         }
     }
 
+//    public void imprimir() {
+//        System.out.println("Ventanilla");
+//        ventanillas.mostrarDatosV();
+//        System.out.println("Clientes en Recepción");
+//        clientes.mostrarDatos();
+//        System.out.println("Clientes Espera");
+//        clientesEspera.mostrarClienteEspera();
+//        System.out.println("Imagenes Impresora:");
+//        if (cabezaImprColor.getColaImagen() != null) {
+//            cabezaImprColor.getColaImagen().mostrarColor();
+//        }
+//        if (cabezImprByN.getColaImagen() != null) {
+//            cabezImprByN.getColaImagen().mostrarByN();
+//        }
+//    }
+    
     private void DatosEstudiante() {
         System.out.println("\n>>> Arnoldo Luis Antonio González Camey");
         System.out.println(">>> Carné: 20170148");
@@ -143,7 +180,7 @@ public class app {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(Jsontxt); // Convertir el texto a JsonElement
         JsonObject obj = element.getAsJsonObject(); //JsonElement a JsonObject
-        Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
+        Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//retorna miembros objeto
 
         for (Map.Entry<String, JsonElement> entry : entries) {
             String key = entry.getKey(); //Claves del Json 
@@ -159,12 +196,12 @@ public class app {
                 clientes.insertarCliente(key, id_cliente, nombre_cliente, img_color, img_bw);
             }
         }
-        clientes.mostrarDatos();
         return true;
     }
 
     private void ejecutarPaso() {
-        System.out.println("NO. PASO -> " + pasos);
+        System.out.println("----------------------Paso No. " + pasos + "----------------------");
+        System.out.println("-------------------------------------------------------");
         pasos++;
         clientesAtendidos.terminarCliente(this.clientesEspera);
 
@@ -182,10 +219,24 @@ public class app {
         if (imagenByN != null) {
             this.clientesEspera.entregarImagen(imagenByN);
         }
+        clientesEspera.agregarPasoClienteEspera();
         ventanillas.darImagen(this.cabezaImprColor, this.cabezImprByN, clientesEspera);
         ventanillas.pasarVentanilla(clientes);
-        //clientes.generarClientesRandom();
-        s();
+        clientes.generarClientesRandom();
+    }
+
+    public void solicitarInfoCliente() {
+        System.out.print("Escriba el Id del Cliente: ");
+        Scanner lector = new Scanner(System.in);
+        int idClienteSolicitado = lector.nextInt();
+        System.out.println("\n<<<<< Cliente >>>>>");
+        Clases.Cliente clienteSol = clientesAtendidos.solicitarInfoCliente(idClienteSolicitado);
+        if (clienteSol != null) {
+            System.out.println("\tId: " + clienteSol.getId() + "\n\tNombre: " + clienteSol.getNombre()
+                    + "\n\tImágenes Color: " + clienteSol.getColor() + "\n\tImágenes Blanco y Negro: " + clienteSol.getByN());
+        } else {
+            System.out.println("El Id del Cliente solicitado no se encuentra");
+        }
     }
 
     public void crearGrafico(String contenidoGrafica, String nombre) {

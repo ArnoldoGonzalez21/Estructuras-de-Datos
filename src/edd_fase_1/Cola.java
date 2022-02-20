@@ -172,7 +172,6 @@ public class Cola {
     }
 
     public String graficaColaColor() {
-        mostrarColor();
         int id = 1;
         String contenido = "digraph L{\n"
                 + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
@@ -200,7 +199,6 @@ public class Cola {
     }
 
     public String graficaColaByN() {
-        mostrarByN();
         int id = 1;
         String contenido = "digraph L{\n"
                 + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"

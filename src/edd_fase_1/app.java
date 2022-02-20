@@ -54,7 +54,18 @@ public class app {
                     ejecutarPaso();
                     break;
                 case 3:
-                    clientes.generarClientesRandom();
+                    if (this.clientes != null) {
+                        crearGrafico(this.clientes.graficaClienteRecepcion(), "ColaClientes");
+                    }
+                    if (this.cabezaImprColor.getColaImagen() != null) {
+                        crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
+                    }
+                    if (this.cabezImprByN.getColaImagen() != null) {
+                        crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
+                    }
+                    crearGrafico(this.ventanillas.graficaListaVentanilla(), "ListaVentanilla");
+                    crearGrafico(this.clientesEspera.graficaListaEspera(), "ListaEspera");
+                    crearGrafico(this.clientesAtendidos.graficaClienteAtendido(), "ListaAtendido");
                     break;
                 case 4:
                     menuReportes();
@@ -107,7 +118,6 @@ public class app {
         System.out.println("^  2) Top 5 clientes menor Imagenes B y n    ^");
         System.out.println("^  3) Cliente con más pasos                  ^");
         System.out.println("^  4) Datos de un cliente en específico      ^");
-        System.out.println("^  5) Generar Gráficas                       ^");
         System.out.println("==============================================");
         System.out.print("Escriba aquí: ");
         opcion = lector.nextInt();
@@ -126,20 +136,6 @@ public class app {
                 break;
             case 4:
                 solicitarInfoCliente();
-                break;
-            case 5:
-                if (this.clientes != null) {
-                    crearGrafico(this.clientes.graficaClienteRecepcion(), "ColaClientes");
-                }
-                if (this.cabezaImprColor.getColaImagen() != null) {
-                    crearGrafico(this.cabezaImprColor.getColaImagen().graficaColaColor(), "ColaColor");
-                }
-                if (this.cabezImprByN.getColaImagen() != null) {
-                    crearGrafico(this.cabezImprByN.getColaImagen().graficaColaByN(), "ColaByN");
-                }
-                crearGrafico(this.ventanillas.graficaListaVentanilla(), "ListaVentanilla");
-                crearGrafico(this.clientesEspera.graficaListaEspera(), "ListaEspera");
-                crearGrafico(this.clientesAtendidos.graficaClienteAtendido(), "ListaAtendido");
                 break;
             default:
                 System.out.println("\n<<<<<<< Opción Inválida >>>>>>>");
@@ -161,7 +157,6 @@ public class app {
 //            cabezImprByN.getColaImagen().mostrarByN();
 //        }
 //    }
-    
     private void DatosEstudiante() {
         System.out.println("\n>>> Arnoldo Luis Antonio González Camey");
         System.out.println(">>> Carné: 20170148");

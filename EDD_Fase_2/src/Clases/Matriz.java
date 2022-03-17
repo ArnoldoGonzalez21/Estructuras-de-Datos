@@ -91,7 +91,7 @@ public class Matriz {
                 insertado = true;
                 break;
             }
-            if (aux.getAbajo()!= null) {
+            if (aux.getAbajo() != null) {
                 aux = aux.getAbajo();
             } else {
                 insertado = false;
@@ -108,6 +108,53 @@ public class Matriz {
             nuevo.setArriba(aux);
         }
         return nuevo;
+    }
+
+    public void insertarNodo(int x, int y, String dato) {
+        NodoMatriz nuevo = new NodoMatriz(dato, x, y);
+        NodoMatriz nodoColumna = buscarColumna(x);
+        NodoMatriz nodoFila = buscarFila(y);
+        //No existe ni fila ni columna
+        if (nodoFila == null && nodoColumna == null) {
+            System.out.println("No existe fila ni col");
+            nodoColumna = crearColumna(x);
+            nodoFila = crearFila(y);
+            nuevo = insertarOrdenColumna(nuevo, nodoFila);
+            nuevo = insertarOrdenFila(nuevo, nodoColumna);
+            return;
+        } else if (nodoFila == null && nodoColumna != null) {
+            System.out.println("No fila, si columna");
+            nodoColumna = crearFila(y);
+            nuevo = insertarOrdenColumna(nuevo, nodoFila);
+            nuevo = insertarOrdenFila(nuevo, nodoColumna);
+            return;
+
+        } else if (nodoFila != null && nodoColumna == null) {
+            System.out.println("Si fila, no columna");
+            nodoColumna = crearColumna(x);
+            nuevo = insertarOrdenColumna(nuevo, nodoFila);
+            nuevo = insertarOrdenFila(nuevo, nodoColumna);
+            return;
+        } else if (nodoFila != null && nodoColumna != null) {
+            System.out.println("Si los dos");
+            nuevo = insertarOrdenColumna(nuevo, nodoFila);
+            nuevo = insertarOrdenFila(nuevo, nodoColumna);
+            return;
+        }
+    }
+
+    public void imprimir() {
+        NodoMatriz aux = raiz;
+        while (aux != null) {
+            String tex = "";
+            NodoMatriz aux2 = aux;
+            while (aux2 != null) {
+                tex += "[" + (aux2.getX()) +" / "+ aux2.getY() + "]";
+                aux2 = aux2.getSiguiente();
+            }
+            System.out.println(tex);
+            aux = aux.getAbajo();
+        }
     }
 
 }

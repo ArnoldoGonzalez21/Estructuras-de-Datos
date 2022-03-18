@@ -15,7 +15,7 @@ public class Registro {
         this.raiz = null;
     }
 
-    public void insertar(int dpi, String nombre, String contrasena) {
+    public void insertar(long dpi, String nombre, String contrasena) {
         Usuario nodo = new Usuario(dpi, nombre, contrasena);
         if (raiz == null) {
             raiz = new RamaArbolB();
@@ -71,7 +71,7 @@ public class Registro {
     }
 
     private Usuario dividir(RamaArbolB rama) {
-        int val = -999;
+        long val = -999;
         String nom = "";
         String contra = "";
         Usuario temp, Nuevito;

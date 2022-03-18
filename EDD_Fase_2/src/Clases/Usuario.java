@@ -8,13 +8,13 @@ public class Usuario {
 
     private String nombre;
     private String contrasena;
-    private int dpi;
+    private long dpi;
     Usuario siguiente;
     Usuario anterior;
     RamaArbolB derecha;
     RamaArbolB izquierda;
 
-    public Usuario(int dpi, String nombre, String contrasena) {
+    public Usuario(long dpi, String nombre, String contrasena) {
         this.dpi = dpi;
         this.nombre = nombre;
         this.contrasena = contrasena;
@@ -67,14 +67,14 @@ public class Usuario {
     /**
      * @return the dpi
      */
-    public int getDpi() {
+    public long getDpi() {
         return dpi;
     }
 
     /**
      * @param dpi the dpi to set
      */
-    public void setDpi(int dpi) {
+    public void setDpi(long dpi) {
         this.dpi = dpi;
     }
 

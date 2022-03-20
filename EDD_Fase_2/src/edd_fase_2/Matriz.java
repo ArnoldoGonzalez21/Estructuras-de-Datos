@@ -1,4 +1,6 @@
-package Clases;
+package edd_fase_2;
+
+import Clases.NodoMatriz;
 
 /**
  *
@@ -149,7 +151,7 @@ public class Matriz {
             String tex = "";
             NodoMatriz aux2 = aux;
             while (aux2 != null) {
-                tex += "[" + (aux2.getX()) +" / "+ aux2.getY() + "]";
+                tex += "[" + (aux2.getX()) + " / " + aux2.getY() + "]";
                 aux2 = aux2.getSiguiente();
             }
             System.out.println(tex);

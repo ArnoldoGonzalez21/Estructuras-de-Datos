@@ -1,4 +1,7 @@
-package Clases;
+package edd_fase_2;
+
+import Clases.Usuario;
+import edd_fase_2.RamaArbolB;
 
 /**
  *
@@ -46,7 +49,7 @@ public class Registro {
                 if (nodo.getDpi() == temp.getDpi()) {
                     return null;
                 } else if (nodo.getDpi() < temp.getDpi()) {
-                    Usuario obj = insertar_en_rama(nodo, temp.izquierda);
+                    Usuario obj = insertar_en_rama(nodo, temp.getIzquierda());
                     if (obj instanceof Usuario) {
                         rama.insertar((Usuario) obj);
                         if (rama.contador == orden_arbol) {
@@ -54,8 +57,8 @@ public class Registro {
                         }
                     }
                     return null;
-                } else if (temp.siguiente == null) {
-                    Usuario obj = insertar_en_rama(nodo, temp.derecha);
+                } else if (temp.getSiguiente() == null) {
+                    Usuario obj = insertar_en_rama(nodo, temp.getDerecha());
                     if (obj instanceof Usuario) {
                         rama.insertar((Usuario) obj);
                         if (rama.contador == orden_arbol) {
@@ -64,7 +67,7 @@ public class Registro {
                     }
                     return null;
                 }
-                temp = (Usuario) temp.siguiente;
+                temp = (Usuario) temp.getSiguiente();
             } while (temp != null);
         }
         return null;
@@ -85,14 +88,14 @@ public class Registro {
             //implementacion para dividir unicamente ramas de 4 nodos
             if (cont < 3) {
                 temp = new Usuario(aux.getDpi(), aux.getNombre(), aux.getContrasena());
-                temp.izquierda = aux.izquierda;
+                temp.setIzquierda(aux.getIzquierda());
                 if (cont == 2) {
-                    temp.derecha = aux.siguiente.izquierda;
+                    temp.setDerecha(aux.getSiguiente().getIzquierda());
                 } else {
-                    temp.derecha = aux.derecha;
+                    temp.setDerecha(aux.getDerecha());
                 }
                 //si la rama posee ramas deja de ser hoja
-                if (temp.derecha != null && temp.izquierda != null) {
+                if (temp.getDerecha() != null && temp.getIzquierda() != null) {
                     rizquierda.hoja = false;
                 }
 
@@ -104,19 +107,19 @@ public class Registro {
                 contra = aux.getContrasena();
             } else {
                 temp = new Usuario(aux.getDpi(), aux.getNombre(), aux.getContrasena());
-                temp.izquierda = aux.izquierda;
-                temp.derecha = aux.derecha;
+                temp.setIzquierda(aux.getIzquierda());
+                temp.setDerecha(aux.getDerecha());
                 //si la rama posee ramas deja de ser hoja
-                if (temp.derecha != null && temp.izquierda != null) {
+                if (temp.getDerecha() != null && temp.getIzquierda() != null) {
                     rderecha.hoja = false;
                 }
                 rderecha.insertar(temp);
             }
-            aux = aux.siguiente;
+            aux = aux.getSiguiente();
         }
         Nuevito = new Usuario(val, nom, contra);
-        Nuevito.derecha = rderecha;
-        Nuevito.izquierda = rizquierda;
+        Nuevito.setDerecha(rderecha);
+        Nuevito.setIzquierda(rizquierda);
         return Nuevito;
     }
 

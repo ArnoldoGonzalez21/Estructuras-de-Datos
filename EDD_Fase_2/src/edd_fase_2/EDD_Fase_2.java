@@ -1,6 +1,6 @@
 package edd_fase_2;
 
-import Clases.Matriz;
+import Interfaz.Tools;
 
 /**
  *
@@ -32,12 +32,16 @@ public class EDD_Fase_2 {
 //        arbol.insertar(65, "dsa", "sda");
 //        arbol.insertar(92, "dsa", "sda");
 //        arbol.insertar(99, "dsa", "sda");
-//        System.out.println("------------------");
-        Administrador ad = new Administrador();
-        //ad.cargaMasivaCliente();
-       // ad.cargaMasivaCapas();
-//        ad.cargaMasivaImagen();
-ad.cargaMasivaAlbum();
+////        System.out.println("------------------");
+//        Administrador ad = new Administrador();
+//        //ad.cargaMasivaCliente();
+//        // ad.cargaMasivaCapas();
+////        ad.cargaMasivaImagen();
+//        ad.cargaMasivaAlbum();
+//        ad.album.imprimirAlbum();
+//    }
+
+    new Interfaz.VentanaAdministrador(null);
     }
 
 }

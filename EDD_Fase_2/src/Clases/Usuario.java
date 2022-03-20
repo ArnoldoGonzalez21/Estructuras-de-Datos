@@ -1,5 +1,7 @@
 package Clases;
 
+import edd_fase_2.RamaArbolB;
+
 /**
  *
  * @author Arnoldo González
@@ -9,10 +11,10 @@ public class Usuario {
     private String nombre;
     private String contrasena;
     private long dpi;
-    Usuario siguiente;
-    Usuario anterior;
-    RamaArbolB derecha;
-    RamaArbolB izquierda;
+    private Usuario siguiente;
+    private Usuario anterior;
+    private RamaArbolB derecha;
+    private RamaArbolB izquierda;
 
     public Usuario(long dpi, String nombre, String contrasena) {
         this.dpi = dpi;
@@ -30,8 +32,8 @@ public class Usuario {
     }
 
     public boolean validarUsuario(String nombre, String password) {
-        boolean nombreUs = this.nombre.equalsIgnoreCase(nombre);
-        boolean contrasenaUs = this.contrasena.equals(password);
+        boolean nombreUs = this.getNombre().equalsIgnoreCase(nombre);
+        boolean contrasenaUs = this.getContrasena().equals(password);
         boolean correcto = nombreUs && contrasenaUs;
         return correcto;
     }
@@ -76,6 +78,62 @@ public class Usuario {
      */
     public void setDpi(long dpi) {
         this.dpi = dpi;
+    }
+
+    /**
+     * @return the siguiente
+     */
+    public Usuario getSiguiente() {
+        return siguiente;
+    }
+
+    /**
+     * @param siguiente the siguiente to set
+     */
+    public void setSiguiente(Usuario siguiente) {
+        this.siguiente = siguiente;
+    }
+
+    /**
+     * @return the anterior
+     */
+    public Usuario getAnterior() {
+        return anterior;
+    }
+
+    /**
+     * @param anterior the anterior to set
+     */
+    public void setAnterior(Usuario anterior) {
+        this.anterior = anterior;
+    }
+
+    /**
+     * @return the derecha
+     */
+    public RamaArbolB getDerecha() {
+        return derecha;
+    }
+
+    /**
+     * @param derecha the derecha to set
+     */
+    public void setDerecha(RamaArbolB derecha) {
+        this.derecha = derecha;
+    }
+
+    /**
+     * @return the izquierda
+     */
+    public RamaArbolB getIzquierda() {
+        return izquierda;
+    }
+
+    /**
+     * @param izquierda the izquierda to set
+     */
+    public void setIzquierda(RamaArbolB izquierda) {
+        this.izquierda = izquierda;
     }
 
 }

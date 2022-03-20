@@ -1,8 +1,5 @@
 package edd_fase_2;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,6 +10,9 @@ import com.google.gson.JsonParser;
  * @author Arnoldo González
  */
 public class Administrador {
+    
+    ListaSimple album = new ListaSimple();
+    ListaSimple imagenes = new ListaSimple();
 
     public boolean cargaMasivaCliente() {
 
@@ -75,7 +75,13 @@ public class Administrador {
             JsonObject gsonObj = objt.getAsJsonObject();
             String nombreAlbum = gsonObj.get("nombre_album").getAsString();
             JsonArray imgs = gsonObj.get("imgs").getAsJsonArray();
-            System.out.println("nombreAlbum: " + nombreAlbum + " imgs: " + imgs);
+            //System.out.println("nombreAlbum: " + nombreAlbum + " imgs: " + imgs);
+            for (JsonElement objt2 : imgs) {
+                int id = objt2.getAsInt();
+                this.imagenes.insertarImagen(id);
+            }
+            this.album.insertarAlbum(nombreAlbum,this.imagenes);
+            this.imagenes = new ListaSimple();
         }
         return true;
     }

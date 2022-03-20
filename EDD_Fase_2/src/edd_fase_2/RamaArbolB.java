@@ -1,4 +1,6 @@
-package Clases;
+package edd_fase_2;
+
+import Clases.Usuario;
 
 /**
  *
@@ -31,34 +33,34 @@ public class RamaArbolB {
                 } else {
                     if (aux.getDpi() > nuevo.getDpi()) {
                         if (aux == primero) {//------------->insertar al inicio
-                            aux.anterior = nuevo;
-                            nuevo.siguiente = aux;
+                            aux.setAnterior(nuevo);
+                            nuevo.setSiguiente(aux);
                             //ramas del nodo
-                            aux.izquierda = nuevo.derecha;
-                            nuevo.derecha = null;
+                            aux.setIzquierda(nuevo.getDerecha());
+                            nuevo.setDerecha(null);
                             primero = nuevo;
                             contador++;
                             break;
                         } else {//------------->insertar en medio;
-                            nuevo.siguiente = aux;
+                            nuevo.setSiguiente(aux);
                             //ramas del nodo
-                            aux.izquierda = nuevo.derecha;
-                            nuevo.derecha = null;
+                            aux.setIzquierda(nuevo.getDerecha());
+                            nuevo.setDerecha(null);
 
-                            nuevo.anterior = aux.anterior;
-                            aux.anterior.siguiente = nuevo;
-                            aux.anterior = nuevo;
+                            nuevo.setAnterior(aux.getAnterior());
+                            aux.getAnterior().setSiguiente(nuevo);
+                            aux.setAnterior(nuevo);
                             contador++;
                             break;
                         }
-                    } else if (aux.siguiente == null) {//------------->insertar al final
-                        aux.siguiente = nuevo;
-                        nuevo.anterior = aux;
+                    } else if (aux.getSiguiente() == null) {//------------->insertar al final
+                        aux.setSiguiente(nuevo);
+                        nuevo.setAnterior(aux);
                         contador++;
                         break;
                     }
                 }
-                aux = aux.siguiente;
+                aux = aux.getSiguiente();
             }
 
         }

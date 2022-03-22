@@ -5,8 +5,9 @@ package Clases;
  * @author Arnoldo González
  */
 public class NodoMatriz {
-
-    private String dato;
+    
+    private int idCapa;
+    private String color;
     private int x;
     private int y;
     private NodoMatriz siguiente;
@@ -14,24 +15,25 @@ public class NodoMatriz {
     private NodoMatriz arriba;
     private NodoMatriz abajo;
 
-    public NodoMatriz(String dato, int x, int y) {
-        this.dato = dato;
+    public NodoMatriz(int idCapa, String dato, int x, int y) {
+        this.idCapa = idCapa;
+        this.color = dato;
         this.x = x;
         this.y = y;
     }
 
     /**
-     * @return the dato
+     * @return the color
      */
-    public String getDato() {
-        return dato;
+    public String getColor() {
+        return color;
     }
 
     /**
-     * @param dato the dato to set
+     * @param color the color to set
      */
-    public void setDato(String dato) {
-        this.dato = dato;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     /**
@@ -116,6 +118,20 @@ public class NodoMatriz {
      */
     public void setAbajo(NodoMatriz abajo) {
         this.abajo = abajo;
+    }
+
+    /**
+     * @return the idCapa
+     */
+    public int getIdCapa() {
+        return idCapa;
+    }
+
+    /**
+     * @param idCapa the idCapa to set
+     */
+    public void setIdCapa(int idCapa) {
+        this.idCapa = idCapa;
     }
 
 }

@@ -32,16 +32,27 @@ public class EDD_Fase_2 {
 //        arbol.insertar(65, "dsa", "sda");
 //        arbol.insertar(92, "dsa", "sda");
 //        arbol.insertar(99, "dsa", "sda");
-////        System.out.println("------------------");
+//        System.out.println("------------------");
 //        Administrador ad = new Administrador();
+//        System.out.println("Escriba aqui: ");
 //        //ad.cargaMasivaCliente();
-//        // ad.cargaMasivaCapas();
-////        ad.cargaMasivaImagen();
+//         ad.cargaMasivaCapas();
+//        ad.cargaMasivaImagen();
 //        ad.cargaMasivaAlbum();
 //        ad.album.imprimirAlbum();
-//    }
-
-    new Interfaz.VentanaAdministrador(null);
+//    new Interfaz.VentanaAdministrador(null);
+        ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
+        abb.insertar(4);
+        abb.insertar(8);
+        abb.insertar(2);
+        abb.insertar(5);
+        abb.insertar(0);
+        abb.insertar(3);
+        abb.preOrder();
+        System.out.println("");
+        abb.posOrder();
+        System.out.println("");
+        abb.inOrder();
     }
 
 }

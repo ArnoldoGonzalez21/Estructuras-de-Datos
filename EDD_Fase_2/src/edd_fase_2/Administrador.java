@@ -10,9 +10,10 @@ import com.google.gson.JsonParser;
  * @author Arnoldo González
  */
 public class Administrador {
-    
+
     ListaSimple album = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
+    Matriz capas = new Matriz();
 
     public boolean cargaMasivaCliente() {
 
@@ -46,6 +47,7 @@ public class Administrador {
                 int fila = gsonObj2.get("fila").getAsInt();
                 int columna = gsonObj2.get("columna").getAsInt();
                 String color = gsonObj2.get("color").getAsString();
+                this.capas.insertarNodo(id_capa, fila, columna, color);
                 System.out.println("id_capa: " + id_capa + " fila: " + fila + " columna: " + columna + " color: " + color);
             }
         }
@@ -80,7 +82,7 @@ public class Administrador {
                 int id = objt2.getAsInt();
                 this.imagenes.insertarImagen(id);
             }
-            this.album.insertarAlbum(nombreAlbum,this.imagenes);
+            this.album.insertarAlbum(nombreAlbum, this.imagenes);
             this.imagenes = new ListaSimple();
         }
         return true;

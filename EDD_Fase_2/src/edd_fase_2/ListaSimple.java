@@ -36,10 +36,10 @@ public class ListaSimple {
             this.setCabezaImagen(nuevo);
         } else {
             Imagen actual = this.getCabezaImagen();
-            while (actual.getSiguiente() != null) {
-                actual = actual.getSiguiente();
+            while (actual.getSiguienteAlbum() != null) {
+                actual = actual.getSiguienteAlbum();
             }
-            actual.setSiguiente(nuevo);
+            actual.setSiguienteAlbum(nuevo);
         }
     }
     
@@ -53,7 +53,7 @@ public class ListaSimple {
                 Imagen actualImg = actual.getListaImagenes().getCabezaImagen();
                 while(actualImg != null){
                     System.out.println(actualImg.getId());
-                    actualImg = actualImg.getSiguiente();
+                    actualImg = actualImg.getSiguienteAlbum();
                 }
             }
             actual = actual.getSiguiente();

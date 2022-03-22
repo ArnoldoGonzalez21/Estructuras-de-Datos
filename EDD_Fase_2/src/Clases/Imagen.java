@@ -7,11 +7,11 @@ package Clases;
 public class Imagen {
 
     private int id;
-    private Imagen siguiente;
+    private Imagen siguienteAlbum;
 
     public Imagen(int id) {
         this.id = id;
-        this.siguiente = null;
+        this.siguienteAlbum = null;
     }
 
     /**
@@ -29,17 +29,17 @@ public class Imagen {
     }
 
     /**
-     * @return the siguiente
+     * @return the siguienteAlbum
      */
-    public Imagen getSiguiente() {
-        return siguiente;
+    public Imagen getSiguienteAlbum() {
+        return siguienteAlbum;
     }
 
     /**
-     * @param siguiente the siguiente to set
+     * @param siguienteAlbum the siguienteAlbum to set
      */
-    public void setSiguiente(Imagen siguiente) {
-        this.siguiente = siguiente;
+    public void setSiguienteAlbum(Imagen siguienteAlbum) {
+        this.siguienteAlbum = siguienteAlbum;
     }
 
 }

@@ -11,7 +11,7 @@ public class Matriz {
     NodoMatriz raiz;
 
     public Matriz() {
-        this.raiz = new NodoMatriz("Raiz", -1, -1);
+        this.raiz = new NodoMatriz(-1, "Raiz", -1, -1);
     }
 
     public NodoMatriz buscarColumna(int x) {
@@ -36,9 +36,9 @@ public class Matriz {
         return null;
     }
 
-    public NodoMatriz crearColumna(int x) {
+    public NodoMatriz crearColumna(int idCapa, int x) {
         NodoMatriz nodoColumna = this.raiz;
-        NodoMatriz nuevo = new NodoMatriz("COL", x, -1);
+        NodoMatriz nuevo = new NodoMatriz(idCapa, "COL", x, -1);
         NodoMatriz columna = insertarOrdenColumna(nuevo, nodoColumna);
         return columna;
     }
@@ -49,7 +49,7 @@ public class Matriz {
         while (true) {
             if (nuevo.getX() == aux.getX()) {
                 aux.setY(nuevo.getY());
-                aux.setDato(nuevo.getDato());
+                aux.setColor(nuevo.getColor());
                 return aux;
             } else if (aux.getX() > nuevo.getX()) {
                 insertado = true;
@@ -74,9 +74,9 @@ public class Matriz {
         return nuevo;
     }
 
-    public NodoMatriz crearFila(int y) {
+    public NodoMatriz crearFila(int idCapa, int y) {
         NodoMatriz nodoFila = this.raiz;
-        NodoMatriz nuevo = new NodoMatriz("Fila", -1, y);
+        NodoMatriz nuevo = new NodoMatriz(idCapa, "Fila", -1, y);
         NodoMatriz fila = insertarOrdenFila(nuevo, nodoFila);
         return fila;
     }
@@ -87,7 +87,7 @@ public class Matriz {
         while (true) {
             if (nuevo.getY() == aux.getY()) {
                 aux.setX(nuevo.getX());
-                aux.setDato(nuevo.getDato());
+                aux.setColor(nuevo.getColor());
                 return aux;
             } else if (aux.getY() > nuevo.getY()) {
                 insertado = true;
@@ -112,36 +112,34 @@ public class Matriz {
         return nuevo;
     }
 
-    public void insertarNodo(int x, int y, String dato) {
-        NodoMatriz nuevo = new NodoMatriz(dato, x, y);
+    public void insertarNodo(int idCapa, int x, int y, String dato) {
+        NodoMatriz nuevo = new NodoMatriz(idCapa, dato, x, y);
         NodoMatriz nodoColumna = buscarColumna(x);
         NodoMatriz nodoFila = buscarFila(y);
         //No existe ni fila ni columna
         if (nodoFila == null && nodoColumna == null) {
             System.out.println("No existe fila ni col");
-            nodoColumna = crearColumna(x);
-            nodoFila = crearFila(y);
+            nodoColumna = crearColumna(idCapa, x);
+            nodoFila = crearFila(idCapa, y);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            return;
+            
         } else if (nodoFila == null && nodoColumna != null) {
             System.out.println("No fila, si columna");
-            nodoColumna = crearFila(y);
+            nodoFila = crearFila(idCapa, y);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            return;
-
+            
         } else if (nodoFila != null && nodoColumna == null) {
             System.out.println("Si fila, no columna");
-            nodoColumna = crearColumna(x);
+            nodoColumna = crearColumna(idCapa, x);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            return;
+            
         } else if (nodoFila != null && nodoColumna != null) {
             System.out.println("Si los dos");
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            return;
         }
     }
 

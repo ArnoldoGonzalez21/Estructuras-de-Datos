@@ -57,57 +57,39 @@ public class ListaEncabezado {
     }
 
     public String graficaEncabezado(boolean columna_grafica) {
-        boolean entroFila = false, entroCol = false;
+
         NodoEncabezado actual = this.primero;
-        String contRank = "", contFila = "", contCol = "", contFilaEnlace = "", contColEnlace = "", contRaizF = "", contRaizC = "";
+        String contRank = "", contFila = "", contCol = "";
         if (columna_grafica) {
             contRank = "{rank = same;raiz";
         }
         while (actual != null) {
-            NodoEncabezado tmp = actual.getSiguiente();
-            if (this.tipo == "Fila") {
+            if ("Fila".equals(this.tipo)) {
                 contFila += "F" + actual.getId() + "[label=\"F" + actual.getId() + "\",group = 1, fillcolor = white];\n";
-                if (tmp != null) {
-                    contFilaEnlace += "F" + actual.getId() + " -> F" + tmp.getId() + ";\n";
-                }
-                if (!entroFila) {
-                    contRaizF += "raiz -> F" + actual.getId() + ";\n";
-                    entroFila = true;
-                }
-            } else if (this.tipo == "Columna") {
+            } else if ("Columna".equals(this.tipo)) {
                 contCol += "C" + actual.getId() + "[label=\"C" + actual.getId() + "\",group= " + (actual.getId() + 1) + ",fillcolor=white];\n";
-                if (tmp != null) {
-                    contColEnlace += "C" + actual.getId() + " -> C" + tmp.getId() + ";\n";
-                }
-                if (!entroCol) {
-                    contRaizC += "raiz -> C" + actual.getId() + ";\n";
-                    entroCol = true;
-                }
                 contRank += "; C" + actual.getId();
             }
             actual = actual.getSiguiente();
 
         }
-        String contenido = "";
         if (columna_grafica) {
             contRank += "}";
-            contenido = contCol + contColEnlace + contRaizC + contRank;
-
+            contCol += contRank;
+            return contCol;
         } else {
-            contenido = contFila + contFilaEnlace + contRaizF;
+            return contFila;
         }
-        return contenido;
     }
 
-    
-    public void mostrarEncabezados(){
+    public void mostrarEncabezados() {
         NodoEncabezado tmp = this.primero;
-        while(tmp != null){
-            System.out.println("Encabezado: "+this.tipo+" "+tmp.getId());
+        while (tmp != null) {
+            System.out.println("Encabezado: " + this.tipo + " " + tmp.getId());
             tmp = tmp.getSiguiente();
         }
     }
-    
+
     public NodoEncabezado getEncabezado(int id) {
         NodoEncabezado tmp = this.primero;
         while (tmp != null) {

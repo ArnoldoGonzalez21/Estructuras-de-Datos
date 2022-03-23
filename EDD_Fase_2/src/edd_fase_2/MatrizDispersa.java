@@ -22,7 +22,7 @@ public class MatrizDispersa {
         NodoMatriz nuevo = new NodoMatriz(idCapa, color, posX, posY);
         //buscar si ya existen encabezados
         NodoEncabezado nodo_X = this.filas.getEncabezado(posX);
-        NodoEncabezado nodo_Y = this.filas.getEncabezado(posY);
+        NodoEncabezado nodo_Y = this.columnas.getEncabezado(posY);
 
         //crearlos
         if (nodo_X == null) {
@@ -101,58 +101,61 @@ public class MatrizDispersa {
 
     public String enlazarNodo() {
         NodoEncabezado pivote = this.filas.primero;
-        String contNodo = "", contEnlaceFila = "", contEnlaceCol = "", contRank = "";
-        while (pivote != null) {
-            boolean entroPrimFila = false;
-            NodoMatriz pivoteCelda = pivote.getAcceso();
-            contEnlaceFila += "F" + pivote.getId() + " -> ";
-            contRank += "{rank=same;F" + pivote.getId();
-            while (pivoteCelda != null) {
-                NodoMatriz tmpPivoteCelda = pivoteCelda.getAnterior();
-                contNodo += "\nnodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY();
-                contNodo += "[label=\"" + pivoteCelda.getColor() + "\", fillcolor = \"" + pivoteCelda.getColor() + "\", group = " + (pivoteCelda.getY() + 1) + "]\n";
-                if (pivote.getId() == pivoteCelda.getX()) {
-                    contRank += ";nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY();
-                    if (!entroPrimFila) {
-                        contEnlaceFila += "nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY() + ";\n";
-                        entroPrimFila = true;
-                    } else {
-                        if (tmpPivoteCelda != null) {
-                            contEnlaceFila += "nodo" + tmpPivoteCelda.getX() + "_" + tmpPivoteCelda.getY() + " -> " + "nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY() + ";\n";
-                        }
+        String contNodo = "", contEnlaceFila = "", contEnlaceCol = "", contRank = "", contEnlaceFilaNodo = "", contEnlaceColumnaNodo = "";
+        String contFila = "", contColumna = "", contRankCol = "{rank = same";
+        boolean unEnlaceC = false, unaVez = false;
+        int contadorF = 0;
+        int n = this.columnas.ultimo.getId();
+        int m = this.filas.ultimo.getId();
+        while (contadorF <= m) {
+            contFila += "F" + contadorF + "[label=\"F" + contadorF + "\",group = 1, fillcolor = white];\n";
+            int contadorC = 0;
+            contEnlaceFilaNodo += "F" + contadorF + " -> nodo" + contadorF + "_0;\n";
+            contRank += "{rank=same;F" + contadorF;
+            while (contadorC <= n) {
+                contNodo += "nodo" + contadorF + "_" + contadorC + "[label = \"white\" fillcolor=\"white\", group = " + (contadorC + 1) + ", fontcolor = white];\n";
+                contRank += ";nodo" + contadorF + "_" + contadorC;
+                if (!unaVez) {
+                    if (contadorF + 1 <= m) {
+                        contEnlaceColumnaNodo += "nodo" + contadorF + "_" + contadorC + " -> nodo" + (contadorF + 1) + "_" + contadorC + ";";
                     }
+                }
+                if (!unEnlaceC) {
+                    contColumna += "C" + contadorC + "[label=\"C" + contadorC + "\",group= " + (contadorC + 1) + ",fillcolor=white];\n";
+                    contRankCol += "; C" + contadorC;
+                    if (contadorC + 1 <= n) {
+                        contEnlaceCol += "C" + contadorC + " -> nodo" + contadorF + "_" + contadorC + ";\n";
+                        contEnlaceCol += "C" + contadorC + " -> C" + (contadorC + 1) + ";\n";
+                    }
+                }
+                if (contadorC + 1 <= n) {
+                    contEnlaceFila += "nodo" + contadorF + "_" + contadorC + " -> nodo" + contadorF + "_" + (contadorC + 1) + ";\n";
 
                 }
-                pivoteCelda = pivoteCelda.getSiguiente();
+                contadorC++;
             }
             contRank += "}\n";
-            pivote = pivote.getSiguiente();
+            unEnlaceC = true;
+            if (contadorF + 1 <= m) {
+                contEnlaceFila += "F" + contadorF + " -> F" + (contadorF + 1) + ";";
+            }
+            contadorF++;
         }
 
-        pivote = this.columnas.primero;
-        while (pivote != null) {
-            boolean entroPrimCol = false;
-            NodoMatriz pivoteCelda = pivote.getAcceso();
-            contEnlaceCol += "C" + pivote.getId() + " -> ";
-            while (pivoteCelda != null) {
-                NodoMatriz tmpPivoteCelda = pivoteCelda.getArriba();
-                if (pivote.getId() == pivoteCelda.getY()) {
-                    if (!entroPrimCol) {
-                        contEnlaceCol += "nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY() + ";\n";
-                        entroPrimCol = true;
-                    } else {
-                        if (tmpPivoteCelda != null) {
-                            contEnlaceCol += "nodo" + tmpPivoteCelda.getX() + "_" + tmpPivoteCelda.getY() + " -> " + "nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY() + ";\n";
-                        }
-                    }
+        contRankCol += "}\n";
 
-                }
-                pivoteCelda = pivoteCelda.getAbajo();
+        while (pivote != null) {
+            NodoMatriz pivoteCelda = pivote.getAcceso();
+            while (pivoteCelda != null) {
+                contNodo += "nodo" + pivoteCelda.getX() + "_" + pivoteCelda.getY();
+                contNodo += "[label=\"" + pivoteCelda.getColor() + "\", fillcolor = \"" + pivoteCelda.getColor() + "\", group = " + (pivoteCelda.getY() + 1) + ", fontcolor = \"" + pivoteCelda.getColor() + "\"]\n";
+                pivoteCelda = pivoteCelda.getSiguiente();
             }
             pivote = pivote.getSiguiente();
         }
 
-        contNodo += contEnlaceFila + contRank + contEnlaceCol;
+        contNodo += contEnlaceFila + contRank + contEnlaceCol + contEnlaceFilaNodo + contEnlaceColumnaNodo;
+        contNodo += contFila + contColumna + contRankCol;
         return contNodo;
     }
 
@@ -163,12 +166,11 @@ public class MatrizDispersa {
                 + "label = \"Matriz Colores\"\n"
                 + "bgcolor = \"#8ECBE5\"\n"
                 + "edge[dir = \"both\"]\n";
-        String encabezados = this.filas.graficaEncabezado(false);
-        encabezados += this.columnas.graficaEncabezado(true);
+        //String encabezados = this.filas.graficaEncabezado(false);
+        //encabezados += this.columnas.graficaEncabezado(true);
         String nodos = this.enlazarNodo();
-        
         String final_graphviz = "\n\t}\n}";
-        contenido += encabezados + nodos + final_graphviz;
+        contenido += nodos + final_graphviz;
         System.out.println(contenido);
     }
 

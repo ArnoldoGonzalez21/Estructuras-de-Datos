@@ -4,6 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
@@ -13,7 +16,8 @@ public class Administrador {
 
     ListaSimple album = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
-    Matriz capas = new Matriz();
+    ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
+    Grafica grafica = new Grafica();
 
     public boolean cargaMasivaCliente() {
 
@@ -38,19 +42,30 @@ public class Administrador {
         String Jsontxt = Archivo.leerArchivoJsonConsola();
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
+        boolean uno = false;
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
             int id_capa = gsonObj.get("id_capa").getAsInt();
+            Clases.Capa nodoCapa = this.abb.insertar(id_capa); //insertar en abb las capas
             JsonArray pixeles = gsonObj.get("pixeles").getAsJsonArray();
             for (JsonElement objt2 : pixeles) {
                 JsonObject gsonObj2 = objt2.getAsJsonObject();
                 int fila = gsonObj2.get("fila").getAsInt();
                 int columna = gsonObj2.get("columna").getAsInt();
                 String color = gsonObj2.get("color").getAsString();
-                this.capas.insertarNodo(id_capa, fila, columna, color);
-                System.out.println("id_capa: " + id_capa + " fila: " + fila + " columna: " + columna + " color: " + color);
+                nodoCapa.pixeles.insertar(id_capa, fila, columna, color);
+               // nodoCapa.pixeles.insertarNodo(id_capa, fila, columna, color);
+            }
+            if (!uno) {
+                nodoCapa.pixeles.GraficarMatriz();
+               // nodoCapa.pixeles.imprimir();
+//                nodoCapa.pixeles.();
+                uno = true;
             }
         }
+        // this.abb.preOrder();
+        // this.abb.graficaPreOrder(grafica);
+        // System.out.println(grafica.contenidoABB + grafica.enlaceABBIzq + grafica.enlaceABBDer);
         return true;
     }
 
@@ -86,5 +101,20 @@ public class Administrador {
             this.imagenes = new ListaSimple();
         }
         return true;
+    }
+
+    public void crearGrafico(String contenidoGrafica, String nombre) {
+        try {
+            FileWriter archivo = new FileWriter(nombre + ".dot", false);
+            PrintWriter pw = new PrintWriter(archivo);
+            pw.write(contenidoGrafica);
+            pw.close();
+            archivo.close();
+            Runtime.getRuntime().exec("dot -Tpng " + nombre + ".dot -o " + nombre + ".png");
+            System.out.println("Gráfica generada exitosamente");
+
+        } catch (IOException e) {
+            System.out.println("Error Archivo: " + e.getMessage());
+        }
     }
 }

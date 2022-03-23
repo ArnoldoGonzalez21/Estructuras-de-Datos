@@ -15,9 +15,9 @@ public class NodoMatriz {
     private NodoMatriz arriba;
     private NodoMatriz abajo;
 
-    public NodoMatriz(int idCapa, String dato, int x, int y) {
+    public NodoMatriz(int idCapa, String color, int x, int y) {
         this.idCapa = idCapa;
-        this.color = dato;
+        this.color = color;
         this.x = x;
         this.y = y;
     }

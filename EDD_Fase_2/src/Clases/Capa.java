@@ -1,6 +1,8 @@
 package Clases;
 
 import edd_fase_2.ArbolBinarioBusqueda;
+import edd_fase_2.Matriz;
+import edd_fase_2.MatrizDispersa;
 
 /**
  *
@@ -11,11 +13,13 @@ public class Capa {
     private ArbolBinarioBusqueda hijoDer;
     private ArbolBinarioBusqueda hijoIzq;
     private int idCapa;
+    public MatrizDispersa pixeles;
 
     public Capa() {
         this.hijoDer = null;
         this.hijoIzq = null;
         this.idCapa = 0;
+        this.pixeles = new MatrizDispersa(1);
     }
 
     /**

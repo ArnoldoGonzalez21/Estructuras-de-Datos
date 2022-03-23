@@ -11,7 +11,7 @@ public class Matriz {
     NodoMatriz raiz;
 
     public Matriz() {
-        this.raiz = new NodoMatriz(-1, "Raiz", -1, -1);
+        this.raiz = new NodoMatriz(-1, "Cabeza", -1, -1);
     }
 
     public NodoMatriz buscarColumna(int x) {
@@ -38,7 +38,7 @@ public class Matriz {
 
     public NodoMatriz crearColumna(int idCapa, int x) {
         NodoMatriz nodoColumna = this.raiz;
-        NodoMatriz nuevo = new NodoMatriz(idCapa, "COL", x, -1);
+        NodoMatriz nuevo = new NodoMatriz(idCapa, "Columna", x, -1);
         NodoMatriz columna = insertarOrdenColumna(nuevo, nodoColumna);
         return columna;
     }
@@ -116,31 +116,98 @@ public class Matriz {
         NodoMatriz nuevo = new NodoMatriz(idCapa, dato, x, y);
         NodoMatriz nodoColumna = buscarColumna(x);
         NodoMatriz nodoFila = buscarFila(y);
-        //No existe ni fila ni columna
         if (nodoFila == null && nodoColumna == null) {
-            System.out.println("No existe fila ni col");
+            //System.out.println("No existe fila ni col");
             nodoColumna = crearColumna(idCapa, x);
             nodoFila = crearFila(idCapa, y);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            
+
         } else if (nodoFila == null && nodoColumna != null) {
-            System.out.println("No fila, si columna");
+            //System.out.println("No fila, si columna");
             nodoFila = crearFila(idCapa, y);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            
+
         } else if (nodoFila != null && nodoColumna == null) {
-            System.out.println("Si fila, no columna");
+            //System.out.println("Si fila, no columna");
             nodoColumna = crearColumna(idCapa, x);
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
-            
+
         } else if (nodoFila != null && nodoColumna != null) {
-            System.out.println("Si los dos");
+            //System.out.println("Si los dos");
             nuevo = insertarOrdenColumna(nuevo, nodoFila);
             nuevo = insertarOrdenFila(nuevo, nodoColumna);
         }
+    }
+    
+    public void columnaMayor(){
+        
+    }
+
+    /*
+    1 2 3  4  5 6 
+    7 8 9 10 11 12
+    13...
+     */
+    public void graficarMatriz() {
+        String contenido = "digraph L{\n"
+                + "node[shape = circle fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Matriz Colores\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "edge[dir = \"both\"]\n";
+        String nodo = "", enlace = "";
+        NodoMatriz actual = raiz;
+        while (actual != null) {
+            NodoMatriz aux = actual;
+            while (aux != null) {
+                if (aux.getColor() != "Cabeza" ||aux.getColor() != "Fila" ||aux.getColor() != "Columna" ) {
+
+                    String coordenada = aux.getX() + "_" + aux.getY();
+                    nodo += "nodo" + coordenada + "[label = \"" + coordenada + "\", fillcolor = \"" + aux.getColor() + "\"]\n";
+                    if (aux.getSiguiente() != null && aux.getSiguiente().getColor() != "Cabeza") {
+                        enlace += "nodo" + coordenada + " -> nodo" + aux.getSiguiente().getX() + "_" + aux.getSiguiente().getY() + ";\n";
+                    }
+//                    if (aux.getAnterior() != null && aux.getAnterior().getColor() != "Cabeza") {
+//                        enlace += "nodo" + aux.getAnterior().getX() + "_" + aux.getAnterior().getY() + " -> nodo" + coordenada + ";\n";
+//                    }
+                    if (aux.getAbajo() != null && aux.getAbajo().getColor() != "Cabeza") {
+                        enlace += "nodo" + coordenada + " -> nodo" + aux.getAbajo().getX() + "_" + aux.getAbajo().getY() + ";\n";
+                    }
+                }
+                aux = aux.getSiguiente();
+            }
+            actual = actual.getAbajo();
+        }
+        String rank = graficarMatrizRank();
+        System.out.println(contenido + nodo + enlace + rank);
+    }
+
+    public String graficarMatrizRank() {
+        String rank = "";
+        NodoMatriz actual = raiz;
+        while (actual != null) {
+            NodoMatriz aux = actual;
+            while (aux != null) {
+                boolean primero = true;
+                rank += "{rank = same";
+                if (aux.getColor() != "Cabeza") {
+                    String coordenada = aux.getX() + "_" + aux.getY();
+                    if (primero) {
+                        rank += ";" + coordenada;
+                        primero = false;
+                    } else {
+                        rank += "," + coordenada;
+                    }
+                }
+                rank += ";\n";
+                aux = aux.getSiguiente();
+            }
+            actual = actual.getAbajo();
+        }
+        return rank;
     }
 
     public void imprimir() {

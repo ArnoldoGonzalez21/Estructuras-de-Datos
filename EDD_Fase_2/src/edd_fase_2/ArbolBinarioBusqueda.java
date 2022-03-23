@@ -18,29 +18,69 @@ public class ArbolBinarioBusqueda {
         return (raiz == null);
     }
 
-    public void insertar(int id) {
+    public Capa insertar(int id) {
         if (esVacio()) {
             Capa nuevo = new Capa();
             nuevo.setIdCapa(id);
             nuevo.setHijoDer(new ArbolBinarioBusqueda());
             nuevo.setHijoIzq(new ArbolBinarioBusqueda());
             raiz = nuevo;
+            return nuevo;
         } else {
             if (id > raiz.getIdCapa()) {
-                (raiz.getHijoDer()).insertar(id);
+                Capa nuevo = (raiz.getHijoDer()).insertar(id);
+                return nuevo;
             }
             if (id < raiz.getIdCapa()) {
-                (raiz.getHijoIzq()).insertar(id);
+                Capa nuevo = (raiz.getHijoIzq()).insertar(id);
+                return nuevo;
             }
         }
+        return null;
     }
 
     public void preOrder() {
-        //raiz, hijoIzquierdo, hijoDerecho
+        //raiz, hijoIzquierdo, hijoDerecho 
         if (!esVacio()) {
             System.out.print(raiz.getIdCapa() + ", ");
             raiz.getHijoIzq().preOrder();
             raiz.getHijoDer().preOrder();
+        }
+    }
+
+    public void graficaPreOrder(Grafica grafica) {
+        if (!esVacio()) {
+
+            System.out.println("nodo" + raiz.getIdCapa() + "[label = " + raiz.getIdCapa() + " ,fillcolor = \"#FCF8F7\"];");
+            grafica.contenidoABB += "nodo" + raiz.getIdCapa() + "[label = " + raiz.getIdCapa() + " ,fillcolor = \"#FCF8F7\"];\n";
+            if (!raiz.getHijoIzq().esVacio()) {
+                grafica.enlaceABBIzq += "nodo" + raiz.getIdCapa() + " -> ";
+                grafica.tienePadreIzq = true;
+            }
+            if (!raiz.getHijoDer().esVacio()) {
+                grafica.enlaceABBDer += "nodo" + raiz.getIdCapa() + " -> ";
+                grafica.tienePadreDer = true;
+            }
+            raiz.getHijoIzq().graficaPreOrder(grafica);
+            if (grafica.tienePadreIzq) {
+                grafica.enlaceABBIzq += "nodo" + raiz.getIdCapa() + ";\n";
+                grafica.tienePadreIzq = false;
+            } //revisar derecho no sirve
+            raiz.getHijoDer().graficaPreOrder(grafica);
+            if (grafica.tienePadreDer) {
+                grafica.enlaceABBDer += "Dernodo" + raiz.getIdCapa() + ";\n";
+                grafica.tienePadreDer = false;
+            }
+        }
+    }
+
+    public void preOrder2() {
+        //raiz, hijoIzquierdo, hijoDerecho 
+        if (!esVacio()) {
+            System.out.print(raiz.getIdCapa() + ", ");
+            //raiz.pixeles.imprimir();
+            raiz.getHijoIzq().preOrder2();
+            raiz.getHijoDer().preOrder2();
         }
     }
 
@@ -132,8 +172,10 @@ public class ArbolBinarioBusqueda {
 
     public boolean esHoja() {
         boolean hoja = false;
-        if ((raiz.getHijoIzq()).esVacio() && (raiz.getHijoDer()).esVacio()) {
-            hoja = true;
+        if (raiz != null) {
+            if (raiz.getHijoIzq().esVacio() && raiz.getHijoDer().esVacio()) {
+                hoja = true;
+            }
         }
         return hoja;
     }

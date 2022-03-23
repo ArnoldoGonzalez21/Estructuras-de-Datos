@@ -1,0 +1,122 @@
+package edd_fase_2;
+
+import Clases.NodoEncabezado;
+
+/**
+ *
+ * @author Arnoldo González
+ */
+public class ListaEncabezado {
+
+    NodoEncabezado primero;
+    NodoEncabezado ultimo;
+    String tipo;
+    int size;
+
+    public ListaEncabezado(String tipo) {
+        primero = null;
+        ultimo = null;
+        this.tipo = tipo;
+        size = 0;
+    }
+
+    public void insertarNodoEncabezado(NodoEncabezado nuevo) {
+        this.size++;
+        if (this.primero == null) {
+            this.primero = nuevo;
+            this.ultimo = nuevo;
+        } else {
+            //nuevo es menor que el primero
+            if (nuevo.getId() < this.primero.getId()) {
+                nuevo.setSiguiente(this.primero);
+                this.primero.setAnterior(nuevo);
+                this.primero = nuevo;
+            } //nuevo es mayor a ultimo
+            else if (nuevo.getId() > ultimo.getId()) {
+                ultimo.setSiguiente(nuevo);
+                nuevo.setAnterior(ultimo);
+                this.ultimo = nuevo;
+            } //en medio
+            else {
+                NodoEncabezado tmp = this.primero;
+                while (tmp != null) {
+                    if (nuevo.getId() < tmp.getId()) {
+                        nuevo.setSiguiente(tmp);
+                        nuevo.setAnterior(tmp.getAnterior());
+                        tmp.getAnterior().setSiguiente(nuevo);
+                        tmp.setAnterior(nuevo);
+                        break;
+                    } else if (nuevo.getId() > tmp.getId()) {
+                        tmp = tmp.getSiguiente();
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public String graficaEncabezado(boolean columna_grafica) {
+        boolean entroFila = false, entroCol = false;
+        NodoEncabezado actual = this.primero;
+        String contRank = "", contFila = "", contCol = "", contFilaEnlace = "", contColEnlace = "", contRaizF = "", contRaizC = "";
+        if (columna_grafica) {
+            contRank = "{rank = same;raiz";
+        }
+        while (actual != null) {
+            NodoEncabezado tmp = actual.getSiguiente();
+            if (this.tipo == "Fila") {
+                contFila += "F" + actual.getId() + "[label=\"F" + actual.getId() + "\",group = 1, fillcolor = white];\n";
+                if (tmp != null) {
+                    contFilaEnlace += "F" + actual.getId() + " -> F" + tmp.getId() + ";\n";
+                }
+                if (!entroFila) {
+                    contRaizF += "raiz -> F" + actual.getId() + ";\n";
+                    entroFila = true;
+                }
+            } else if (this.tipo == "Columna") {
+                contCol += "C" + actual.getId() + "[label=\"C" + actual.getId() + "\",group= " + (actual.getId() + 1) + ",fillcolor=white];\n";
+                if (tmp != null) {
+                    contColEnlace += "C" + actual.getId() + " -> C" + tmp.getId() + ";\n";
+                }
+                if (!entroCol) {
+                    contRaizC += "raiz -> C" + actual.getId() + ";\n";
+                    entroCol = true;
+                }
+                contRank += "; C" + actual.getId();
+            }
+            actual = actual.getSiguiente();
+
+        }
+        String contenido = "";
+        if (columna_grafica) {
+            contRank += "}";
+            contenido = contCol + contColEnlace + contRaizC + contRank;
+
+        } else {
+            contenido = contFila + contFilaEnlace + contRaizF;
+        }
+        return contenido;
+    }
+
+    
+    public void mostrarEncabezados(){
+        NodoEncabezado tmp = this.primero;
+        while(tmp != null){
+            System.out.println("Encabezado: "+this.tipo+" "+tmp.getId());
+            tmp = tmp.getSiguiente();
+        }
+    }
+    
+    public NodoEncabezado getEncabezado(int id) {
+        NodoEncabezado tmp = this.primero;
+        while (tmp != null) {
+            if (id == tmp.getId()) {
+                return tmp;
+            }
+            tmp = tmp.getSiguiente();
+        }
+        return null;
+    }
+
+}

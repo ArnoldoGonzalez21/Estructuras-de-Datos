@@ -12,7 +12,7 @@ public class EDD_Fase_2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("--------------------------");
+//        System.out.println("--------------------------");
 //        Matriz matrizAux = new Matriz();
 //        matrizAux.insertarNodo(0, 0, "hola");
 //        matrizAux.insertarNodo(1, 1, "hola");
@@ -34,9 +34,9 @@ public class EDD_Fase_2 {
 //        arbol.insertar(99, "dsa", "sda");
 //        System.out.println("------------------");
         Administrador ad = new Administrador();
-        System.out.println("Escriba aqui: ");
+     //   System.out.println("Escriba aqui: ");
 //        //ad.cargaMasivaCliente();
-         ad.cargaMasivaCapas();
+//         ad.cargaMasivaCapas();
          
 //        ad.cargaMasivaImagen();
 //        ad.cargaMasivaAlbum();
@@ -54,6 +54,21 @@ public class EDD_Fase_2 {
 //        abb.posOrder();
 //        System.out.println("");
 //        abb.inOrder();
+        new Interfaz.VentanaClliente(ad);
+
+//        ArbolBB arbol_numeros=new ArbolBB();
+//        //Llenamos con información el árbol
+//        arbol_numeros.insertar(12);
+//        arbol_numeros.insertar(5);
+//        arbol_numeros.insertar(26);
+//        arbol_numeros.insertar(33);
+//        arbol_numeros.insertar(59);
+//        arbol_numeros.insertar(27);
+//        arbol_numeros.insertar(15);      
+//        //Graficamos el árbol generando la imagen arbol_numeros.jpg
+//        arbol_numeros.graficar("arbol_numeros.jpg");
+//        //Imprimimos el contenido del árbol ordenado
+//        arbol_numeros.inorden();
     }
 
 }

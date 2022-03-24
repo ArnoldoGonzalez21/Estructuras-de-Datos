@@ -1,7 +1,6 @@
 package Clases;
 
 import edd_fase_2.ArbolBinarioBusqueda;
-import edd_fase_2.Matriz;
 import edd_fase_2.MatrizDispersa;
 
 /**

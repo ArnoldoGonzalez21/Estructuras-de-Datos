@@ -17,11 +17,11 @@ public class Administrador {
     ListaSimple album = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
     ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
+    ArbolBB arbolbb = new ArbolBB();
+    MatrizDispersa matrizD = new MatrizDispersa(-1);
     Grafica grafica = new Grafica();
 
-    public boolean cargaMasivaCliente() {
-
-        String Jsontxt = Archivo.leerArchivoJsonConsola();
+    public boolean cargaMasivaCliente(String Jsontxt) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -38,40 +38,31 @@ public class Administrador {
         return true;
     }
 
-    public boolean cargaMasivaCapas() {
-        String Jsontxt = Archivo.leerArchivoJsonConsola();
+    public boolean cargaMasivaCapas(String Jsontxt) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
-        boolean uno = false;
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
             int id_capa = gsonObj.get("id_capa").getAsInt();
-            Clases.Capa nodoCapa = this.abb.insertar(id_capa); //insertar en abb las capas
+            //Clases.Capa nodoCapa = this.abb.insertar(id_capa); //insertar en abb las capas
+            Clases.NodoBinario nodoAbb = this.arbolbb.insertar(id_capa);
             JsonArray pixeles = gsonObj.get("pixeles").getAsJsonArray();
             for (JsonElement objt2 : pixeles) {
                 JsonObject gsonObj2 = objt2.getAsJsonObject();
                 int fila = gsonObj2.get("fila").getAsInt();
                 int columna = gsonObj2.get("columna").getAsInt();
                 String color = gsonObj2.get("color").getAsString();
-                nodoCapa.pixeles.insertar(id_capa, fila, columna, color);
-               // nodoCapa.pixeles.insertarNodo(id_capa, fila, columna, color);
-            }
-            if (!uno) {
-                nodoCapa.pixeles.GraficarMatriz();
-               // nodoCapa.pixeles.imprimir();
-//                nodoCapa.pixeles.();
-                uno = true;
+                nodoAbb.pixeles.insertar(id_capa, fila, columna, color);
             }
         }
+        this.arbolbb.inorden();
         // this.abb.preOrder();
         // this.abb.graficaPreOrder(grafica);
         // System.out.println(grafica.contenidoABB + grafica.enlaceABBIzq + grafica.enlaceABBDer);
         return true;
     }
 
-    public boolean cargaMasivaImagen() {
-
-        String Jsontxt = Archivo.leerArchivoJsonConsola();
+    public boolean cargaMasivaImagen(String Jsontxt) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -83,9 +74,7 @@ public class Administrador {
         return true;
     }
 
-    public boolean cargaMasivaAlbum() {
-
-        String Jsontxt = Archivo.leerArchivoJsonConsola();
+    public boolean cargaMasivaAlbum(String Jsontxt) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -101,6 +90,24 @@ public class Administrador {
             this.imagenes = new ListaSimple();
         }
         return true;
+    }
+
+    public String matriz() {
+        Clases.Capa nodoCapa = this.abb.raiz;
+//        String contenido = nodoCapa.pixeles.GraficarMatriz();
+        System.out.println("cantidad " + this.abb.cantidad());
+        this.grafica.cantidad(abb);
+        this.abb.inOrder(grafica);
+        System.out.println("lenght: " + grafica.matriz().length);
+        for (int i = 0; i < grafica.matriz().length; i++) {
+            System.out.println("ID CAPA: " + grafica.matriz()[i].getIdCapa());
+            matrizD = grafica.matriz()[i].pixeles.recorrerMatriz(this.grafica);
+
+        }
+        String contenido = matrizD.GraficarMatriz();
+        //System.out.println("aca vamos de nuevo");
+        //matrizD.recorrerMatriz(this.grafica);
+        return contenido;
     }
 
     public void crearGrafico(String contenidoGrafica, String nombre) {

@@ -26,6 +26,13 @@ public class Tools {
         return lbl;
     }
 
+    public JLabel addLabelImagen(int x, int y, int ancho, int altura) {
+        JLabel lbl = new JLabel("");
+        lbl.setSize(ancho, altura);
+        lbl.setLocation(x, y);
+        return lbl;
+    }
+
     public JButton addButton(String texto, int x, int y, int ancho, int altura) {
         JButton btn = new JButton(texto);
         btn.setBounds(x, y, ancho, altura);

@@ -70,9 +70,8 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         }
 
         if (AE.getSource() == this.btnCargaUsuario) {
-//            this.administracion.borrarContenido();
-//            String contenido = Archivo.leerArchivo(this);
-//            this.administracion.cargaMasivaTaller(contenido);
+            String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
+            this.administracion.cargaMasivaCliente(contenido);
         }
 
         if (AE.getSource() == this.btnModificar) {

@@ -84,12 +84,23 @@ public class ArbolBinarioBusqueda {
         }
     }
 
-    public void inOrder() {
+    public void inOrder2() {
         //hijoIzquierdo, raiz, hijoDerecho
         if (!esVacio()) {
-            raiz.getHijoIzq().inOrder();
+            raiz.getHijoIzq().inOrder2();
             System.out.print(raiz.getIdCapa() + ", ");
-            raiz.getHijoDer().inOrder();
+            raiz.getHijoDer().inOrder2();
+        }
+    }
+    
+    public void inOrder(Grafica grafica) {
+        //hijoIzquierdo, raiz, hijoDerecho
+        if (!esVacio()) {
+            raiz.getHijoIzq().inOrder(grafica);
+            System.out.print(raiz.getIdCapa() + ", ");
+            grafica.matriz()[grafica.contador] = raiz;
+            grafica.contador++; 
+            raiz.getHijoDer().inOrder(grafica);
         }
     }
 

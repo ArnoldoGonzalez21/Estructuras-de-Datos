@@ -57,6 +57,50 @@ public class ListaEncabezado {
     }
 
     public String graficaEncabezado(boolean columna_grafica) {
+        boolean entroFila = false, entroCol = false;
+        NodoEncabezado actual = this.primero;
+        String contRank = "", contFila = "", contCol = "", contFilaEnlace = "", contColEnlace = "", contRaizF = "", contRaizC = "";
+        if (columna_grafica) {
+            contRank = "{rank = same;raiz";
+        }
+        while (actual != null) {
+            NodoEncabezado tmp = actual.getSiguiente();
+            if (this.tipo == "Fila") {
+                contFila += "F" + actual.getId() + "[label=\"F" + actual.getId() + "\",group = 1, fillcolor = white];\n";
+                if (tmp != null) {
+                    contFilaEnlace += "F" + actual.getId() + " -> F" + tmp.getId() + ";";
+                }
+                if (!entroFila) {
+                    contRaizF += "raiz -> F" + actual.getId() + ";";
+                    entroFila = true;
+                }
+            } else if (this.tipo == "Columna") {
+                contCol += "C" + actual.getId() + "[label=\"C" + actual.getId() + "\",group= " + (actual.getId() + 1) + ",fillcolor=white];\n";
+                if (tmp != null) {
+                    contColEnlace += "C" + actual.getId() + " -> C" + tmp.getId() + ";";
+                }
+                if (!entroCol) {
+                    contRaizC += "raiz -> C" + actual.getId() + ";";
+                    entroCol = true;
+                }
+                contRank += "; C" + actual.getId();
+            }
+            actual = actual.getSiguiente();
+
+        }
+        String contenido = "";
+        if (columna_grafica) {
+            contRank += "}";
+            contenido = contCol + contColEnlace + contRaizC + contRank;
+
+        } else {
+            contenido = contFila + contFilaEnlace + contRaizF;
+        }
+        return contenido;
+    }
+    
+    
+    public String graficaEncabezado2(boolean columna_grafica) {
 
         NodoEncabezado actual = this.primero;
         String contRank = "", contFila = "", contCol = "";

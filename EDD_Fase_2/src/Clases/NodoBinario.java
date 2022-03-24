@@ -11,17 +11,8 @@ import edd_fase_2.MatrizDispersa;
 public class NodoBinario {
 
     public MatrizDispersa pixeles;
-    /**
-     * Variable que almacena el valor específico del nodo.
-     */
     private final Comparable valor;
-    /**
-     * Variable que apunta hacia el nodo izquierdo de este nodo.
-     */
     private NodoBinario izquierdo;
-    /**
-     * Variable que apunta hacia el nodo derecho de este nodo.
-     */
     private NodoBinario derecho;
     /**
      * Variable privada con la que lleva el control de un correlativo que se le
@@ -35,11 +26,6 @@ public class NodoBinario {
      */
     private final int id;
 
-    /**
-     * Constructor de la clase NodoBinario.
-     *
-     * @param valor Valor específico que el nodo almacenará.
-     */
     public NodoBinario(Comparable valor) {
         this.valor = valor;
         this.izquierdo = null;
@@ -48,34 +34,32 @@ public class NodoBinario {
         this.pixeles = new MatrizDispersa(1);
     }
 
-    /**
-     * Método que inserta un Nodo en el árbol binario de búsqueda.
-     *
-     * @param val Valor que se desea insertar.
-     * @return 
-     */
+    public NodoBinario() {
+        this.valor = 0;
+        this.izquierdo = null;
+        this.derecho = null;
+        this.id = -1;
+        this.pixeles = new MatrizDispersa(1);
+    }
+
     public NodoBinario insertar(Comparable val) {
-        //Si el valor a insertar es menor que el nodo actual, entonces debería
-        //insertarse a la izquierda de este. 
-        if (val.compareTo(getValor()) < 0) { //Si la izquierda del nodo actual esta desocupada entonces se inserta.
+        //Si el valor es menor que el nodo actual, entonces insertar a la izquierda de este. 
+        if (val.compareTo(getValor()) < 0) { //Si la izquierda del nodo actual null insertar.
             if (getIzquierdo() == null) {
                 NodoBinario nuevo = new NodoBinario(val);
                 setIzquierdo(nuevo);
                 return nuevo;
-            } //De lo contrario nos desplazamos al nodo izquierdo, en busca de un
-            //lugar para insertar el nuevo nodo.
+            } //Si no mover a la izq para buscar donde
             else {
                 getIzquierdo().insertar(val);
             }
-        } //Si el valor a insertar es mayor que el nodo actual, entonces debería
-        //insertarse a la derecha de este de este.         
-        else if (val.compareTo(getValor()) > 0){ //Si la derecha del nodo actual esta desocupada entonces se inserta.
+        } //Si el valor  es mayor que el nodo actual, entonces insertat a la derecha de este de este.         
+        else if (val.compareTo(getValor()) > 0) { //Si la derecha del nodo actual es nula insertar
             if (getDerecho() == null) {
                 NodoBinario nuevo = new NodoBinario(val);
                 setDerecho(nuevo);
                 return nuevo;
-            } //De lo contrario nos desplazamos al nodo derecho, en busca de un
-            //lugar para insertar el nuevo nodo.            
+            } //Si no mover a la derecha         
             else {
                 getDerecho().insertar(val);
             }
@@ -92,13 +76,12 @@ public class NodoBinario {
      * Método que genera el gráfico del árbol binario de búsqueda con graphviz,
      * considerando como la raíz de dicho árbol el actual Nodo.
      *
-     * @param path Ruta de la imagen que se generará.
      */
     public void graficar(String path) {
         FileWriter fichero = null;
         PrintWriter escritor;
         try {
-            fichero = new FileWriter("aux_grafico.dot");
+            fichero = new FileWriter("arbol.dot");
             escritor = new PrintWriter(fichero);
             escritor.print(getCodigoGraphviz());
         } catch (Exception e) {
@@ -114,26 +97,20 @@ public class NodoBinario {
         }
         try {
             Runtime rt = Runtime.getRuntime();
-            rt.exec("dot -Tjpg -o " + path + " aux_grafico.dot");
-            //Esperamos medio segundo para dar tiempo a que la imagen se genere.
-            //Para que no sucedan errores en caso de que se decidan graficar varios
-            //árboles sucesivamente.
+            rt.exec("dot -Tpng -o " + path + " arbol.dot");
+            //Esperar para evitar errores
             Thread.sleep(500);
         } catch (Exception ex) {
             System.err.println("Error al generar la imagen para el archivo aux_grafico.dot");
         }
     }
 
-    /**
-     * Método que retorna el código que grapviz usará para generar la imagen del
-     * árbol binario de búsqueda.
-     *
-     * @return
-     */
     public String getCodigoGraphviz() {
         return "digraph grafica{\n"
                 + "rankdir=TB;\n"
-                + "node [shape = record, style=filled, fillcolor=seashell2];\n"
+                + "label = Arbol Binario de Búsqueda - ABB\n"
+                + "bgcolor = #8ECBE5\n"
+                + "node [shape = record, style=filled, fillcolor=#FCFF48];\n"
                 + getCodigoInterno()
                 + "}\n";
     }

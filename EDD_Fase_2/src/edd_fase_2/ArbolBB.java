@@ -8,25 +8,13 @@ import Clases.NodoBinario;
  */
 public class ArbolBB {
 
-    /**
-     * Nodo raíz del árbol.
-     */
-    private NodoBinario raiz;
-    private int cantidad = 0;
-    /**
-     * Constructor de la clase, incialmente la raíz es nula porque el árbol está
-     * vacío.
-     */
+    public NodoBinario raiz;
+    private int cantidad = -1;
+
     public ArbolBB() {
         raiz = null;
     }
 
-    /**
-     * Método que se encarga de insertar un valor en el árbol binario de
-     * búsqueda.
-     *
-     * @param val Valor específico que se desea insertar.
-     */
     public NodoBinario insertar(Comparable val) {
         if (raiz == null) {
             raiz = new NodoBinario(val);
@@ -47,28 +35,30 @@ public class ArbolBB {
         raiz.graficar(path);
     }
 
-    /**
-     * Método que imprime el recorrido inorden del árbol binario de búsqueda.
-     */
     public void inorden() {
         System.out.println("Recorrido inorden del árbol binario de búsqueda:");
         inorden(raiz);
         System.out.println();
     }
 
-    /**
-     * Método privado que ejecuta la tarea de hacer un recorrido inorden del
-     * árbol binario de búsqueda.
-     *
-     * @param a Nodo específico que se recorrerá conforme el método se llama
-     * recursivamente.
-     */
-    private void inorden(NodoBinario nodo) {
+    public void inorden(NodoBinario nodo, Grafica grafica) { //se encargada de introducir los nodos en el arreglo
+        if (nodo == null) {
+            return;
+        }
+        inorden(nodo.getIzquierdo(), grafica);
+        System.out.print(nodo.getValor() + ",");
+        grafica.matriz()[grafica.contador] = nodo;
+        grafica.contador++;
+        inorden(nodo.getDerecho(), grafica);
+    }
+
+    private void inorden(NodoBinario nodo) { //utilizado para saber la cantidad de nodos del abb
         if (nodo == null) {
             return;
         }
         inorden(nodo.getIzquierdo());
         System.out.print(nodo.getValor() + ",");
+        this.cantidad++;
         inorden(nodo.getDerecho());
     }
 
@@ -93,6 +83,7 @@ public class ArbolBB {
     }
 
     public int cantidad() {
+        inorden(raiz);
         return cantidad;
     }
 }

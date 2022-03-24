@@ -16,7 +16,7 @@ public class Administrador {
 
     ListaSimple album = new ListaSimple();
     ListaSimple imagenes = new ListaSimple();
-    ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
+//    ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
     ArbolBB arbolbb = new ArbolBB();
     MatrizDispersa matrizD = new MatrizDispersa(-1);
     Grafica grafica = new Grafica();
@@ -55,7 +55,7 @@ public class Administrador {
                 nodoAbb.pixeles.insertar(id_capa, fila, columna, color);
             }
         }
-        this.arbolbb.inorden();
+//        this.arbolbb.inorden();
         // this.abb.preOrder();
         // this.abb.graficaPreOrder(grafica);
         // System.out.println(grafica.contenidoABB + grafica.enlaceABBIzq + grafica.enlaceABBDer);
@@ -93,23 +93,39 @@ public class Administrador {
     }
 
     public String matriz() {
-        Clases.Capa nodoCapa = this.abb.raiz;
-//        String contenido = nodoCapa.pixeles.GraficarMatriz();
-        System.out.println("cantidad " + this.abb.cantidad());
-        this.grafica.cantidad(abb);
-        this.abb.inOrder(grafica);
+        this.grafica.cantidad(this.arbolbb);
+        this.arbolbb.inorden(this.arbolbb.raiz, grafica);
         System.out.println("lenght: " + grafica.matriz().length);
         for (int i = 0; i < grafica.matriz().length; i++) {
-            System.out.println("ID CAPA: " + grafica.matriz()[i].getIdCapa());
             matrizD = grafica.matriz()[i].pixeles.recorrerMatriz(this.grafica);
 
         }
         String contenido = matrizD.GraficarMatriz();
-        //System.out.println("aca vamos de nuevo");
-        //matrizD.recorrerMatriz(this.grafica);
+        System.out.println(contenido);
         return contenido;
     }
+    
+    public void generarAbb(){
+        this.arbolbb.graficar("arbol_abb.png");
+    }
 
+//    public String matriz() {
+//        Clases.Capa nodoCapa = this.abb.raiz;
+////        String contenido = nodoCapa.pixeles.GraficarMatriz();
+//        System.out.println("cantidad " + this.abb.cantidad());
+//        this.grafica.cantidad(abb);
+//        this.abb.inOrder(grafica);
+//        System.out.println("lenght: " + grafica.matriz().length);
+//        for (int i = 0; i < grafica.matriz().length; i++) {
+//            System.out.println("ID CAPA: " + grafica.matriz()[i].getIdCapa());
+//            matrizD = grafica.matriz()[i].pixeles.recorrerMatriz(this.grafica);
+//
+//        }
+//        String contenido = matrizD.GraficarMatriz();
+//        //System.out.println("aca vamos de nuevo");
+//        //matrizD.recorrerMatriz(this.grafica);
+//        return contenido;
+//    }
     public void crearGrafico(String contenidoGrafica, String nombre) {
         try {
             FileWriter archivo = new FileWriter(nombre + ".dot", false);
@@ -117,8 +133,16 @@ public class Administrador {
             pw.write(contenidoGrafica);
             pw.close();
             archivo.close();
-            Runtime.getRuntime().exec("dot -Tpng " + nombre + ".dot -o " + nombre + ".png");
-            System.out.println("Gráfica generada exitosamente");
+            try {
+                Runtime.getRuntime().exec("dot -Tpng " + nombre + ".dot -o " + nombre + ".png");
+                //Esperamos medio segundo para dar tiempo a que la imagen se genere.
+                //Para que no sucedan errores en caso de que se decidan graficar varios
+                //árboles sucesivamente.
+                Thread.sleep(500);
+                System.out.println("Gráfica generada exitosamente");
+            } catch (Exception ex) {
+                System.err.println("Error al generar la imagen del archivo .dot");
+            }
 
         } catch (IOException e) {
             System.out.println("Error Archivo: " + e.getMessage());

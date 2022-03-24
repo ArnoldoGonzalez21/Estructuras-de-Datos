@@ -5,36 +5,21 @@ package edd_fase_2;
  * @author Arnoldo González
  */
 public class Grafica {
-    int cantidad = 0;
-    Clases.Capa [] matriz;
-    MatrizDispersa imagenCompleta = new MatrizDispersa(-1);;
-    int contador = 0;
-    String contenidoABB = "digraph L{\n"
-                + "node[shape = circle fillcolor = \"#F8DEA1\" style = filled]\n"
-                + "subgraph cluster_p{\n"
-                + "label = \"Arbol Binario Capas\"\n"
-                + "bgcolor = \"#8ECBE5\"\n"
-                + "edge[dir = \"right\"]\n";
-    String enlaceABBIzq = "";
-    String enlaceABBDer = "";
-    boolean tienePadreIzq = false;
-    boolean tienePadreDer = false;
-    
-    public void cantidad(ArbolBinarioBusqueda abb){
+
+    int cantidad = 0, contador = 0;
+    Clases.NodoBinario[] matriz;
+    MatrizDispersa imagenCompleta = new MatrizDispersa(-1);
+
+    public void cantidad(ArbolBB abb) {
         this.cantidad = abb.cantidad();
-        this.matriz = new Clases.Capa[cantidad];
+        this.matriz = new Clases.NodoBinario[cantidad];
     }
-    
-    public Clases.Capa[] matriz(){
+
+    public Clases.NodoBinario[] matriz() {
         return this.matriz;
     }
-    public MatrizDispersa matrizDispera(){
+
+    public MatrizDispersa matrizDispera() {
         return imagenCompleta;
     }
 }
-/*3, 0, 2, 1, 4,
-         3
-     0      4
-        2
-      1
-*/

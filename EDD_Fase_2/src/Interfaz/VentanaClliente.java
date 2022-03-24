@@ -65,8 +65,9 @@ public class VentanaClliente extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
             // if (nombre != "") {
-            this.administracion.crearGrafico(this.administracion.matriz(), "imagen");
-
+//            String contenido = this.administracion.matriz();
+//            this.administracion.crearGrafico(contenido, "imagen");
+            this.administracion.generarAbb();
             //}
         }
         if (AE.getSource() == this.btnMostrarImagen) {

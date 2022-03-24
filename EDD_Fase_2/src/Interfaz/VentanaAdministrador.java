@@ -15,7 +15,7 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
     Administrador administracion;
-    JButton btnEliminar, btnInsertar, btnCargaUsuario, btnModificar, btnLogOut;
+    JButton btnEliminar, btnInsertar, btnCargaUsuario, btnModificar, btnLogOut, btnMostrarImagen, btnGenerarImagen;
     JLabel lblTitulo;
 
     public VentanaAdministrador(Administrador administracion) {
@@ -27,7 +27,7 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
     public void AjustarVentana() {
         setTitle("Ventana Administrador");
         setLayout(null);
-        setSize(490, 275);
+        setSize(650, 475);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,21 +35,27 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
     }
 
     private void componentes() {
-        lblTitulo = this.tools.addLabelTitulo("Administrador", 25, 10, 300, 40, 15);
-        btnCargaUsuario = this.tools.addButton("Cargar Usuarios", 25, 60, 200, 30);
-        btnInsertar = this.tools.addButton("Insertar", 25, 100, 200, 30);
-        btnModificar = this.tools.addButton("Modificar", 25, 140, 200, 30);
-        btnEliminar = this.tools.addButton("Eliminar", 25, 180, 200, 30);
-        btnLogOut = tools.addButton("← Log Out", 225, 25, 117, 20);
+        lblTitulo = this.tools.addLabelTitulo("Ventana Administrador", 25, 20, 300, 40, 20);
+        btnCargaUsuario = this.tools.addButton("Cargar Clientes", 25, 70, 200, 30);
+        btnInsertar = this.tools.addButton("Insertar Clientes", 25, 110, 200, 30);
+        btnModificar = this.tools.addButton("Modificar Cliente", 25, 150, 200, 30);
+        btnEliminar = this.tools.addButton("Eliminar Cliente", 25, 190, 200, 30);
+        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 265, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Imagen", 430, 375, 150, 25);
+        btnLogOut = tools.addButton("← Log Out", 485, 15, 117, 20);
         add(lblTitulo);
-        btnEliminar.addActionListener(this);
-        add(btnEliminar);
-        btnInsertar.addActionListener(this);
-        add(btnInsertar);
         btnCargaUsuario.addActionListener(this);
         add(btnCargaUsuario);
+        btnInsertar.addActionListener(this);
+        add(btnInsertar);
         btnModificar.addActionListener(this);
         add(btnModificar);
+        btnEliminar.addActionListener(this);
+        add(btnEliminar);
+        btnMostrarImagen.addActionListener(this);
+        add(btnMostrarImagen);
+        btnGenerarImagen.addActionListener(this);
+        add(btnGenerarImagen);
         btnLogOut.addActionListener(this);
         add(btnLogOut);
         repaint();
@@ -57,21 +63,14 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent AE) {
-        if (AE.getSource() == this.btnEliminar) {
-            this.setVisible(false);
-//            new VentanaResidencia(this.administracion, this.tools);
-            this.dispose();
+        if (AE.getSource() == this.btnCargaUsuario) {
+            String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
+            this.administracion.cargaMasivaCliente(contenido);
         }
-
         if (AE.getSource() == this.btnInsertar) {
             this.setVisible(false);
 //            new VentanaMotivo(this.administracion, this.tools);
             this.dispose();
-        }
-
-        if (AE.getSource() == this.btnCargaUsuario) {
-            String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
-            this.administracion.cargaMasivaCliente(contenido);
         }
 
         if (AE.getSource() == this.btnModificar) {
@@ -79,5 +78,24 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 //            String contenido = Archivo.leerArchivo(this);
 //            this.administracion.cargaMasivaAtencion(contenido);
         }
+
+        if (AE.getSource() == this.btnEliminar) {
+            this.setVisible(false);
+//            new VentanaResidencia(this.administracion, this.tools);
+            this.dispose();
+        }
+
+        if (AE.getSource() == this.btnGenerarImagen) {
+            this.setVisible(false);
+//            new VentanaResidencia(this.administracion, this.tools);
+            this.dispose();
+        }
+
+        if (AE.getSource() == this.btnMostrarImagen) {
+            this.setVisible(false);
+//            new VentanaResidencia(this.administracion, this.tools);
+            this.dispose();
+        }
+
     }
 }

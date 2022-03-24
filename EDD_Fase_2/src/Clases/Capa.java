@@ -1,24 +1,17 @@
 package Clases;
 
-import edd_fase_2.ArbolBinarioBusqueda;
-import edd_fase_2.MatrizDispersa;
-
 /**
  *
  * @author Arnoldo González
  */
 public class Capa {
 
-    private ArbolBinarioBusqueda hijoDer;
-    private ArbolBinarioBusqueda hijoIzq;
     private int idCapa;
-    public MatrizDispersa pixeles;
+    private Capa siguiente;
 
-    public Capa() {
-        this.hijoDer = null;
-        this.hijoIzq = null;
-        this.idCapa = 0;
-        this.pixeles = new MatrizDispersa(1);
+    public Capa(int idCapa) {
+        this.idCapa = idCapa;
+        this.siguiente = null;
     }
 
     /**
@@ -36,31 +29,16 @@ public class Capa {
     }
 
     /**
-     * @return the hijoDer
+     * @return the siguiente
      */
-    public ArbolBinarioBusqueda getHijoDer() {
-        return hijoDer;
+    public Capa getSiguiente() {
+        return siguiente;
     }
 
     /**
-     * @param hijoDer the hijoDer to set
+     * @param siguiente the siguiente to set
      */
-    public void setHijoDer(ArbolBinarioBusqueda hijoDer) {
-        this.hijoDer = hijoDer;
+    public void setSiguiente(Capa siguiente) {
+        this.siguiente = siguiente;
     }
-
-    /**
-     * @return the hijoIzq
-     */
-    public ArbolBinarioBusqueda getHijoIzq() {
-        return hijoIzq;
-    }
-
-    /**
-     * @param hijoIzq the hijoIzq to set
-     */
-    public void setHijoIzq(ArbolBinarioBusqueda hijoIzq) {
-        this.hijoIzq = hijoIzq;
-    }
-
 }

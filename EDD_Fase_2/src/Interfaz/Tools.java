@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -49,5 +50,11 @@ public class Tools {
         JPasswordField txt = new JPasswordField(texto);
         txt.setBounds(x, y, ancho, altura);
         return txt;
+    }
+
+    public JComboBox addComboBox(String[] opciones, int x, int y, int ancho, int altura) {
+        JComboBox combo = new JComboBox(opciones);
+        combo.setBounds(x, y, ancho, altura);
+        return combo;
     }
 }

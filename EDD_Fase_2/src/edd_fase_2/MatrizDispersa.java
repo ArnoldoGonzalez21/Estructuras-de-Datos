@@ -259,7 +259,7 @@ public class MatrizDispersa {
         return contenido;
     }
 
-    public MatrizDispersa recorrerMatriz(Grafica grafica) {
+    public MatrizDispersa recorrerMatriz(Utilidades grafica) {
         NodoEncabezado pivote = this.filas.primero;
         while (pivote != null) {
             NodoMatriz pivoteCelda = pivote.getAcceso();

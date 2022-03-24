@@ -2,6 +2,7 @@ package edd_fase_2;
 
 import Clases.Album;
 import Clases.Imagen;
+import Clases.Capa;
 
 /**
  *
@@ -11,10 +12,13 @@ public class ListaSimple {
 
     private Album cabezaAlbum;
     private Imagen cabezaImagen;
+    private Capa cabezaCapa;
+    public int size = 0;
 
     public ListaSimple() {
         this.cabezaAlbum = null;
         this.cabezaImagen = null;
+        this.cabezaCapa = null;
     }
 
     public void insertarAlbum(String nombre, ListaSimple imagenes) {
@@ -42,16 +46,29 @@ public class ListaSimple {
             actual.setSiguienteAlbum(nuevo);
         }
     }
-    
-    public void imprimirAlbum(){
+
+    public void insertarCapa(int id) {
+        Capa nuevo = new Capa(id);
+        this.size++;
+        if (this.getCabezaCapa() == null) {
+            this.setCabezaCapa(nuevo);
+        } else {
+            Capa actual = this.getCabezaCapa();
+            while (actual.getSiguiente() != null) {
+                actual = actual.getSiguiente();
+            }
+            actual.setSiguiente(nuevo);
+        }
+    }
+
+    public void imprimirAlbum() {
         System.out.println("IMPRIMIR ALBUM");
         Album actual = cabezaAlbum;
-        while(actual != null)
-        {
+        while (actual != null) {
             System.out.println(actual.getNombre());
-            if(actual.getListaImagenes() != null){
+            if (actual.getListaImagenes() != null) {
                 Imagen actualImg = actual.getListaImagenes().getCabezaImagen();
-                while(actualImg != null){
+                while (actualImg != null) {
                     System.out.println(actualImg.getId());
                     actualImg = actualImg.getSiguienteAlbum();
                 }
@@ -86,5 +103,19 @@ public class ListaSimple {
      */
     public void setCabezaImagen(Imagen cabezaImagen) {
         this.cabezaImagen = cabezaImagen;
+    }
+
+    /**
+     * @return the cabezaCapa
+     */
+    public Capa getCabezaCapa() {
+        return cabezaCapa;
+    }
+
+    /**
+     * @param cabezaCapa the cabezaCapa to set
+     */
+    public void setCabezaCapa(Capa cabezaCapa) {
+        this.cabezaCapa = cabezaCapa;
     }
 }

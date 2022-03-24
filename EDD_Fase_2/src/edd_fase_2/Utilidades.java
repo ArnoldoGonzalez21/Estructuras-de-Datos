@@ -4,7 +4,7 @@ package edd_fase_2;
  *
  * @author Arnoldo González
  */
-public class Grafica {
+public class Utilidades {
 
     int cantidad = 0, contador = 0;
     Clases.NodoBinario[] matriz;
@@ -12,6 +12,7 @@ public class Grafica {
 
     public void cantidad(ArbolBB abb) {
         this.cantidad = abb.cantidad();
+        if(cantidad == -1)cantidad = 0;
         this.matriz = new Clases.NodoBinario[cantidad];
     }
 

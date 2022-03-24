@@ -18,8 +18,9 @@ public class Administrador {
     ListaSimple imagenes = new ListaSimple();
 //    ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
     ArbolBB arbolbb = new ArbolBB();
+    ArbolAVL avl = new ArbolAVL();
     MatrizDispersa matrizD = new MatrizDispersa(-1);
-    Grafica grafica = new Grafica();
+    Utilidades util = new Utilidades();
 
     public boolean cargaMasivaCliente(String Jsontxt) {
         JsonParser parser = new JsonParser();
@@ -55,10 +56,6 @@ public class Administrador {
                 nodoAbb.pixeles.insertar(id_capa, fila, columna, color);
             }
         }
-//        this.arbolbb.inorden();
-        // this.abb.preOrder();
-        // this.abb.graficaPreOrder(grafica);
-        // System.out.println(grafica.contenidoABB + grafica.enlaceABBIzq + grafica.enlaceABBDer);
         return true;
     }
 
@@ -70,10 +67,12 @@ public class Administrador {
             int id = gsonObj.get("id").getAsInt();
             JsonArray capas = gsonObj.get("capas").getAsJsonArray();
             System.out.println("id: " + id + " capas: " + capas);
+            this.avl.insertar(id, capas);
         }
+        this.avl.inorden();
         return true;
     }
-
+    
     public boolean cargaMasivaAlbum(String Jsontxt) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
@@ -93,19 +92,30 @@ public class Administrador {
     }
 
     public String matriz() {
-        this.grafica.cantidad(this.arbolbb);
-        this.arbolbb.inorden(this.arbolbb.raiz, grafica);
-        System.out.println("lenght: " + grafica.matriz().length);
-        for (int i = 0; i < grafica.matriz().length; i++) {
-            matrizD = grafica.matriz()[i].pixeles.recorrerMatriz(this.grafica);
+        this.util.cantidad(this.arbolbb);
+        this.arbolbb.inorden(this.arbolbb.raiz, util);
+        System.out.println("lenght: " + util.matriz().length);
+        for (int i = 0; i < util.matriz().length; i++) {
+            matrizD = util.matriz()[i].pixeles.recorrerMatriz(this.util);
 
         }
         String contenido = matrizD.GraficarMatriz();
         System.out.println(contenido);
         return contenido;
     }
-    
-    public void generarAbb(){
+
+    public String[] capasCombo() {
+        this.util.cantidad(this.arbolbb);
+        this.arbolbb.inorden(this.arbolbb.raiz, util);
+        System.out.println("lenght: " + util.matriz().length);
+        String[] matriz = new String[util.matriz().length];
+        for (int i = 0; i < util.matriz().length; i++) {
+            matriz[i] = (String) util.matriz()[i].getValor();
+        }
+        return matriz;
+    }
+
+    public void generarAbb() {
         this.arbolbb.graficar("arbol_abb.png");
     }
 
@@ -113,17 +123,17 @@ public class Administrador {
 //        Clases.Capa nodoCapa = this.abb.raiz;
 ////        String contenido = nodoCapa.pixeles.GraficarMatriz();
 //        System.out.println("cantidad " + this.abb.cantidad());
-//        this.grafica.cantidad(abb);
-//        this.abb.inOrder(grafica);
-//        System.out.println("lenght: " + grafica.matriz().length);
-//        for (int i = 0; i < grafica.matriz().length; i++) {
-//            System.out.println("ID CAPA: " + grafica.matriz()[i].getIdCapa());
-//            matrizD = grafica.matriz()[i].pixeles.recorrerMatriz(this.grafica);
+//        this.util.cantidad(abb);
+//        this.abb.inOrder(util);
+//        System.out.println("lenght: " + util.matriz().length);
+//        for (int i = 0; i < util.matriz().length; i++) {
+//            System.out.println("ID CAPA: " + util.matriz()[i].getIdCapa());
+//            matrizD = util.matriz()[i].pixeles.recorrerMatriz(this.util);
 //
 //        }
 //        String contenido = matrizD.GraficarMatriz();
 //        //System.out.println("aca vamos de nuevo");
-//        //matrizD.recorrerMatriz(this.grafica);
+//        //matrizD.recorrerMatriz(this.util);
 //        return contenido;
 //    }
     public void crearGrafico(String contenidoGrafica, String nombre) {
@@ -135,9 +145,7 @@ public class Administrador {
             archivo.close();
             try {
                 Runtime.getRuntime().exec("dot -Tpng " + nombre + ".dot -o " + nombre + ".png");
-                //Esperamos medio segundo para dar tiempo a que la imagen se genere.
-                //Para que no sucedan errores en caso de que se decidan graficar varios
-                //árboles sucesivamente.
+                //Esperar para evitar posibles errores mas adelante
                 Thread.sleep(500);
                 System.out.println("Gráfica generada exitosamente");
             } catch (Exception ex) {

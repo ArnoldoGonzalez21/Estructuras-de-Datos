@@ -25,12 +25,6 @@ public class ArbolBB {
         return raiz;
     }
 
-    /**
-     * Método que genera una imagen del árbol binario de búsqueda en la ruta que
-     * se le indica.
-     *
-     * @param path Ruta específica en la que se guardará la imagen generada.
-     */
     public void graficar(String path) {
         raiz.graficar(path);
     }
@@ -41,7 +35,7 @@ public class ArbolBB {
         System.out.println();
     }
 
-    public void inorden(NodoBinario nodo, Grafica grafica) { //se encargada de introducir los nodos en el arreglo
+    public void inorden(NodoBinario nodo, Utilidades grafica) { //se encargada de introducir los nodos en el arreglo
         if (nodo == null) {
             return;
         }

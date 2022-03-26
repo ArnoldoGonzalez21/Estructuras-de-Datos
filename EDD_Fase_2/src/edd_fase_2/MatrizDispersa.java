@@ -230,7 +230,7 @@ public class MatrizDispersa {
         System.out.println(contenido);
         return contenido;
     }
-
+    
     public MatrizDispersa recorrerMatriz(Utilidades util) {
         NodoEncabezado pivote = this.filas.primero;
         while (pivote != null) {

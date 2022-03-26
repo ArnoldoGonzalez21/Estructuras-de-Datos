@@ -60,7 +60,7 @@ public class NodoAVL {
         FileWriter fichero = null;
         PrintWriter escritor;
         try {
-            fichero = new FileWriter("aux_grafico.dot");
+            fichero = new FileWriter(path+".dot");
             escritor = new PrintWriter(fichero);
             escritor.print(getCodigoGraphviz());
         } catch (Exception e) {

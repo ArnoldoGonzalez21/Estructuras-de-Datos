@@ -10,6 +10,7 @@ import Clases.NodoBinario;
 public class Utilidades {
 
     NodoBinario nodoBuscado = new NodoBinario();
+    NodoAVL nodoBuscadoAVL = new NodoAVL(-1);
     int cantidad = 0, contador = 0, contadorAVL = 0, cantidadAVL = 0;
     NodoBinario[] matriz;
     NodoAVL[] matrizImagen;

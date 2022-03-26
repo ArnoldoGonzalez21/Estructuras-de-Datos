@@ -90,15 +90,15 @@ public class VentanaCliente extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
             System.out.println(comboImagen.getSelectedItem().toString());
-            String contenido = "";
-//            String contenido = this.administracion.matrizNodo(this.usuarioActual, comboCapa.getSelectedItem().toString());
-            this.administracion.crearGrafico(contenido, "Capa_" + this.usuarioActual.getDpi());
-
-//            String contenido = this.administracion.matrizCompleta(this.usuarioActual);
+            String contenido = this.administracion.crearImagen(this.usuarioActual, comboImagen.getSelectedItem().toString());
+            this.administracion.crearGrafico(contenido, "Imagen_" + this.usuarioActual.getDpi());
+            this.setVisible(false);
+            new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
+            this.dispose();
         }
         if (AE.getSource() == this.btnMostrarImagen) {
             lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
-            Image img = new ImageIcon("Imagen.png").getImage();
+            Image img = new ImageIcon("Imagen_" + this.usuarioActual.getDpi() + ".png").getImage();
             ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
             lblGrafica.setIcon(img2);
             add(lblGrafica);
@@ -143,5 +143,4 @@ public class VentanaCliente extends JFrame implements ActionListener {
             this.dispose();
         }
     }
-
 }

@@ -75,10 +75,8 @@ public class VentanaEstructura extends JFrame implements ActionListener {
             if (comboEstructura.getSelectedIndex() == 0) {
                 this.administracion.generarAbb(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
             } else if (comboEstructura.getSelectedIndex() == 1) {
-                System.out.println(comboEstructura.getName());
                 this.administracion.generarAVL(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
             } else if (comboEstructura.getSelectedIndex() == 2) {
-                System.out.println(comboEstructura.getName());
                 this.administracion.crearGrafico(this.administracion.generarListaAlbum(this.usuarioActual), "Grafica_" + this.usuarioActual.getDpi());
             }
         }
@@ -96,7 +94,5 @@ public class VentanaEstructura extends JFrame implements ActionListener {
             new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
             this.dispose();
         }
-
     }
-
 }

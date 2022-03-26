@@ -1,5 +1,7 @@
 package edd_fase_2;
 
+import Clases.Capa;
+import Clases.NodoAVL;
 import Clases.NodoBinario;
 import Clases.Usuario;
 import com.google.gson.JsonArray;
@@ -17,7 +19,6 @@ import java.io.PrintWriter;
 public class Administrador {
 
     ListaSimple imagenes = new ListaSimple();
-//    MatrizDispersa matrizD = new MatrizDispersa(1);
     MatrizDispersa matrizPixeles = new MatrizDispersa(1);
     Utilidades util = new Utilidades();
 
@@ -31,9 +32,9 @@ public class Administrador {
             String contrasena = gsonObj.get("password").getAsString().trim();
             Usuario user = registro.insertarUsuario(dpi, nombre, contrasena);
             if (user != null) {
-//                System.out.println("dpi: " + dpi + " nombre: " + nombre + " contrasena: " + contrasena);
+                System.out.println("dpi: " + dpi + " nombre: " + nombre + " contrasena: " + contrasena);
             } else {
-//                System.out.println("El DPI " + dpi + " ya existe");
+                System.out.println("El DPI " + dpi + " ya existe");
             }
         }
         return true;
@@ -89,9 +90,24 @@ public class Administrador {
         }
         return true;
     }
-    
-    public void crearImagen(String id){
-        
+
+    public String crearImagen(Usuario usuarioActual, String id) {
+        this.util.matrizImagenCompleta = new MatrizDispersa(1);
+        NodoAVL nodo = usuarioActual.getImagenesUser().inordenBus(usuarioActual.getImagenesUser().raiz, this.util, id);
+        String contenido = "";
+        if (nodo != null) {
+            Capa actual = nodo.capas.getCabezaCapa();
+            while (actual != null) {
+                NodoBinario nodoABB = usuarioActual.getCapasUser().inordenBus(usuarioActual.getCapasUser().raiz, this.util, String.valueOf(actual.getIdCapa()));
+                if (nodoABB != null || !nodoABB.getValor().toString().equals("-1")) {
+                    nodoABB.pixeles.recorrerMatriz(this.util);
+                }
+                actual = actual.getSiguiente();
+            }
+        }
+        contenido = this.util.matrizImagenCompleta.graficarMatriz();
+        System.out.println(contenido);
+        return contenido;
     }
 
     public String matrizCompleta(Usuario usuarioActual) {

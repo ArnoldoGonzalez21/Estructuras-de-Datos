@@ -102,6 +102,24 @@ public class ArbolAVL {
         inordenMatriz(nodo.getDerecho(), util);
     }
 
+    public NodoAVL inordenBus(NodoAVL nodo, Utilidades util, String id) {
+        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
+        inordenBusqueda(nodo, util, id);
+        return util.nodoBuscadoAVL;
+    }
+
+    private void inordenBusqueda(NodoAVL nodo, Utilidades util, String id) { //utilizado para buscar un nodo
+        if (nodo == null) {
+            return;
+        }
+        inordenBusqueda(nodo.getIzquierdo(), util, id);
+        if (nodo.getValor().toString().equals(id)) {
+            System.out.println("NODO.GETVALOR: " + nodo.getValor());
+            util.nodoBuscadoAVL = nodo;
+        }
+        inordenBusqueda(nodo.getDerecho(), util, id);
+    }
+
     private void inordenPrint(NodoAVL nodo, Utilidades util) {
         if (nodo == null) {
             return;

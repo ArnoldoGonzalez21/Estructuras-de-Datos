@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interfaz;
 
+import Clases.Usuario;
 import edd_fase_2.Administrador;
+import edd_fase_2.Registro;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,12 +20,16 @@ public class VentanaEstructura extends JFrame implements ActionListener {
 
     Tools tools;
     Administrador administracion;
+    Usuario usuarioActual;
+    Registro registro;
     JButton btnMostrarImagen, btnRegresar, btnGenerarImagen;
     JLabel lblTitulo, lblSubTitulo, lblGrafica;
-    JComboBox comboCapa;
+    JComboBox comboEstructura;
 
-    public VentanaEstructura(Administrador administracion, Tools tools) {
+    public VentanaEstructura(Administrador administracion, Usuario usuarioActual, Registro registro, Tools tools) {
         this.administracion = administracion;
+        this.usuarioActual = usuarioActual;
+        this.registro = registro;
         this.tools = tools;
         this.AjustarVentana();
         this.componentes();
@@ -46,8 +47,8 @@ public class VentanaEstructura extends JFrame implements ActionListener {
 
     private void componentes() {
         lblTitulo = this.tools.addLabelTitulo("Gráfica de las Estructuras", 25, 20, 300, 40, 20);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 265, 375, 150, 25);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 430, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Imagen", 265, 375, 150, 25);
+        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 430, 375, 150, 25);
         btnRegresar = tools.addButton("← Regresar", 485, 15, 117, 20);
         lblSubTitulo = this.tools.addLabel("Seleccione la estructura:", 25, 70, 250, 40, 13);
         add(lblTitulo);
@@ -63,34 +64,36 @@ public class VentanaEstructura extends JFrame implements ActionListener {
     }
 
     public void agregarCombo() {
-        String[] opciones = {"Árbol Binario de Búsqueda", "Árbol B", "Lista Simple"};
-        comboCapa = this.tools.addComboBox(opciones, 25, 100, 200, 25);
-        add(comboCapa);
+        String[] opciones = {"Árbol Binario de Búsqueda", "Árbol AVL", "Lista Simple"};
+        comboEstructura = this.tools.addComboBox(opciones, 25, 100, 200, 25);
+        add(comboEstructura);
     }
 
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
-            // if (nombre != "") {
-//            String contenido = this.administracion.matriz();
-//            this.administracion.crearGrafico(contenido, "imagen");
-            this.administracion.generarAbb();
-            //}
+            if (comboEstructura.getSelectedIndex() == 0) {
+                this.administracion.generarAbb(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
+            } else if (comboEstructura.getSelectedIndex() == 1) {
+                System.out.println(comboEstructura.getName());
+                this.administracion.generarAVL(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
+            } else if (comboEstructura.getSelectedIndex() == 2) {
+                System.out.println(comboEstructura.getName());
+                this.administracion.crearGrafico(this.administracion.generarListaAlbum(this.usuarioActual), "Grafica_" + this.usuarioActual.getDpi());
+            }
         }
         if (AE.getSource() == this.btnMostrarImagen) {
-            // if (nombre != "") {
             lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
-            Image img = new ImageIcon("imagen.png").getImage();
+            Image img = new ImageIcon("Grafica_" + this.usuarioActual.getDpi() + ".png").getImage();
             ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
             lblGrafica.setIcon(img2);
             add(lblGrafica);
             repaint();
-            //}
         }
 
         if (AE.getSource() == this.btnRegresar) {
             this.setVisible(false);
-            new VentanaClliente(this.administracion);
+            new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
             this.dispose();
         }
 

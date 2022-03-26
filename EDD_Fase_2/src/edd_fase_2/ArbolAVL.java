@@ -9,7 +9,8 @@ import com.google.gson.JsonArray;
  */
 public class ArbolAVL {
 
-    private NodoAVL raiz;
+    public NodoAVL raiz;
+    public int cantidadNodo = 0;
 
     public ArbolAVL() {
         raiz = null;
@@ -21,6 +22,7 @@ public class ArbolAVL {
 
     private NodoAVL insertar(Comparable valor, NodoAVL raiz, JsonArray capas) {
         if (raiz == null) {
+            this.cantidadNodo++;
             raiz = new NodoAVL(valor);
             for (Object objt2 : capas) {
                 raiz.capas.insertarCapa(Integer.parseInt(objt2.toString()));
@@ -84,24 +86,34 @@ public class ArbolAVL {
         raiz.graficar(path);
     }
 
-    public void inorden() {
-        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
-        inorden(raiz);
+    public void inorden(NodoAVL nodo, Utilidades util) {
+//        System.out.println("Recorrido inorden del árbol avl:");
+        inordenMatriz(nodo, util);
         System.out.println();
     }
 
-    private void inorden(NodoAVL nodo) {
+    private void inordenMatriz(NodoAVL nodo, Utilidades util) {
         if (nodo == null) {
             return;
         }
-        inorden(nodo.getIzquierdo());
-        System.out.println("Id: " + nodo.getValor() + " Size: " + nodo.capas.size + "\n");
+        inordenMatriz(nodo.getIzquierdo(), util);
+        util.matrizImagen()[util.contadorAVL] = nodo;
+        util.contadorAVL++;
+        inordenMatriz(nodo.getDerecho(), util);
+    }
+
+    private void inordenPrint(NodoAVL nodo, Utilidades util) {
+        if (nodo == null) {
+            return;
+        }
+        inorden(nodo.getIzquierdo(), util);
+        System.out.println("Id: " + nodo.getValor() + " Size: " + nodo.capas.sizeCapa + "\n");
         Clases.Capa actual = nodo.capas.getCabezaCapa();
         while (actual != null) {
             System.out.print(actual.getIdCapa() + ", ");
             actual = actual.getSiguiente();
         }
-        inorden(nodo.getDerecho());
+        inorden(nodo.getDerecho(), util);
     }
 
     private int altura(NodoAVL nodo) {

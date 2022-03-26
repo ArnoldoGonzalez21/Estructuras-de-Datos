@@ -64,32 +64,32 @@ public class NodoAVL {
             escritor = new PrintWriter(fichero);
             escritor.print(getCodigoGraphviz());
         } catch (Exception e) {
-            System.err.println("Error al escribir el archivo aux_grafico.dot");
+            System.err.println("Error al escribir el archivo .dot");
         } finally {
             try {
                 if (null != fichero) {
                     fichero.close();
                 }
             } catch (Exception e2) {
-                System.err.println("Error al cerrar el archivo aux_grafico.dot");
+                System.err.println("Error al cerrar el archivo .dot");
             }
         }
         try {
             Runtime rt = Runtime.getRuntime();
-            rt.exec("dot -Tjpg -o " + path + " aux_grafico.dot");
+            rt.exec("dot -Tpng -o " + path + ".png " + path + ".dot");
             //Esperar para evitar errores
             Thread.sleep(500);
         } catch (Exception ex) {
-            System.err.println("Error al generar la imagen para el archivo aux_grafico.dot");
+            System.err.println("Error al generar la imagen para el archivo AVL");
         }
     }
 
     private String getCodigoGraphviz() {
         return "digraph grafica{\n"
                 + "rankdir=TB;\n"
-                + "label = Arbol AVL\n"
-                + "bgcolor = #8ECBE5\n"
-                + "node [shape = record, style=filled, fillcolor=#FCFF48];\n"
+                + "label = \"Arbol AVL\";\n"
+                + "bgcolor = \"#8ECBE5\";\n"
+                + "node [shape = record, style=filled, fillcolor=\"#FCFF48\"];\n"
                 + getCodigoInterno()
                 + "}\n";
     }
@@ -97,17 +97,17 @@ public class NodoAVL {
     private String getCodigoInterno() {
         String etiqueta;
         if (getIzquierdo() == null && getDerecho() == null) {
-            etiqueta = "nodo" + id + " [ label =\"" + getValor() + "\"];\n";
+            etiqueta = "nodo" + id + " [label =\"" + getValor() + "\"];\n";
         } else {
-            etiqueta = "nodo" + id + " [ label =\"<C0>|" + getValor() + "|<C1>\"];\n";
+            etiqueta = "nodo" + id + " [label =\"<N0>|" + getValor() + "|<N1>\"];\n";
         }
         if (getIzquierdo() != null) {
             etiqueta = etiqueta + getIzquierdo().getCodigoInterno()
-                    + "nodo" + id + ":C0->nodo" + getIzquierdo().id + "\n";
+                    + "nodo" + id + ":N0->nodo" + getIzquierdo().id + "\n";
         }
         if (getDerecho() != null) {
             etiqueta = etiqueta + getDerecho().getCodigoInterno()
-                    + "nodo" + id + ":C1->nodo" + getDerecho().id + "\n";
+                    + "nodo" + id + ":N1->nodo" + getDerecho().id + "\n";
         }
         return etiqueta;
     }

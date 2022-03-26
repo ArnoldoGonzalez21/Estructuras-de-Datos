@@ -13,16 +13,19 @@ public class ListaSimple {
     private Album cabezaAlbum;
     private Imagen cabezaImagen;
     private Capa cabezaCapa;
-    public int size = 0;
-
+    public int sizeCapa = 0;
+    public int sizeAlbum;
+    
     public ListaSimple() {
         this.cabezaAlbum = null;
         this.cabezaImagen = null;
         this.cabezaCapa = null;
+        this.sizeAlbum = 0;
     }
-
-    public void insertarAlbum(String nombre, ListaSimple imagenes) {
+    
+    public Album insertarAlbum(String nombre, ListaSimple imagenes) {
         Album nuevo = new Album(nombre, imagenes);
+        this.sizeAlbum++;
         if (this.getCabezaAlbum() == null) {
             this.setCabezaAlbum(nuevo);
         } else {
@@ -32,6 +35,7 @@ public class ListaSimple {
             }
             actual.setSiguiente(nuevo);
         }
+        return nuevo;
     }
 
     public void insertarImagen(int id) {
@@ -49,7 +53,7 @@ public class ListaSimple {
 
     public void insertarCapa(int id) {
         Capa nuevo = new Capa(id);
-        this.size++;
+        this.sizeCapa++;
         if (this.getCabezaCapa() == null) {
             this.setCabezaCapa(nuevo);
         } else {
@@ -75,6 +79,50 @@ public class ListaSimple {
             }
             actual = actual.getSiguiente();
         }
+    }
+
+    public String graficaAlbum() {
+        int id = 1;
+        String nodoImagen = "", columnas = "", apuntador = "", apuntadorImagen = "", rank = "{rank = same";
+        String contenido = "digraph L{\n"
+                + "node[shape = note fillcolor = \"#F8DEA1\" style = filled]\n"
+                + "subgraph cluster_p{\n"
+                + "label = \"Álbumes\"\n"
+                + "bgcolor = \"#8ECBE5\"\n"
+                + "edge[dir = \"right\"]\n";
+
+        Album actual = this.getCabezaAlbum();
+        for (int i = 0; i < this.sizeAlbum; i++) {
+
+            Boolean primeraImagen = false;
+            columnas += "Album" + actual.getId() + "[label = \"Álbum " + actual.getNombre() + "\", fillcolor = \"#F8DEA1\" shape = folder];\n";
+
+            if (actual.getListaImagenes() != null) {
+                Clases.Imagen actualImg = actual.getListaImagenes().getCabezaImagen();
+                while (actualImg != null) {
+                    nodoImagen += "nodo" + id + "[label = \"Imagen " + actualImg.getId() + "\", fillcolor = \"#FCF8F7\"]\n";
+
+                    if (!primeraImagen) {
+                        apuntadorImagen += "Album" + actual.getId() + " -> " + " nodo" + id + ";\n";
+                        primeraImagen = true;
+                    }
+                    if (actualImg.getSiguienteAlbum() != null) {
+                        apuntadorImagen += " nodo" + id + " -> " + " nodo" + (id + 1) + ";\n";
+                    }
+                    id++;
+                    actualImg = actualImg.getSiguienteAlbum();
+                }
+            }
+
+            if (actual.getSiguiente() != null) {
+                apuntador += "Album" + actual.getId() + " -> " + "Album" + actual.getSiguiente().getId() + ";\n";
+            }
+            rank += ";" + "Album" + actual.getId();
+            actual = actual.getSiguiente();
+        }
+        rank += "}\n";
+        contenido += columnas + apuntador + nodoImagen + apuntadorImagen + rank + "}\n}";
+        return contenido;
     }
 
     /**

@@ -1,5 +1,8 @@
 package Clases;
 
+import edd_fase_2.ArbolAVL;
+import edd_fase_2.ArbolBB;
+import edd_fase_2.ListaSimple;
 import edd_fase_2.RamaArbolB;
 
 /**
@@ -10,13 +13,18 @@ public class Usuario {
 
     private String nombre;
     private String contrasena;
-    private long dpi;
+    private final Comparable dpi;
     private Usuario siguiente;
     private Usuario anterior;
     private RamaArbolB derecha;
     private RamaArbolB izquierda;
+    private ListaSimple albumUser;
+    private ArbolAVL imagenesUser;
+    private ArbolBB capasUser;
+    public boolean cargoCapa;
+    public boolean cargoImagen;
 
-    public Usuario(long dpi, String nombre, String contrasena) {
+    public Usuario(Comparable dpi, String nombre, String contrasena) {
         this.dpi = dpi;
         this.nombre = nombre;
         this.contrasena = contrasena;
@@ -24,17 +32,22 @@ public class Usuario {
         this.anterior = null;
         this.derecha = null;
         this.izquierda = null;
+        this.albumUser = new ListaSimple();
+        this.imagenesUser = new ArbolAVL();
+        this.capasUser = new ArbolBB();
+        this.cargoCapa = false;
+        this.cargoImagen = false;
     }
 
-    public Usuario(String nombre, String contrasena) {
-        this.nombre = nombre;
+    public Usuario(String dpi, String contrasena) {
+        this.dpi = dpi;
         this.contrasena = contrasena;
     }
 
-    public boolean validarUsuario(String nombre, String password) {
-        boolean nombreUs = this.getNombre().equalsIgnoreCase(nombre);
+    public boolean validarUsuario(String dpi, String password) {
+        boolean dpiUs = this.getDpi().toString().equalsIgnoreCase(dpi);
         boolean contrasenaUs = this.getContrasena().equals(password);
-        boolean correcto = nombreUs && contrasenaUs;
+        boolean correcto = dpiUs && contrasenaUs;
         return correcto;
     }
 
@@ -69,15 +82,8 @@ public class Usuario {
     /**
      * @return the dpi
      */
-    public long getDpi() {
+    public Comparable getDpi() {
         return dpi;
-    }
-
-    /**
-     * @param dpi the dpi to set
-     */
-    public void setDpi(long dpi) {
-        this.dpi = dpi;
     }
 
     /**
@@ -134,6 +140,48 @@ public class Usuario {
      */
     public void setIzquierda(RamaArbolB izquierda) {
         this.izquierda = izquierda;
+    }
+
+    /**
+     * @return the albumUser
+     */
+    public ListaSimple getAlbumUser() {
+        return albumUser;
+    }
+
+    /**
+     * @param albumUser the albumUser to set
+     */
+    public void setAlbumUser(ListaSimple albumUser) {
+        this.albumUser = albumUser;
+    }
+
+    /**
+     * @return the imagenesUser
+     */
+    public ArbolAVL getImagenesUser() {
+        return imagenesUser;
+    }
+
+    /**
+     * @param imagenesUser the imagenesUser to set
+     */
+    public void setImagenesUser(ArbolAVL imagenesUser) {
+        this.imagenesUser = imagenesUser;
+    }
+
+    /**
+     * @return the capasUser
+     */
+    public ArbolBB getCapasUser() {
+        return capasUser;
+    }
+
+    /**
+     * @param capasUser the capasUser to set
+     */
+    public void setCapasUser(ArbolBB capasUser) {
+        this.capasUser = capasUser;
     }
 
 }

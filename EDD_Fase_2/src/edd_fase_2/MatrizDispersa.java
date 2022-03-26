@@ -151,34 +151,6 @@ public class MatrizDispersa {
             }
             pivote = pivote.getSiguiente();
         }
-//        String nodoFila = "", nodoColumna = "", rankC = "{rank = same;raiz";
-//        nodoFila += "raiz[label=\"raiz\",group = 0, fillcolor = \"white\"];\n";
-//        nodoFila += "raiz -> F0;\nraiz -> C0;";
-//        boolean unEnlaceC = false;
-//        int contadorF = 0;
-//        int n = this.columnas.ultimo.getId();
-//        int m = this.filas.ultimo.getId();
-//        while (contadorF <= m) {
-//            nodoFila += "F" + contadorF + "[label=\"F" + contadorF + "\",group = 1, fillcolor = white];\n";
-//            int contadorC = 0;
-//            while (contadorC <= n) {
-//                if (!unEnlaceC) {
-//                    nodoColumna += "C" + contadorC + "[label=\"C" + contadorC + "\",group= " + (contadorC + 1) + ",fillcolor=white];\n";
-//                    rankC += "; C" + contadorC;
-//                    if (contadorC + 1 <= n) {
-//                        contEnlaceCol += "C" + contadorC + " -> C" + (contadorC + 1) + ";\n";
-//                    }
-//                }
-//                contadorC++;
-//            }
-//            unEnlaceC = true;
-//            if (contadorF + 1 <= m) {
-//                contEnlaceFila += "F" + contadorF + " -> F" + (contadorF + 1) + ";";
-//            }
-//            contadorF++;
-//        }
-//        rankC += "}\n";
-//        contNodo += contEnlaceFila + contRank + contEnlaceCol + nodoFila + nodoColumna + rankC;
         contNodo += contEnlaceFila + contRank + contEnlaceCol;
         return contNodo;
     }
@@ -243,7 +215,7 @@ public class MatrizDispersa {
         return contNodo;
     }
 
-    public String GraficarMatriz() {
+    public String graficarMatriz() {
         String contenido = "digraph L{\n"
                 + "node[shape = box fillcolor = \"#F8DEA1\" style = filled]\n"
                 + "subgraph cluster_p{\n"
@@ -259,18 +231,18 @@ public class MatrizDispersa {
         return contenido;
     }
 
-    public MatrizDispersa recorrerMatriz(Utilidades grafica) {
+    public MatrizDispersa recorrerMatriz(Utilidades util) {
         NodoEncabezado pivote = this.filas.primero;
         while (pivote != null) {
             NodoMatriz pivoteCelda = pivote.getAcceso();
             while (pivoteCelda != null) {
                 System.out.println(pivoteCelda.getX() + "_" + pivoteCelda.getY());
-                grafica.matrizDispera().insertar(-1, pivoteCelda.getX(), pivoteCelda.getY(), pivoteCelda.getColor());
+                util.matrizImagenCompleta.insertar(-1, pivoteCelda.getX(), pivoteCelda.getY(), pivoteCelda.getColor());
                 pivoteCelda = pivoteCelda.getSiguiente();
             }
             pivote = pivote.getSiguiente();
         }
-        return grafica.imagenCompleta;
+        return util.matrizImagenCompleta;
     }
 
 }

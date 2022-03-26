@@ -9,6 +9,8 @@ import edd_fase_2.ListaSimple;
 public class Album {
 
     private String nombre;
+    private int id;
+    private static int contador = 1;
     private ListaSimple listaImagenes = new ListaSimple();
     private Album siguiente;
 
@@ -16,6 +18,7 @@ public class Album {
         this.nombre = nombre;
         this.listaImagenes = imagenes;
         this.siguiente = null;
+        this.id = contador++;
     }
 
     /**
@@ -58,6 +61,20 @@ public class Album {
      */
     public void setSiguiente(Album siguiente) {
         this.siguiente = siguiente;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

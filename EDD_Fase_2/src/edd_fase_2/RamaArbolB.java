@@ -28,10 +28,10 @@ public class RamaArbolB {
             Usuario aux = primero;
             while (aux != null) {
                 if (aux.getDpi() == nuevo.getDpi()) {
-                    System.out.println("El ID " + nuevo.getDpi() + " ya existe");
+                    System.out.println("El DPI " + nuevo.getDpi() + " ya existe");
                     break;
                 } else {
-                    if (aux.getDpi() > nuevo.getDpi()) {
+                    if (aux.getDpi().compareTo(nuevo.getDpi()) > 0) {
                         if (aux == primero) {//------------->insertar al inicio
                             aux.setAnterior(nuevo);
                             nuevo.setSiguiente(aux);

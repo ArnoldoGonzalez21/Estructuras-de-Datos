@@ -15,12 +15,12 @@ public class ArbolBB {
         raiz = null;
     }
 
-    public NodoBinario insertar(Comparable val) {
+    public NodoBinario insertar(Comparable val, MatrizDispersa pixeles) {
         if (raiz == null) {
-            raiz = new NodoBinario(val);
+            raiz = new NodoBinario(val, pixeles);
             cantidad++;
         } else {
-            raiz.insertar(val);
+            raiz.insertar(val, pixeles);
         }
         return raiz;
     }
@@ -35,15 +35,15 @@ public class ArbolBB {
         System.out.println();
     }
 
-    public void inorden(NodoBinario nodo, Utilidades grafica) { //se encargada de introducir los nodos en el arreglo
+    public void inorden(NodoBinario nodo, Utilidades util) { //se encargada de introducir los nodos en el arreglo
         if (nodo == null) {
             return;
         }
-        inorden(nodo.getIzquierdo(), grafica);
-        System.out.print(nodo.getValor() + ",");
-        grafica.matriz()[grafica.contador] = nodo;
-        grafica.contador++;
-        inorden(nodo.getDerecho(), grafica);
+        inorden(nodo.getIzquierdo(), util);
+//        System.out.print(nodo.getValor() + ",");
+        util.matriz()[util.contador] = nodo;
+        util.contador++;
+        inorden(nodo.getDerecho(), util);
     }
 
     private void inorden(NodoBinario nodo) { //utilizado para saber la cantidad de nodos del abb
@@ -51,7 +51,7 @@ public class ArbolBB {
             return;
         }
         inorden(nodo.getIzquierdo());
-        System.out.print(nodo.getValor() + ",");
+//        System.out.print(nodo.getValor() + ",");
         this.cantidad++;
         inorden(nodo.getDerecho());
     }
@@ -77,7 +77,26 @@ public class ArbolBB {
     }
 
     public int cantidad() {
+        this.cantidad = 0;
         inorden(raiz);
         return cantidad;
+    }
+
+    public NodoBinario inordenBus(NodoBinario nodo, Utilidades util, String id) {
+        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
+        inordenBusqueda(nodo, util, id);
+        return util.nodoBuscado;
+    }
+
+    private void inordenBusqueda(NodoBinario nodo, Utilidades util, String id) { //utilizado para buscar un nodo
+        if (nodo == null) {
+            return;
+        }
+        inordenBusqueda(nodo.getIzquierdo(), util, id);
+        if (nodo.getValor().toString().equals(id)) {
+            System.out.println("NODO.GETVALOR: " + nodo.getValor());
+            util.nodoBuscado = nodo;
+        }
+        inordenBusqueda(nodo.getDerecho(), util, id);
     }
 }

@@ -1,6 +1,9 @@
 package edd_fase_2;
 
+import Clases.Usuario;
+import Interfaz.Autenticacion;
 import Interfaz.Tools;
+import edd_fase_2.ArbolB;
 
 /**
  *
@@ -13,27 +16,36 @@ public class EDD_Fase_2 {
      */
     public static void main(String[] args) {
 //        System.out.println("--------------------------");
-//        Clases.Registro arbol = new Clases.Registro("", "");
-//        arbol.insertar(10, "dsa", "sda");
-//        arbol.insertar(20, "dsa", "sda");
-//        arbol.insertar(5, "dsa", "sda");
-//        arbol.insertar(9, "dsa", "sda");
-//        arbol.insertar(12, "dsa", "sda");
-//        arbol.insertar(18, "dsa", "sda");
-//        arbol.insertar(25, "dsa", "sda");
-//        arbol.insertar(65, "dsa", "sda");
-//        arbol.insertar(92, "dsa", "sda");
-//        arbol.insertar(99, "dsa", "sda");
+//        ArbolB arbol = new ArbolB("admin", "EDD2022");
+//        arbol.insertar(2, "raul", "sda");
+//        arbol.insertar(4, "pedro", "sda");
+//        arbol.insertar(6, "maria", "sda");
+//        arbol.insertar(12, "mercedes", "sda");
+//        arbol.insertar(8, "saul", "sda");
+//        arbol.insertar(0, "roxana", "sda");
+//        arbol.insertar(11, "ximena", "sda");
+//        arbol.insertar(14, "santiago", "sda");
+//        arbol.insertar(1, "emilio", "sda");
+//        arbol.insertar(9, "susana", "sda");
+//        arbol.insertar(3, "susana", "sda");
+//        arbol.inorden();
+
+//        Registro ls = new Registro("", "");//
+//        ls.insertarUsuario(2, "raul", "sda");
+//        ls.insertarUsuario(4, "pedro", "sda");
+//        ls.insertarUsuario(6, "maria", "sda");
+//        ls.insertarUsuario(12, "mercedes", "sda");
+//        ls.insertarUsuario(8, "saul", "sda");
+//        ls.insertarUsuario(0, "roxana", "sda");
+//        ls.insertarUsuario(11, "ximena", "sda");
+//        ls.insertarUsuario(14, "santiago", "sda");
+//        ls.insertarUsuario(1, "emilio", "sda");
+//        ls.insertarUsuario(9, "susana", "sda");
+//        ls.insertarUsuario(3, "susana", "sda");
+//        ls.recorrerUser();
 //        System.out.println("------------------");
         Administrador ad = new Administrador();
-        //   System.out.println("Escriba aqui: ");
-//        //ad.cargaMasivaCliente();
-//         ad.cargaMasivaCapas();
-
-//        ad.cargaMasivaImagen();
-//        ad.cargaMasivaAlbum();
-//        ad.album.imprimirAlbum();
-    new Interfaz.VentanaAdministrador(ad);
+//    new Interfaz.VentanaAdministrador(ad);
 //        ArbolBinarioBusqueda abb = new ArbolBinarioBusqueda();
 //        abb.insertar(4);
 //        abb.insertar(8);
@@ -42,13 +54,10 @@ public class EDD_Fase_2 {
 //        abb.insertar(0);
 //        abb.insertar(3);
 //        abb.preOrder();
-//        System.out.println("");
 //        abb.posOrder();
-//        System.out.println("");
 //        abb.inOrder();
-//        new Interfaz.VentanaClliente(ad);
+//        new Interfaz.VentanaCliente(ad, new Usuario("", ""), new Registro("admin", "admin"));
 //        ArbolBB arbol_numeros=new ArbolBB();
-//        //Llenamos con información el árbol
 //        arbol_numeros.insertar(12);
 //        arbol_numeros.insertar(5);
 //        arbol_numeros.insertar(26);
@@ -75,6 +84,8 @@ public class EDD_Fase_2 {
 //        arbol_numeros.insertar(612);
 //        arbol_numeros.graficar("arbol_numeros.jpg");
 //        arbol_numeros.inorden();
+        new Autenticacion(new Registro("a", "a"), ad);
+
     }
 
 }

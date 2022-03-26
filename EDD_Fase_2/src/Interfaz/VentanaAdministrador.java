@@ -1,6 +1,8 @@
 package Interfaz;
 
+import Clases.Usuario;
 import edd_fase_2.Administrador;
+import edd_fase_2.Registro;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -15,11 +17,15 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
     Administrador administracion;
+    Usuario usuarioActual;
+    Registro registro;
     JButton btnEliminar, btnInsertar, btnCargaUsuario, btnModificar, btnLogOut, btnMostrarImagen, btnGenerarImagen;
     JLabel lblTitulo;
 
-    public VentanaAdministrador(Administrador administracion) {
+    public VentanaAdministrador(Administrador administracion, Usuario usuarioActual, Registro registro) {
         this.administracion = administracion;
+        this.usuarioActual = usuarioActual;
+        this.registro = registro;
         AjustarVentana();
         componentes();
     }
@@ -65,7 +71,7 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnCargaUsuario) {
             String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
-            this.administracion.cargaMasivaCliente(contenido);
+            this.administracion.cargaMasivaCliente(contenido, this.registro);
         }
         if (AE.getSource() == this.btnInsertar) {
             this.setVisible(false);
@@ -96,6 +102,11 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 //            new VentanaResidencia(this.administracion, this.tools);
             this.dispose();
         }
-
+        
+        if (AE.getSource() == this.btnLogOut) {
+            setVisible(false);
+            new Autenticacion(this.registro, this.administracion);
+            this.dispose();
+        }
     }
 }

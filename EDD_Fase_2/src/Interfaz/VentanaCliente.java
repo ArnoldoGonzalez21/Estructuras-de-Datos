@@ -1,6 +1,8 @@
 package Interfaz;
 
+import Clases.Usuario;
 import edd_fase_2.Administrador;
+import edd_fase_2.Registro;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,19 +16,23 @@ import javax.swing.JLabel;
  *
  * @author Arnoldo González
  */
-public class VentanaClliente extends JFrame implements ActionListener {
+public class VentanaCliente extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
     Administrador administracion;
-    JButton btnMostrarImagen, btnCargaAlbum, btnCargaCapa, btnCargaImagen, btnLogOut, btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa;
+    Usuario usuarioActual;
+    Registro registro;
+    JButton btnMostrarImagen, btnCargaAlbum, btnCargaCapa, btnCargaImagen, btnLogOut,
+            btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa;
     JLabel lblTitulo, lblSubTitulo, lblGrafica;
-    JComboBox comboCapa;
-    String nombre = "";
+    JComboBox comboImagen;
 
-    public VentanaClliente(Administrador administracion) {
+    public VentanaCliente(Administrador administracion, Usuario usuarioActual, Registro registro) {
         this.administracion = administracion;
-        AjustarVentana();
-        componentes();
+        this.usuarioActual = usuarioActual;
+        this.registro = registro;
+        this.AjustarVentana();
+        this.componentes();
     }
 
     public void AjustarVentana() {
@@ -36,7 +42,6 @@ public class VentanaClliente extends JFrame implements ActionListener {
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     private void componentes() {
@@ -44,12 +49,12 @@ public class VentanaClliente extends JFrame implements ActionListener {
         btnCargaCapa = this.tools.addButton("Cargar Capa", 25, 100, 200, 30);
         btnCargaAlbum = this.tools.addButton("Cargar Album", 25, 140, 200, 30);
         btnCargaImagen = this.tools.addButton("Cargar Imagen", 25, 180, 200, 30);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 265, 375, 150, 25);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 430, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Imagen", 265, 375, 150, 25);
+        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 430, 375, 150, 25);
         btnLogOut = tools.addButton("← Log Out", 485, 15, 117, 20);
         btnVentanaEstructura = tools.addButton("Graficar Estructuras", 15, 15, 175, 20);
-        btnVentanaCapa = tools.addButton("Graficar Capa", 200, 15, 117, 20);        
-        lblSubTitulo = this.tools.addLabel("Seleccione la imagen:", 25, 245, 300, 40, 13);
+        btnVentanaCapa = tools.addButton("Graficar Capa", 200, 15, 117, 20);
+        lblSubTitulo = this.tools.addLabel("Seleccione el Id de la imagen:", 25, 245, 300, 40, 13);
         add(lblTitulo);
         add(lblSubTitulo);
         btnMostrarImagen.addActionListener(this);
@@ -68,58 +73,73 @@ public class VentanaClliente extends JFrame implements ActionListener {
         add(btnVentanaEstructura);
         btnVentanaCapa.addActionListener(this);
         add(btnVentanaCapa);
-        agregarCombo();
+        if (this.usuarioActual.cargoImagen) {
+            agregarCombo();
+        }
         repaint();
     }
 
     public void agregarCombo() {
-        String[] opciones = this.administracion.capasCombo();
-        comboCapa = this.tools.addComboBox(opciones, 25, 275, 200, 25);
-        add(comboCapa);
+        String[] opciones = this.administracion.imagenCombo(this.usuarioActual);
+        comboImagen = this.tools.addComboBox(opciones, 25, 275, 200, 25);
+        add(comboImagen);
+        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
-            // if (nombre != "") {
-            String contenido = this.administracion.matriz();
-            this.administracion.crearGrafico(contenido, "imagen");
-//            this.administracion.generarAbb();
-            //}
+            System.out.println(comboImagen.getSelectedItem().toString());
+            String contenido = "";
+//            String contenido = this.administracion.matrizNodo(this.usuarioActual, comboCapa.getSelectedItem().toString());
+            this.administracion.crearGrafico(contenido, "Capa_" + this.usuarioActual.getDpi());
+
+//            String contenido = this.administracion.matrizCompleta(this.usuarioActual);
         }
         if (AE.getSource() == this.btnMostrarImagen) {
-            // if (nombre != "") {
             lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
-            Image img = new ImageIcon("imagen.png").getImage();
+            Image img = new ImageIcon("Imagen.png").getImage();
             ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
             lblGrafica.setIcon(img2);
             add(lblGrafica);
             repaint();
-            //}
         }
 
         if (AE.getSource() == this.btnCargaAlbum) {
             String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
-            this.administracion.cargaMasivaAlbum(contenido);
+            this.administracion.cargaMasivaAlbum(contenido, this.usuarioActual);
         }
 
         if (AE.getSource() == this.btnCargaCapa) {
             String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
-            this.administracion.cargaMasivaCapas(contenido);
+            this.administracion.cargaMasivaCapas(contenido, this.usuarioActual);
+            this.usuarioActual.cargoCapa = true;
         }
 
         if (AE.getSource() == this.btnCargaImagen) {
             String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
-            this.administracion.cargaMasivaImagen(contenido);
-        }
-        if (AE.getSource() == this.btnVentanaEstructura) {
+            this.administracion.cargaMasivaImagen(contenido, this.usuarioActual);
+            this.usuarioActual.cargoImagen = true;
             this.setVisible(false);
-            new VentanaEstructura(this.administracion, this.tools);
+            new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
             this.dispose();
         }
+
+        if (AE.getSource() == this.btnVentanaEstructura) {
+            this.setVisible(false);
+            new VentanaEstructura(this.administracion, this.usuarioActual, this.registro, this.tools);
+            this.dispose();
+        }
+
         if (AE.getSource() == this.btnVentanaCapa) {
             this.setVisible(false);
-            new VentanaCapa(this.administracion, this.tools);
+            new VentanaCapa(this.administracion, this.usuarioActual, this.registro, this.tools);
+            this.dispose();
+        }
+
+        if (AE.getSource() == this.btnLogOut) {
+            setVisible(false);
+            new Autenticacion(this.registro, this.administracion);
             this.dispose();
         }
     }

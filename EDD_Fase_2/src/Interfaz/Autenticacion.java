@@ -15,6 +15,7 @@ import javax.swing.JTextField;
  */
 public class Autenticacion extends JFrame implements ActionListener {
 
+    Tools tools = new Tools();
     JTextField txtDpi;
     JPasswordField txtContrasena;
     JButton btnIniciarSesion;
@@ -23,12 +24,11 @@ public class Autenticacion extends JFrame implements ActionListener {
     Clases.Usuario usuarioActual;
     edd_fase_2.Administrador administracion;
 
-    public Autenticacion(edd_fase_2.Registro registro, Clases.Usuario usuarioActual, edd_fase_2.Administrador administracion, Tools tools) {
+    public Autenticacion(edd_fase_2.Registro registro, edd_fase_2.Administrador administracion) {
         this.registro = registro;
         this.administracion = administracion;
-        this.usuarioActual = usuarioActual;
         AjustarVentana();
-        this.componentes(tools);
+        this.componentes();
     }
 
     private void AjustarVentana() {
@@ -40,13 +40,13 @@ public class Autenticacion extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void componentes(Tools tools) {
-        lblTitulo = tools.addLabelTitulo("Login", 255, 20, 400, 40, 20);
-        lblDpi = tools.addLabel("Código: ", 40, 70, 200, 30, 15);
-        txtDpi = tools.addTextField("", 140, 70, 312, 25);
-        lblContra = tools.addLabel("Contraseña: ", 40, 100, 200, 30, 15);
-        txtContrasena = tools.addPasswordField("", 140, 100, 312, 25);
-        btnIniciarSesion = tools.addButton("Iniciar Sesión", 140, 140, 310, 30);
+    private void componentes() {
+        lblTitulo = this.tools.addLabelTitulo("Login", 255, 20, 400, 40, 20);
+        lblDpi = this.tools.addLabel("DPI: ", 40, 70, 200, 30, 15);
+        txtDpi = this.tools.addTextField("", 140, 70, 312, 25);
+        lblContra = this.tools.addLabel("Contraseña: ", 40, 100, 200, 30, 15);
+        txtContrasena = this.tools.addPasswordField("", 140, 100, 312, 25);
+        btnIniciarSesion = this.tools.addButton("Iniciar Sesión", 140, 140, 310, 30);
         add(lblTitulo);
         add(lblDpi);
         add(txtDpi);
@@ -59,56 +59,31 @@ public class Autenticacion extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent AE) {
-//        if (AE.getSource() == this.btnIniciarSesion) {
-//            int posicionUser = 0, posicionUserAlumno = 0;
-//            int cont = -1, cont2 = -1;
-//            boolean acabo = false, acaboAlumno = false;
-//            Clases.Usuario user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());
-//            Clases.Usuario userAlumno = this.registro.validarUsuarioAlumno(this.txtDpi.getText(), this.txtContrasena.getText());
-//            if (user == null && userAlumno == null) {
-//                JOptionPane.showMessageDialog(this, "Usuario o contraseña inválidos"); 
-//            }
-//            if (user != null) {
-//                if (user.equals(registro.getAdministrador()) && userAlumno != null) {
-//                    this.setVisible(true);
-//                    this.dispose();
-//                    new VentanaPrincipal(this.usuarioActual, this.registro, this.administracion, this.escuela);
-//                    this.dispose();
-//                }
-//            }
-//            if (user != null) {
-//                for (int i = 0; i < registro.getUsuario().length; i++) {
-//                    if (registro.getUsuario()[i] == null) {
-//                        continue;
-//                    } else if (user.equals(registro.getUsuario()[i]) && registro.getUsuario()[i] != null) {
-//                        acabo = true;
-//                        cont = registro.getUsuario()[i].getCodigo();
-//                        this.setVisible(true);
-//                        this.dispose();
-//                        new VentanaCursosProfesor(this.usuarioActual, this.registro, posicionUser, this.administracion, this.escuela);
-//                    }
-//                    if (!acabo) {
-//                        posicionUser++;
-//                    }
-//                }
-//            }
-//            if (userAlumno != null) {
-//                for (int i = 0; i < registro.getUsuarioAlumno().length; i++) {
-//                    if (registro.getUsuarioAlumno()[i] == null) {
-//                        continue;
-//                    } else if (userAlumno.equals(registro.getUsuarioAlumno()[i]) && registro.getUsuarioAlumno()[i] != null) {
-//                        acaboAlumno = true;
-//                        cont2 = registro.getUsuarioAlumno()[i].getCodigo();
-//                        System.out.println("aca no creo");
-//                        this.setVisible(true);
-//                        this.dispose();
-//                        new VentanaCursoAlumno(this.usuarioActual, this.registro, posicionUserAlumno, this.administracion, this.escuela);
-//                    }
-//                    if (!acaboAlumno) {
-//                        posicionUserAlumno++;
-//                    }
-//                }
-//            }
-//        }
+        if (AE.getSource() == this.btnIniciarSesion) {
+            Clases.Usuario user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());            
+            if (user == null) {
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña inválida");
+            }
+            if (user != null) {
+                if (user.equals(registro.getAdministrador())) {
+                    this.setVisible(true);
+                    this.dispose();
+                    new VentanaAdministrador(this.administracion, user, this.registro);
+                    this.dispose();
+                } else {
+                    Clases.Usuario actual = this.registro.getCabezaUsuario();
+                    while (actual != null) {
+                        if (user.equals(actual)) {
+                            this.setVisible(true);
+                            this.dispose();
+                            new VentanaCliente(this.administracion, user, this.registro);
+                            this.dispose();
+                            break;
+                        }
+                        actual = actual.getSiguiente();
+                    }                    
+                }
+            }
+        }
     }
 }

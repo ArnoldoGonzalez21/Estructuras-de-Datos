@@ -67,8 +67,12 @@ public class Administrador {
             JsonObject gsonObj = objt.getAsJsonObject();
             int id = gsonObj.get("id").getAsInt();
             JsonArray capas = gsonObj.get("capas").getAsJsonArray();
+            int contador = 0;
+            for (JsonElement objt2 : capas) {
+                contador++;
+            }
             System.out.println("id: " + id + " capas: " + capas);
-            usuarioActual.getImagenesUser().insertar(id, capas);
+            usuarioActual.getImagenesUser().insertar(id, capas, contador);
         }
         return true;
     }
@@ -149,6 +153,37 @@ public class Administrador {
             matrizCompleta[i] = util.matrizImagen()[i].getValor().toString();
         }
         return matrizCompleta;
+    }
+
+    public String textRecorrido(Usuario usuarioActual, int tipoRec, int tipoArbol) {//tipoArbol 0->ABB, 1->AVL
+        if (tipoArbol == 0) {
+            usuarioActual.getCapasUser().imprimirRecorrido(usuarioActual.getCapasUser().raiz, this.util, tipoRec);
+        } else if (tipoArbol == 1) {
+            usuarioActual.getImagenesUser().imprimirRecorrido(usuarioActual.getImagenesUser().raiz, this.util, tipoRec);
+        } else {
+            return "";
+        }
+        return this.util.textRecorrido;
+    }
+
+    public String textAltura(Usuario usuarioActual) {//tipoArbol 0->ABB, 1->AVL
+        usuarioActual.getImagenesUser().imprimirAltura(usuarioActual.getImagenesUser().raiz, this.util);
+        return String.valueOf("  " + util.alturaAVL + 1);
+    }
+
+    public String textCapaHoja(Usuario usuarioActual) {
+        usuarioActual.getCapasUser().imprimirCapaHoja(usuarioActual.getCapasUser().raiz, this.util);
+        return util.txtCapaHoja;
+    }
+
+    public String textTopCinco(Usuario usuarioActual) {
+        
+        NodoAVL[] top = usuarioActual.getImagenesUser().TopCinco(usuarioActual.getImagenesUser().raiz, this.util);
+        String topCapa = "";
+        for (int i = 0; i < top.length; i++) {
+            topCapa += " - " + top[i].getValor().toString();
+        }
+        return topCapa;
     }
 
     public void generarAbb(Usuario usuarioActual, String nombre) {

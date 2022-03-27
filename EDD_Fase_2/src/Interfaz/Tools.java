@@ -1,10 +1,13 @@
 package Interfaz;
 
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -43,6 +46,7 @@ public class Tools {
     public JTextField addTextField(String texto, int x, int y, int ancho, int altura) {
         JTextField txt = new JTextField(texto);
         txt.setBounds(x, y, ancho, altura);
+        txt.setForeground(Color.black);
         return txt;
     }
 
@@ -56,5 +60,19 @@ public class Tools {
         JComboBox combo = new JComboBox(opciones);
         combo.setBounds(x, y, ancho, altura);
         return combo;
+    }
+
+    public JTextArea addTextArea(String texto, int fila, int columna, int x, int y, int ancho, int altura, int tamano) {
+        JTextArea area = new JTextArea(texto, fila, columna);
+        area.setBounds(x, y, ancho, altura);
+        area.setFont(new Font("Verdana", Font.PLAIN, tamano));
+        area.setOpaque(false);
+        return area;
+    }
+
+    public JRadioButton addRadioButton(String texto, int x, int y, int ancho, int altura) {
+        JRadioButton rbtn = new JRadioButton(texto);
+        rbtn.setBounds(x, y, ancho, altura);
+        return rbtn;
     }
 }

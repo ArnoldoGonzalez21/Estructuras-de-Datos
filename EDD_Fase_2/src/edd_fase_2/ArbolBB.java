@@ -56,26 +56,6 @@ public class ArbolBB {
         inorden(nodo.getDerecho());
     }
 
-    public void posOrder(NodoBinario nodo) {
-        //hijoIzquierdo, hijoDerecho, raiz
-        if (nodo == null) {
-            return;
-        }
-        posOrder(nodo.getIzquierdo());
-        posOrder(nodo.getDerecho());
-        System.out.print(nodo.getValor() + ", ");
-    }
-
-    public void preOrder(NodoBinario nodo) {
-        //raiz, hijoIzquierdo, hijoDerecho 
-        if (nodo == null) {
-            return;
-        }
-        System.out.print(nodo.getValor() + ", ");
-        preOrder(nodo.getIzquierdo());
-        preOrder(nodo.getDerecho());
-    }
-
     public int cantidad() {
         this.cantidad = 0;
         inorden(raiz);
@@ -99,4 +79,73 @@ public class ArbolBB {
         }
         inordenBusqueda(nodo.getDerecho(), util, id);
     }
+
+    public void imprimirRecorrido(NodoBinario nodo, Utilidades util, int tipo) { //tipo 0 -> preorder, 1 -> postorder, 2 -> inorder
+        util.textRecorrido = "";
+        switch (tipo) {
+            case 0:
+                System.out.println("Recorrido preorder del árbol binario de búsqueda:");
+                preOrderPrintRec(nodo, util);
+                break;
+            case 1:
+                System.out.println("Recorrido postorder del árbol binario de búsqueda:");
+                postOrderPrintRec(nodo, util);
+                break;
+            case 2:
+                System.out.println("Recorrido inorder del árbol binario de búsqueda:");
+                inorderPrintRec(nodo, util);
+                break;
+        }
+    }
+
+    private void inorderPrintRec(NodoBinario nodo, Utilidades util) { //utilizado para saber la cantidad de nodos del abb
+        if (nodo == null) {
+            return;
+        }
+        inorderPrintRec(nodo.getIzquierdo(), util);
+        util.textRecorrido += " - " + nodo.getValor().toString();
+        System.out.print(nodo.getValor() + ",");
+        inorderPrintRec(nodo.getDerecho(), util);
+    }
+
+    public void postOrderPrintRec(NodoBinario nodo, Utilidades util) {
+        //hijoIzquierdo, hijoDerecho, raiz
+        if (nodo == null) {
+            return;
+        }
+        postOrderPrintRec(nodo.getIzquierdo(), util);
+        postOrderPrintRec(nodo.getDerecho(), util);
+        util.textRecorrido += " - " + nodo.getValor().toString();
+        System.out.print(nodo.getValor() + ", ");
+    }
+
+    public void preOrderPrintRec(NodoBinario nodo, Utilidades util) {
+        //raiz, hijoIzquierdo, hijoDerecho 
+        if (nodo == null) {
+            return;
+        }
+        util.textRecorrido += " - " + nodo.getValor().toString();
+        System.out.print(nodo.getValor() + ", ");
+        preOrderPrintRec(nodo.getIzquierdo(), util);
+        preOrderPrintRec(nodo.getDerecho(), util);
+    }
+
+    public void imprimirCapaHoja(NodoBinario nodo, Utilidades util) { 
+        util.textRecorrido = "";
+        System.out.println("Recorrido preorder del árbol binario de búsqueda:");
+        inorderCapaHoja(nodo, util);
+    }
+
+    private void inorderCapaHoja(NodoBinario nodo, Utilidades util) { //utilizado para saber que nodos son hojas
+        if (nodo == null) {
+            return;
+        }
+        inorderCapaHoja(nodo.getIzquierdo(), util);
+        if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) {
+            util.txtCapaHoja += " - " + nodo.getValor().toString();
+//            System.out.print(nodo.getValor() + ",");
+        }
+        inorderCapaHoja(nodo.getDerecho(), util);
+    }
+
 }

@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 public class NodoAVL {
 
     private final Comparable valor;
-
+    public int numCapas;
     public ListaSimple capas;
     private NodoAVL izquierdo;
     private NodoAVL derecho;
@@ -19,36 +19,37 @@ public class NodoAVL {
     private static int contador = 1;
     private final int id;
 
-    public NodoAVL(Comparable valor) {
+    public NodoAVL(Comparable valor, int numCapas) {
         this.valor = valor;
+        this.numCapas = numCapas;
         this.izquierdo = null;
         this.derecho = null;
         this.id = contador++;
         this.capas = new ListaSimple();
     }
 
-    void insertar(Comparable val) {
+    void insertar(Comparable val, int numCapas) {
         //Si el valor a insertar es menor que el nodo actual, entonces debería
         //insertarse a la izquierda de este. 
         if (val.compareTo(getValor()) < 0) //Si la izquierda del nodo actual esta desocupada entonces se inserta.
         {
             if (getIzquierdo() == null) {
-                setIzquierdo(new NodoAVL(val));
+                setIzquierdo(new NodoAVL(val, numCapas));
             } //De lo contrario nos desplazamos al nodo izquierdo, en busca de un
             //lugar para insertar el nuevo nodo.
             else {
-                getIzquierdo().insertar(val);
+                getIzquierdo().insertar(val, numCapas);
             }
         } //Si el valor a insertar es mayor que el nodo actual, entonces debería
         //insertarse a la derecha de este de este.
         else if (val.compareTo(getValor()) > 0) //Si la derecha del nodo actual esta desocupada entonces se inserta.
         {
             if (getDerecho() == null) {
-                setDerecho(new NodoAVL(val));
+                setDerecho(new NodoAVL(val, numCapas));
             } //De lo contrario nos desplazamos al nodo derecho, en busca de un
             //lugar para insertar el nuevo nodo.            
             else {
-                getDerecho().insertar(val);
+                getDerecho().insertar(val, numCapas);
             }
         } else {
             System.err.println("No se permiten los valores duplicados: \""
@@ -60,7 +61,7 @@ public class NodoAVL {
         FileWriter fichero = null;
         PrintWriter escritor;
         try {
-            fichero = new FileWriter(path+".dot");
+            fichero = new FileWriter(path + ".dot");
             escritor = new PrintWriter(fichero);
             escritor.print(getCodigoGraphviz());
         } catch (Exception e) {

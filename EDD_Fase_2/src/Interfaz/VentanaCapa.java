@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,9 +23,10 @@ public class VentanaCapa extends JFrame implements ActionListener {
     Administrador administracion;
     Usuario usuarioActual;
     Registro registro;
-    JButton btnMostrarImagen, btnRegresar, btnGenerarImagen;
-    JLabel lblTitulo, lblSubTitulo, lblGrafica;
+    JButton btnMostrarImagen, btnRegresar, btnGenerarImagen, btnNodoHoja;
+    JLabel lblTitulo, lblSubTitulo, lblNodoHoja, lblTopCapa, lblGrafica;
     JComboBox comboCapa;
+    JTextField txtNodoHoja, txtTopCapa;
 
     public VentanaCapa(Administrador administracion, Usuario usuarioActual, Registro registro, Tools tools) {
         this.administracion = administracion;
@@ -48,14 +50,25 @@ public class VentanaCapa extends JFrame implements ActionListener {
         lblTitulo = this.tools.addLabelTitulo("Gráfica de Capas", 25, 20, 300, 40, 20);
         btnGenerarImagen = this.tools.addButton("Generar Imagen", 265, 375, 150, 25);
         btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 430, 375, 150, 25);
+        btnNodoHoja = this.tools.addButton("Mostrar", 45, 375, 150, 25);
         btnRegresar = tools.addButton("← Regresar", 485, 15, 117, 20);
         lblSubTitulo = this.tools.addLabel("Seleccione el Id de la capa:", 25, 70, 250, 40, 13);
+        lblNodoHoja = this.tools.addLabel("Nodo capa que son hojas:", 25, 230, 250, 40, 13);
+        lblTopCapa = this.tools.addLabel("<html>Top 5 imagenes con más capas<br>de menor a mayor:<html>", 25, 295, 250, 40, 13);
+        txtNodoHoja = this.tools.addTextField("", 25, 265, 200, 25);
+        txtTopCapa = this.tools.addTextField("", 25, 338, 200, 25);
         add(lblTitulo);
         add(lblSubTitulo);
+        add(lblNodoHoja);
+        add(lblTopCapa);
+        add(txtNodoHoja);
+        add(txtTopCapa);
         btnMostrarImagen.addActionListener(this);
         add(btnMostrarImagen);
         btnGenerarImagen.addActionListener(this);
         add(btnGenerarImagen);
+        btnNodoHoja.addActionListener(this);
+        add(btnNodoHoja);
         btnRegresar.addActionListener(this);
         add(btnRegresar);
         if (this.usuarioActual.cargoCapa) {
@@ -84,6 +97,11 @@ public class VentanaCapa extends JFrame implements ActionListener {
             lblGrafica.setIcon(img2);
             add(lblGrafica);
             repaint();
+        }
+
+        if (AE.getSource() == this.btnNodoHoja) {
+            txtNodoHoja.setText(this.administracion.textCapaHoja(this.usuarioActual));
+            txtTopCapa.setText(this.administracion.textTopCinco(this.usuarioActual));
         }
 
         if (AE.getSource() == this.btnRegresar) {

@@ -63,11 +63,6 @@ public class NodoBinario {
         return null;
     }
 
-    /**
-     * Método que genera el gráfico del árbol binario de búsqueda con graphviz,
-     * considerando como la raíz de dicho árbol el actual Nodo.
-     *
-     */
     public void graficar(String path) {
         FileWriter fichero = null;
         PrintWriter escritor;
@@ -106,13 +101,6 @@ public class NodoBinario {
                 + "}\n";
     }
 
-    /**
-     * Genera el código interior de graphviz, este método tiene la
-     * particularidad de ser recursivo, esto porque recorrer un árbol de forma
-     * recursiva es bastante sencillo y reduce el código considerablemente.
-     *
-     * @return
-     */
     private String getCodigoInterno() {
         String etiqueta;
         if (getIzquierdo() == null && getDerecho() == null) {

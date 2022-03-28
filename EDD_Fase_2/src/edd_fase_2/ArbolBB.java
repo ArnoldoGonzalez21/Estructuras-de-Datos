@@ -130,7 +130,7 @@ public class ArbolBB {
         preOrderPrintRec(nodo.getDerecho(), util);
     }
 
-    public void imprimirCapaHoja(NodoBinario nodo, Utilidades util) { 
+    public void imprimirCapaHoja(NodoBinario nodo, Utilidades util) {
         util.textRecorrido = "";
         System.out.println("Recorrido preorder del árbol binario de búsqueda:");
         inorderCapaHoja(nodo, util);
@@ -142,10 +142,9 @@ public class ArbolBB {
         }
         inorderCapaHoja(nodo.getIzquierdo(), util);
         if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) {
-            util.txtCapaHoja += " - " + nodo.getValor().toString();
+            util.txtCapaHoja += " [" + nodo.getValor().toString() + "] ";
 //            System.out.print(nodo.getValor() + ",");
         }
         inorderCapaHoja(nodo.getDerecho(), util);
     }
-
 }

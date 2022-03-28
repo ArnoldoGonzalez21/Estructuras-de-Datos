@@ -23,7 +23,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
     Usuario usuarioActual;
     Registro registro;
     JButton btnMostrarImagen, btnCargaAlbum, btnCargaCapa, btnCargaImagen, btnLogOut,
-            btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa;
+            btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa, btnReporte;
     JLabel lblTitulo, lblSubTitulo, lblGrafica;
     JComboBox comboImagen;
 
@@ -54,6 +54,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
         btnLogOut = tools.addButton("← Log Out", 485, 15, 117, 20);
         btnVentanaEstructura = tools.addButton("Graficar Estructuras", 15, 15, 175, 20);
         btnVentanaCapa = tools.addButton("Graficar Capa", 200, 15, 117, 20);
+        btnReporte = tools.addButton("Reportes", 328, 15, 117, 20);
         lblSubTitulo = this.tools.addLabel("Seleccione el Id de la imagen:", 25, 245, 300, 40, 13);
         add(lblTitulo);
         add(lblSubTitulo);
@@ -73,6 +74,8 @@ public class VentanaCliente extends JFrame implements ActionListener {
         add(btnVentanaEstructura);
         btnVentanaCapa.addActionListener(this);
         add(btnVentanaCapa);
+        btnReporte.addActionListener(this);
+        add(btnReporte);
         if (this.usuarioActual.cargoImagen) {
             agregarCombo();
         }
@@ -134,6 +137,12 @@ public class VentanaCliente extends JFrame implements ActionListener {
         if (AE.getSource() == this.btnVentanaCapa) {
             this.setVisible(false);
             new VentanaCapa(this.administracion, this.usuarioActual, this.registro, this.tools);
+            this.dispose();
+        }
+        
+        if (AE.getSource() == this.btnReporte) {
+            this.setVisible(false);
+            new VentanaReporte(this.administracion, this.usuarioActual, this.registro, this.tools);
             this.dispose();
         }
 

@@ -17,7 +17,7 @@ public class Utilidades {
     NodoAVL[] matrizImagen;
     MatrizDispersa matrizImagenCompleta = new MatrizDispersa(-1);
     public String textRecorrido = "", txtCapaHoja = "";
-    public int alturaAVL = 0;
+    public int alturaAVL = 0, profundidadABB = 0;
     public NodoAVL[] topCapa = new NodoAVL[5];
 
     public void cantidad(ArbolBB abb) {

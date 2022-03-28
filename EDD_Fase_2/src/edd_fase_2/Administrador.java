@@ -176,14 +176,20 @@ public class Administrador {
         return util.txtCapaHoja;
     }
 
-    public String textTopCinco(Usuario usuarioActual) {
-        
+    public Object[][] tablaTopCinco(Usuario usuarioActual) {
+        Object[][] tabla = new Object[5][3];
         NodoAVL[] top = usuarioActual.getImagenesUser().TopCinco(usuarioActual.getImagenesUser().raiz, this.util);
-        String topCapa = "";
-        for (int i = 0; i < top.length; i++) {
-            topCapa += " - " + top[i].getValor().toString();
+        int j = top.length - 1;
+        for (int i = 0; i < tabla.length; i++) {
+            if (top[j] == null) {
+                continue;
+            }
+            tabla[i][0] = (i + 1);
+            tabla[i][1] = top[j].getValor().toString();
+            tabla[i][2] = top[j].numCapas;
+            j--;
         }
-        return topCapa;
+        return tabla;
     }
 
     public void generarAbb(Usuario usuarioActual, String nombre) {

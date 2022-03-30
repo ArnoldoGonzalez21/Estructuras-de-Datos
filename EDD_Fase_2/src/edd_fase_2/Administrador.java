@@ -3,7 +3,7 @@ package edd_fase_2;
 import Clases.Capa;
 import Clases.NodoAVL;
 import Clases.NodoBinario;
-import Clases.Usuario;
+import Clases.NodoB;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,16 +21,21 @@ public class Administrador {
     ListaSimple imagenes = new ListaSimple();
     MatrizDispersa matrizPixeles = new MatrizDispersa(1);
     Utilidades util = new Utilidades();
+    ArbolB arbolB = new ArbolB(3, util);
 
     public boolean cargaMasivaCliente(String Jsontxt, Registro registro) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
-            Comparable dpi = gsonObj.get("dpi").getAsString().trim();
+            String dpi = gsonObj.get("dpi").getAsString().trim();
             String nombre = gsonObj.get("nombre_cliente").getAsString().trim();
             String contrasena = gsonObj.get("password").getAsString().trim();
-            Usuario user = registro.insertarUsuario(dpi, nombre, contrasena);
+            NodoB user = registro.insertarUsuario(dpi, nombre, contrasena);
+            long numDpi = Long.parseLong(dpi);
+            if (user != null) {
+                arbolB.insertar(numDpi);
+            }
             if (user != null) {
                 System.out.println("dpi: " + dpi + " nombre: " + nombre + " contrasena: " + contrasena);
             } else {
@@ -40,7 +45,7 @@ public class Administrador {
         return true;
     }
 
-    public boolean cargaMasivaCapas(String Jsontxt, Usuario usuarioActual) {
+    public boolean cargaMasivaCapas(String Jsontxt, NodoB usuarioActual) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -60,7 +65,7 @@ public class Administrador {
         return true;
     }
 
-    public boolean cargaMasivaImagen(String Jsontxt, Usuario usuarioActual) {
+    public boolean cargaMasivaImagen(String Jsontxt, NodoB usuarioActual) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -77,7 +82,7 @@ public class Administrador {
         return true;
     }
 
-    public boolean cargaMasivaAlbum(String Jsontxt, Usuario usuarioActual) {
+    public boolean cargaMasivaAlbum(String Jsontxt, NodoB usuarioActual) {
         JsonParser parser = new JsonParser();
         JsonArray gsonArr = parser.parse(Jsontxt).getAsJsonArray();
         for (JsonElement objt : gsonArr) {
@@ -95,7 +100,7 @@ public class Administrador {
         return true;
     }
 
-    public String crearImagen(Usuario usuarioActual, String id) {
+    public String crearImagen(NodoB usuarioActual, String id) {
         this.util.matrizImagenCompleta = new MatrizDispersa(1);
         NodoAVL nodo = usuarioActual.getImagenesUser().inordenBus(usuarioActual.getImagenesUser().raiz, this.util, id);
         String contenido = "";
@@ -114,7 +119,7 @@ public class Administrador {
         return contenido;
     }
 
-    public String matrizCompleta(Usuario usuarioActual) {
+    public String matrizCompleta(NodoB usuarioActual) {
         this.util.cantidad(usuarioActual.getCapasUser());
         usuarioActual.getCapasUser().inorden(usuarioActual.getCapasUser().raiz, util);
         for (int i = 0; i < util.matriz().length; i++) {
@@ -124,7 +129,7 @@ public class Administrador {
         return contenido;
     }
 
-    public String matrizNodo(Usuario usuarioActual, String id) {
+    public String matrizNodo(NodoB usuarioActual, String id) {
         NodoBinario nodo = usuarioActual.getCapasUser().inordenBus(usuarioActual.getCapasUser().raiz, this.util, id);
         String contenido = "";
         if (nodo != null || !nodo.getValor().toString().equals("-1")) {
@@ -134,7 +139,7 @@ public class Administrador {
         return contenido;
     }
 
-    public String[] capaCombo(Usuario usuarioActual) {
+    public String[] capaCombo(NodoB usuarioActual) {
         this.util.cantidad(usuarioActual.getCapasUser());
         usuarioActual.getCapasUser().inorden(usuarioActual.getCapasUser().raiz, util);
         String[] matrizCompleta = new String[util.matriz().length];
@@ -144,7 +149,7 @@ public class Administrador {
         return matrizCompleta;
     }
 
-    public String[] imagenCombo(Usuario usuarioActual) {
+    public String[] imagenCombo(NodoB usuarioActual) {
         this.util.cantidadAVL(usuarioActual.getImagenesUser());
         usuarioActual.getImagenesUser().inorden(usuarioActual.getImagenesUser().raiz, this.util);
         System.out.println("lenght: " + util.matrizImagen().length);
@@ -155,7 +160,7 @@ public class Administrador {
         return matrizCompleta;
     }
 
-    public String textRecorrido(Usuario usuarioActual, int tipoRec, int tipoArbol) {//tipoArbol 0->ABB, 1->AVL
+    public String textRecorrido(NodoB usuarioActual, int tipoRec, int tipoArbol) {//tipoArbol 0->ABB, 1->AVL
         if (tipoArbol == 0) {
             usuarioActual.getCapasUser().imprimirRecorrido(usuarioActual.getCapasUser().raiz, this.util, tipoRec);
         } else if (tipoArbol == 1) {
@@ -166,17 +171,17 @@ public class Administrador {
         return this.util.textRecorrido;
     }
 
-    public String textAltura(Usuario usuarioActual) {//tipoArbol 0->ABB, 1->AVL
+    public String textAltura(NodoB usuarioActual) {//tipoArbol 0->ABB, 1->AVL
         usuarioActual.getImagenesUser().imprimirAltura(usuarioActual.getImagenesUser().raiz, this.util);
         return String.valueOf("  " + util.alturaAVL + 1);
     }
 
-    public String textCapaHoja(Usuario usuarioActual) {
+    public String textCapaHoja(NodoB usuarioActual) {
         usuarioActual.getCapasUser().imprimirCapaHoja(usuarioActual.getCapasUser().raiz, this.util);
         return util.txtCapaHoja;
     }
 
-    public Object[][] tablaTopCinco(Usuario usuarioActual) {
+    public Object[][] tablaTopCinco(NodoB usuarioActual) {
         Object[][] tabla = new Object[5][3];
         NodoAVL[] top = usuarioActual.getImagenesUser().TopCinco(usuarioActual.getImagenesUser().raiz, this.util);
         int j = top.length - 1;
@@ -192,16 +197,21 @@ public class Administrador {
         return tabla;
     }
 
-    public void generarAbb(Usuario usuarioActual, String nombre) {
+    public void generarAbb(NodoB usuarioActual, String nombre) {
         usuarioActual.getCapasUser().graficar(nombre);
     }
 
-    public String generarListaAlbum(Usuario usuarioActual) {
+    public String generarListaAlbum(NodoB usuarioActual) {
         return usuarioActual.getAlbumUser().graficaAlbum();
     }
 
-    public void generarAVL(Usuario usuarioActual, String nombre) {
+    public void generarAVL(NodoB usuarioActual, String nombre) {
         usuarioActual.getImagenesUser().graficar(nombre);
+    }
+
+    public void generarB(NodoB usuarioActual, String nombre) {
+        arbolB.mostrarArbolB();
+        usuarioActual.graficar(nombre, this.util);
     }
 
     public void crearGrafico(String contenidoGrafica, String nombre) {

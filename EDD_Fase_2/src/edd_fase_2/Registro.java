@@ -1,6 +1,6 @@
 package edd_fase_2;
 
-import Clases.Usuario;
+import Clases.NodoB;
 
 /**
  *
@@ -8,23 +8,23 @@ import Clases.Usuario;
  */
 public class Registro {
 
-    private Usuario cabezaUsuario;
-    private Usuario administrador;
+    private NodoB cabezaUsuario;
+    private NodoB administrador;
 
     public Registro(String nombre, String contrasena) {
-        administrador = new Usuario(nombre, contrasena);
+        administrador = new NodoB(nombre, contrasena);
         this.cabezaUsuario = null;
     }
 
-    public Usuario insertarUsuario(Comparable dpi, String nombre, String contrasena) {
-        if(existeUsuario(dpi.toString())){
+    public NodoB insertarUsuario(String dpi, String nombre, String contrasena) {
+        if(existeUsuario(dpi)){
             return null;
         }
-        Usuario nuevo = new Usuario(dpi, nombre, contrasena);
+        NodoB nuevo = new NodoB(dpi, nombre, contrasena);
         if (this.getCabezaUsuario() == null) {
             this.setCabezaUsuario(nuevo);
         } else {
-            Usuario actual = this.getCabezaUsuario();
+            NodoB actual = this.getCabezaUsuario();
             while (actual.getSiguiente() != null) {
                 actual = actual.getSiguiente();
             }
@@ -34,21 +34,21 @@ public class Registro {
     }
 
     public void recorrerUser() {
-        Usuario actual = this.getCabezaUsuario();
+        NodoB actual = this.getCabezaUsuario();
         while (actual != null) {
             System.out.println(actual.getDpi() + " "+actual.getContrasena());
             actual = actual.getSiguiente();
         }
     }
 
-    public Usuario validarUsuario(String dpi, String contrasena) {
+    public NodoB validarUsuario(String dpi, String contrasena) {
         if (!existeUsuario(dpi)) {
             return null;
         }
         if (getAdministrador().validarUsuario(dpi, contrasena)) {
             return getAdministrador();
         }
-        Usuario user = this.getCabezaUsuario();
+        NodoB user = this.getCabezaUsuario();
         while (user != null) {
             if (user.validarUsuario(dpi, contrasena)) {
                 return user;
@@ -59,12 +59,12 @@ public class Registro {
     }
 
     public boolean existeUsuario(String dpi) {
-        if (getAdministrador().getDpi().toString().equalsIgnoreCase(dpi)) {
+        if (getAdministrador().getDpi().equalsIgnoreCase(dpi)) {
             return true;
         }
-        Usuario user = this.getCabezaUsuario();
+        NodoB user = this.getCabezaUsuario();
         while (user != null) {
-            if (user.getDpi().toString().equalsIgnoreCase(dpi)) {
+            if (String.valueOf(user.getDpi()).equalsIgnoreCase(dpi)) {
                 return true;
             }
             user = user.getSiguiente();
@@ -75,28 +75,28 @@ public class Registro {
     /**
      * @return the cabezaUsuario
      */
-    public Usuario getCabezaUsuario() {
+    public NodoB getCabezaUsuario() {
         return cabezaUsuario;
     }
 
     /**
      * @param cabezaUsuario the cabezaUsuario to set
      */
-    public void setCabezaUsuario(Usuario cabezaUsuario) {
+    public void setCabezaUsuario(NodoB cabezaUsuario) {
         this.cabezaUsuario = cabezaUsuario;
     }
 
     /**
      * @return the administrador
      */
-    public Usuario getAdministrador() {
+    public NodoB getAdministrador() {
         return administrador;
     }
 
     /**
      * @param administrador the administrador to set
      */
-    public void setAdministrador(Usuario administrador) {
+    public void setAdministrador(NodoB administrador) {
         this.administrador = administrador;
     }
 

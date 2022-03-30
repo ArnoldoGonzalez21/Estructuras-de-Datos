@@ -21,7 +21,7 @@ public class Autenticacion extends JFrame implements ActionListener {
     JButton btnIniciarSesion;
     JLabel lblTitulo, lblDpi, lblContra;
     edd_fase_2.Registro registro;
-    Clases.Usuario usuarioActual;
+    Clases.NodoB usuarioActual;
     edd_fase_2.Administrador administracion;
 
     public Autenticacion(edd_fase_2.Registro registro, edd_fase_2.Administrador administracion) {
@@ -60,7 +60,7 @@ public class Autenticacion extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnIniciarSesion) {
-            Clases.Usuario user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());            
+            Clases.NodoB user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());            
             if (user == null) {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña inválida");
             }
@@ -71,7 +71,7 @@ public class Autenticacion extends JFrame implements ActionListener {
                     new VentanaAdministrador(this.administracion, user, this.registro);
                     this.dispose();
                 } else {
-                    Clases.Usuario actual = this.registro.getCabezaUsuario();
+                    Clases.NodoB actual = this.registro.getCabezaUsuario();
                     while (actual != null) {
                         if (user.equals(actual)) {
                             this.setVisible(true);

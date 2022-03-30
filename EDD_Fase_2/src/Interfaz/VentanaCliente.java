@@ -1,6 +1,6 @@
 package Interfaz;
 
-import Clases.Usuario;
+import Clases.NodoB;
 import edd_fase_2.Administrador;
 import edd_fase_2.Registro;
 import java.awt.Image;
@@ -20,14 +20,14 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
     Administrador administracion;
-    Usuario usuarioActual;
+    NodoB usuarioActual;
     Registro registro;
     JButton btnMostrarImagen, btnCargaAlbum, btnCargaCapa, btnCargaImagen, btnLogOut,
             btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa, btnReporte;
     JLabel lblTitulo, lblSubTitulo, lblGrafica;
     JComboBox comboImagen;
 
-    public VentanaCliente(Administrador administracion, Usuario usuarioActual, Registro registro) {
+    public VentanaCliente(Administrador administracion, NodoB usuarioActual, Registro registro) {
         this.administracion = administracion;
         this.usuarioActual = usuarioActual;
         this.registro = registro;

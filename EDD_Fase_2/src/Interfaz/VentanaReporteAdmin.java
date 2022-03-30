@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  *
  * @author Arnoldo González
  */
-public class VentanaReporte extends JFrame implements ActionListener {
+public class VentanaReporteAdmin extends JFrame implements ActionListener {
 
     Tools tools;
     Administrador administracion;
@@ -28,7 +28,7 @@ public class VentanaReporte extends JFrame implements ActionListener {
     JComboBox comboCapa;
     JTextField txtNodoHoja;
 
-    public VentanaReporte(Administrador administracion, NodoB usuarioActual, Registro registro, Tools tools) {
+    public VentanaReporteAdmin(Administrador administracion, NodoB usuarioActual, Registro registro, Tools tools) {
         this.administracion = administracion;
         this.usuarioActual = usuarioActual;
         this.registro = registro;

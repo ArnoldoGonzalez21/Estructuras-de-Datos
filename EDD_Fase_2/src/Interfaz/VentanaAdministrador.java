@@ -1,10 +1,12 @@
 package Interfaz;
 
-import Clases.Usuario;
+import Clases.NodoB;
 import edd_fase_2.Administrador;
 import edd_fase_2.Registro;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,12 +19,12 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
     Administrador administracion;
-    Usuario usuarioActual;
+    NodoB usuarioActual;
     Registro registro;
     JButton btnEliminar, btnInsertar, btnCargaUsuario, btnModificar, btnLogOut, btnMostrarImagen, btnGenerarImagen;
-    JLabel lblTitulo;
+    JLabel lblTitulo, lblGrafica;
 
-    public VentanaAdministrador(Administrador administracion, Usuario usuarioActual, Registro registro) {
+    public VentanaAdministrador(Administrador administracion, NodoB usuarioActual, Registro registro) {
         this.administracion = administracion;
         this.usuarioActual = usuarioActual;
         this.registro = registro;
@@ -33,7 +35,7 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
     public void AjustarVentana() {
         setTitle("Ventana Administrador");
         setLayout(null);
-        setSize(650, 475);
+        setSize(1200, 475);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,9 +48,9 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         btnInsertar = this.tools.addButton("Insertar Clientes", 25, 110, 200, 30);
         btnModificar = this.tools.addButton("Modificar Cliente", 25, 150, 200, 30);
         btnEliminar = this.tools.addButton("Eliminar Cliente", 25, 190, 200, 30);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 265, 375, 150, 25);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 430, 375, 150, 25);
-        btnLogOut = tools.addButton("← Log Out", 485, 15, 117, 20);
+        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 680, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Imagen", 515, 375, 150, 25);
+        btnLogOut = tools.addButton("← Log Out", 1035, 15, 117, 20);
         add(lblTitulo);
         btnCargaUsuario.addActionListener(this);
         add(btnCargaUsuario);
@@ -92,17 +94,18 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         }
 
         if (AE.getSource() == this.btnGenerarImagen) {
-            this.setVisible(false);
-//            new VentanaResidencia(this.administracion, this.tools);
-            this.dispose();
+            this.administracion.generarB(this.usuarioActual, "ArbolB");
         }
 
         if (AE.getSource() == this.btnMostrarImagen) {
-            this.setVisible(false);
-//            new VentanaResidencia(this.administracion, this.tools);
-            this.dispose();
+            lblGrafica = this.tools.addLabelImagen(275, 50, 850, 300);
+            Image img = new ImageIcon("ArbolB.png").getImage();
+            ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
+            lblGrafica.setIcon(img2);
+            add(lblGrafica);
+            repaint();
         }
-        
+
         if (AE.getSource() == this.btnLogOut) {
             setVisible(false);
             new Autenticacion(this.registro, this.administracion);

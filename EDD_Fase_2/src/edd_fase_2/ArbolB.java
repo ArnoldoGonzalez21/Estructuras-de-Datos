@@ -1,7 +1,6 @@
 package edd_fase_2;
 
-import Clases.Usuario;
-import edd_fase_2.RamaArbolB;
+import Clases.NodoB;
 
 /**
  *
@@ -9,170 +8,84 @@ import edd_fase_2.RamaArbolB;
  */
 public class ArbolB {
 
-    private Usuario admin;
-    int orden_arbol = 5;
-    RamaArbolB raiz;
+    NodoB raiz;
+    int grado;
+    Utilidades util;
 
-    public ArbolB(String nombre, String contrasena) {
-        this.admin = new Usuario(nombre, contrasena);
+    public ArbolB(int deg, Utilidades util) {
+        this.util = util;
         this.raiz = null;
+        this.grado = deg;
     }
 
-    public void insertar(Comparable dpi, String nombre, String contrasena) {
-        Usuario nodo = new Usuario(dpi, nombre, contrasena);
+    public void recorrer() {
+        if (raiz != null) {
+            raiz.recorrer();
+        }
+    }
+
+    public NodoB buscar(long key) {
+        return raiz == null ? null : raiz.buscar(key);
+    }
+
+    public void insertar(long key) {
+
         if (raiz == null) {
-            raiz = new RamaArbolB();
-            raiz.insertar(nodo);
+            raiz = new NodoB(grado, true);
+            raiz.ClavesNodo[0] = key;
+            raiz.numClavesNodo = 1;
         } else {
-            Usuario obj = insertar_en_rama(nodo, raiz);
-            if (obj != null) {
-                //si devuelve algo el metodo de insertar en rama quiere decir que creo una nueva rama, y se debe insertar en el arbol
-                raiz = new RamaArbolB();
-                raiz.insertar(obj);
-                raiz.hoja = false;
-            }
-        }
-    }
+            if (raiz.numClavesNodo == 2 * grado - 1) {// Cuando el nodo raíz está lleno, el árbol crecerá más alto
+                NodoB nuevo = new NodoB(grado, false);
+                nuevo.hijos[0] = raiz; // La raiz se convierte en hijo de la nueva raiz 
+                nuevo.dividirHijo(0, raiz);
+                int i = 0;
+                if (nuevo.ClavesNodo[0] < key) {
+                    i++;
+                }
+                nuevo.hijos[i].insertarNoLleno(key);
 
-    private Usuario insertar_en_rama(Usuario nodo, RamaArbolB rama) {
-        if (rama.hoja) {
-            rama.insertar(nodo);
-            if (rama.contador == orden_arbol) {
-                //si ya se insertaron todos los elementos posibles se debe dividir la rama
-                return dividir(rama);
+                raiz = nuevo;
             } else {
-                return null;
+                raiz.insertarNoLleno(key);
             }
-        } else {
-            Usuario temp = rama.primero;
-            do {
-                if (nodo.getDpi().equals(temp.getDpi())) {
-                    return null;
-                } else if (nodo.getDpi().compareTo(temp.getDpi()) < 0) {
-                    Usuario obj = insertar_en_rama(nodo, temp.getIzquierda());
-                    if (obj instanceof Usuario) {
-                        rama.insertar((Usuario) obj);
-                        if (rama.contador == orden_arbol) {
-                            return dividir(rama);
-                        }
-                    }
-                    return null;
-                } else if (temp.getSiguiente() == null) {
-                    Usuario obj = insertar_en_rama(nodo, temp.getDerecha());
-                    if (obj instanceof Usuario) {
-                        rama.insertar((Usuario) obj);
-                        if (rama.contador == orden_arbol) {
-                            return dividir(rama);
-                        }
-                    }
-                    return null;
-                }
-                temp = (Usuario) temp.getSiguiente();
-            } while (temp != null);
         }
-        return null;
     }
 
-    private Usuario dividir(RamaArbolB rama) {
-        Comparable val = " ";
-        String nom = "";
-        String contra = "";
-        Usuario temp, Nuevito;
-        Usuario aux = rama.primero;
-        RamaArbolB rderecha = new RamaArbolB();
-        RamaArbolB rizquierda = new RamaArbolB();
-
-        int cont = 0;
-        while (aux != null) {
-            cont++;
-            //implementacion para dividir unicamente ramas de 4 nodos
-            if (cont < 3) {
-                temp = new Usuario(aux.getDpi(), aux.getNombre(), aux.getContrasena());
-                temp.setIzquierda(aux.getIzquierda());
-                if (cont == 2) {
-                    temp.setDerecha(aux.getSiguiente().getIzquierda());
-                } else {
-                    temp.setDerecha(aux.getDerecha());
-                }
-                //si la rama posee ramas deja de ser hoja
-                if (temp.getDerecha() != null && temp.getIzquierda() != null) {
-                    rizquierda.hoja = false;
-                }
-
-                rizquierda.insertar(temp);
-
-            } else if (cont == 3) {
-                val = aux.getDpi();
-                nom = aux.getNombre();
-                contra = aux.getContrasena();
-            } else {
-                temp = new Usuario(aux.getDpi(), aux.getNombre(), aux.getContrasena());
-                temp.setIzquierda(aux.getIzquierda());
-                temp.setDerecha(aux.getDerecha());
-                //si la rama posee ramas deja de ser hoja
-                if (temp.getDerecha() != null && temp.getIzquierda() != null) {
-                    rderecha.hoja = false;
-                }
-                rderecha.insertar(temp);
-            }
-            aux = aux.getSiguiente();
-        }
-        Nuevito = new Usuario(val, nom, contra);
-        Nuevito.setDerecha(rderecha);
-        Nuevito.setIzquierda(rizquierda);
-        return Nuevito;
-    }
-
-    public void inorden() {
-        System.out.println("Recorrido inorden del árbol b :");
-        inorden(raiz);
-        System.out.println();
-    }
-
-    private void inorden(RamaArbolB nodo) { //izq, raiz, der
-        if (nodo == null) {
+    public void eliminar(long key) {
+        if (raiz == null) {
+            System.out.println("El árbol está vacío");
             return;
         }
-        inorden(nodo.primero.getIzquierda());
-        Usuario actual = nodo.primero;
-        while (actual != null) {
-            if (!nodo.hoja) {
-                actual = actual.getSiguiente();
-                System.out.println("nodo Actual "+ actual.getDpi());
-                System.out.print(actual.getDpi() + ", ");
-                break;
+        raiz.eliminar(key);
+
+        if (raiz.numClavesNodo == 0) {
+            if (raiz.isHoja()) {
+                raiz = null;
+            } else {
+                raiz = raiz.hijos[0]; //Si tiene un nodo hijo,el primer nodo hijo es el nuevo nodo raíz
             }
-            System.out.print(actual.getDpi() + ", ");
-            actual = actual.getSiguiente();
         }
-//        inorden(nodo.getDerecha());
     }
 
-//      private void inorden(RamaArbolB nodo) { //izq, raiz, der
-//        if (nodo == null) {
-//            return;
-//        }
-//        inorden(nodo.primero.getIzquierda());
-//        Usuario actual = nodo.primero.getSiguiente();
-//        System.out.print(nodo.primero.getDpi() + ", ");
-//        while (actual != null) {
-//            System.out.print(actual.getDpi() + ", ");
-//            actual = actual.getSiguiente();
-//        }
-//        inorden(nodo.primero.getDerecha());
-//    }
-    /**
-     * @return the admin
-     */
-    public Usuario getAdmin() {
-        return admin;
+    public void mostrarArbolB() {
+        recorrerGrafica(raiz, 0, raiz);
     }
 
-    /**
-     * @param admin the admin to set
-     */
-    public void setAdmin(Usuario admin) {
-        this.admin = admin;
+    private void recorrerGrafica(NodoB nodo, int h, NodoB padre) {    //Print en preorder
+        System.out.print("Level " + h + ": ");
+        if (nodo.hijos[0] != null) {
+            nodo.imprimirPadre(padre, this.util);
+        } else {
+            nodo.imprimir(padre, this.util);
+        }
+        if (!nodo.isHoja()) {
+            for (int j = 0; j <= nodo.numClavesNodo; j++) { //recorre los nodos hijos
+                if (nodo.hijos[j] != null) {
+                    System.out.println();
+                    recorrerGrafica(nodo.hijos[j], h + 1, nodo);
+                }
+            }
+        }
     }
-
 }

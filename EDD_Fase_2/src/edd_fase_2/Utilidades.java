@@ -9,6 +9,7 @@ import Clases.NodoBinario;
  */
 public class Utilidades {
 
+    public String contenidoAB = "", contenidoEnlaceAB = "";
     NodoBinario nodoBuscado = new NodoBinario();
     NodoAVL nodoBuscadoAVL = new NodoAVL(-1, 0);
     NodoAVL nodoPadreEliminar = new NodoAVL(-1, 0);

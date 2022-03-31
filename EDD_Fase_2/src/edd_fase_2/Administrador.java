@@ -197,6 +197,40 @@ public class Administrador {
         return tabla;
     }
 
+    public String[] opcionesUser(Registro registro) {
+        return registro.opcionesUser(this.util);
+    }
+
+    public NodoB buscarUser(Registro registro, String dpi) {
+        return registro.buscarUsuario(dpi);
+    }
+
+    public void modificarUser(Registro registro, String dpiViejo, String dpiNuevo, String nombre, String contrasena) {
+        registro.modificarUsuario(dpiViejo, dpiNuevo, nombre, contrasena);
+        if (!dpiViejo.equals(dpiNuevo)) {
+            this.arbolB.eliminar(Long.parseLong(dpiViejo));
+            this.arbolB.insertar(Long.parseLong(dpiNuevo));
+        }
+    }
+
+    public boolean eliminarUsuario(NodoB usuarioActual, Registro registro, String dpi) {
+        boolean enRegi = registro.eliminarUsuario(dpi);
+        this.arbolB.eliminar(Long.parseLong(dpi));
+        return enRegi;
+    }
+
+    public String cantidadCapas(NodoB user) {
+        return String.valueOf(user.getCapasUser().cantidad());
+    }
+
+    public String cantidadNodoAVL(NodoB user) {
+        return String.valueOf(user.getImagenesUser().cantidadAVL());
+    }
+
+    public Object[][] tablaClienteImg(Registro registro) {
+        return registro.recorrerTablaUser();
+    }
+
     public void generarAbb(NodoB usuarioActual, String nombre) {
         usuarioActual.getCapasUser().graficar(nombre);
     }

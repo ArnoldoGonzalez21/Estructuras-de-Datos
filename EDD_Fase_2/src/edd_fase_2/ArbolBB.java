@@ -51,7 +51,6 @@ public class ArbolBB {
             return;
         }
         inorden(nodo.getIzquierdo());
-//        System.out.print(nodo.getValor() + ",");
         this.cantidad++;
         inorden(nodo.getDerecho());
     }

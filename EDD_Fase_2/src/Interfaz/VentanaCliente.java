@@ -111,6 +111,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
         if (AE.getSource() == this.btnCargaAlbum) {
             String contenido = edd_fase_2.Archivo.leerArchivoJson(this);
             this.administracion.cargaMasivaAlbum(contenido, this.usuarioActual);
+            this.usuarioActual.cargoAlbum = true;
         }
 
         if (AE.getSource() == this.btnCargaCapa) {

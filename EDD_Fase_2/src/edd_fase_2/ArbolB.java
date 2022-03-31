@@ -69,6 +69,8 @@ public class ArbolB {
     }
 
     public void mostrarArbolB() {
+        this.util.contenidoAB = "";
+        this.util.contenidoEnlaceAB = "";
         recorrerGrafica(raiz, 0, raiz);
     }
 

@@ -23,6 +23,8 @@ public class NodoB {
     private NodoB anterior;
     public boolean cargoCapa;
     public boolean cargoImagen;
+    public boolean cargoCliente;
+    public boolean cargoAlbum;
 
     public long[] ClavesNodo;
     int GradoMin;
@@ -40,12 +42,14 @@ public class NodoB {
         this.capasUser = new ArbolBB();
         this.cargoCapa = false;
         this.cargoImagen = false;
+        this.cargoAlbum = false;
         this.dpi = dpi;
     }
 
     public NodoB(String dpi, String contrasena) {
         this.contrasena = contrasena;
         this.dpi = dpi;
+        this.cargoCliente = false;
     }
 
     public NodoB(int deg, boolean isHoja) {

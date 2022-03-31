@@ -6,7 +6,6 @@ import edd_fase_2.Registro;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -23,9 +22,8 @@ public class VentanaReporte extends JFrame implements ActionListener {
     Administrador administracion;
     NodoB usuarioActual;
     Registro registro;
-    JButton btnMostrarImagen, btnRegresar, btnGenerarImagen, btnMostrar;
+    JButton btnMostrarImagen, btnRegresar, btnMostrar;
     JLabel lblTitulo, lblNodoHoja, lblTopCapa, lblGrafica;
-    JComboBox comboCapa;
     JTextField txtNodoHoja;
 
     public VentanaReporte(Administrador administracion, NodoB usuarioActual, Registro registro, Tools tools) {

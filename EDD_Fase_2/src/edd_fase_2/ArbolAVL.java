@@ -277,7 +277,7 @@ public class ArbolAVL {
     }
 
     public NodoAVL[] TopCinco(NodoAVL nodo, Utilidades util) {
-        inorderBuscarTopCinco(nodo, util);        
+        inorderBuscarTopCinco(nodo, util);
         util.ordenarArreglo();
         return util.topCapa;
     }
@@ -287,14 +287,6 @@ public class ArbolAVL {
             return;
         }
         inorderBuscarTopCinco(nodo.getIzquierdo(), util);
-//        System.out.println("Id: " + nodo.getValor() + " Size: " + nodo.capas.sizeCapa + "\n");
-//        Clases.Capa actual = nodo.capas.getCabezaCapa();
-//        int contador = 0;
-//        while (actual != null) {
-//            contador++;
-////            System.out.print(actual.getIdCapa() + ", ");
-//            actual = actual.getSiguiente();
-//        }
         boolean entro = false;
         for (int i = 0; i < util.topCapa.length; i++) {
             if (util.topCapa[i] == null) {
@@ -317,5 +309,9 @@ public class ArbolAVL {
         }
         util.ordenarArreglo();
         inorderBuscarTopCinco(nodo.getDerecho(), util);
+    }
+
+    public int cantidadAVL() {
+        return this.cantidadNodo;
     }
 }

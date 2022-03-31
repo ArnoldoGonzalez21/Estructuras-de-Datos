@@ -15,14 +15,16 @@ public class ListaSimple {
     private Capa cabezaCapa;
     public int sizeCapa = 0;
     public int sizeAlbum;
-    
+    private int cantidadImgAlbum;
+
     public ListaSimple() {
         this.cabezaAlbum = null;
         this.cabezaImagen = null;
         this.cabezaCapa = null;
         this.sizeAlbum = 0;
+        this.cantidadImgAlbum = 0;
     }
-    
+
     public Album insertarAlbum(String nombre, ListaSimple imagenes) {
         Album nuevo = new Album(nombre, imagenes);
         this.sizeAlbum++;
@@ -49,6 +51,22 @@ public class ListaSimple {
             }
             actual.setSiguienteAlbum(nuevo);
         }
+    }
+
+    public String cantidadImgAlbum() {
+        Album actual = getCabezaAlbum();
+        while (actual != null) {
+            if (actual.getListaImagenes() != null) {
+                Imagen actualImg = actual.getListaImagenes().getCabezaImagen();
+                while (actualImg != null) {
+                    System.out.println(actualImg.getId());
+                    cantidadImgAlbum++;
+                    actualImg = actualImg.getSiguienteAlbum();
+                }
+            }
+            actual = actual.getSiguiente();
+        }
+        return String.valueOf(this.cantidadImgAlbum);
     }
 
     public void insertarCapa(int id) {
@@ -123,6 +141,10 @@ public class ListaSimple {
         rank += "}\n";
         contenido += columnas + apuntador + nodoImagen + apuntadorImagen + rank + "}\n}";
         return contenido;
+    }
+
+    public String sizeAlbum() {
+        return String.valueOf(this.sizeAlbum);
     }
 
     /**

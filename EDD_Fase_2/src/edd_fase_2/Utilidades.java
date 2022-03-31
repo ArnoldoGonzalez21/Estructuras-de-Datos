@@ -20,6 +20,7 @@ public class Utilidades {
     public String textRecorrido = "", txtCapaHoja = "";
     public int alturaAVL = 0, profundidadABB = 0;
     public NodoAVL[] topCapa = new NodoAVL[5];
+    public String dpiUsuario[];
 
     public void cantidad(ArbolBB abb) {
         this.cantidad = 0;

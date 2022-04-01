@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 public class NodoB {
 
     private ListaSimple albumUser;
+    private ListaSimple imgPixel;
     private ArbolAVL imagenesUser;
     private ArbolBB capasUser;
     private String dpi;
@@ -25,6 +26,7 @@ public class NodoB {
     public boolean cargoImagen;
     public boolean cargoCliente;
     public boolean cargoAlbum;
+    public boolean genero;
 
     public long[] ClavesNodo;
     int GradoMin;
@@ -33,23 +35,26 @@ public class NodoB {
     private boolean Hoja; // true -> Hoja , false -> no es hoja
 
     public NodoB(String dpi, String nombre, String contrasena) {
+        this.dpi = dpi;
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.siguiente = null;
         this.anterior = null;
         this.albumUser = new ListaSimple();
+        this.imgPixel = new ListaSimple();
         this.imagenesUser = new ArbolAVL();
         this.capasUser = new ArbolBB();
         this.cargoCapa = false;
         this.cargoImagen = false;
         this.cargoAlbum = false;
-        this.dpi = dpi;
+        this.genero = false;
     }
 
     public NodoB(String dpi, String contrasena) {
         this.contrasena = contrasena;
         this.dpi = dpi;
         this.cargoCliente = false;
+        this.genero = false;
     }
 
     public NodoB(int deg, boolean isHoja) {
@@ -509,4 +514,17 @@ public class NodoB {
         this.dpi = dpi;
     }
 
+    /**
+     * @return the imgPixel
+     */
+    public ListaSimple getImgPixel() {
+        return imgPixel;
+    }
+
+    /**
+     * @param imgPixel the imgPixel to set
+     */
+    public void setImgPixel(ListaSimple imgPixel) {
+        this.imgPixel = imgPixel;
+    }
 }

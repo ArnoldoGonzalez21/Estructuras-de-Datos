@@ -9,18 +9,17 @@ import Clases.NodoBinario;
  */
 public class Utilidades {
 
-    public String contenidoAB = "", contenidoEnlaceAB = "";
     NodoBinario nodoBuscado = new NodoBinario();
+    NodoBinario[] matriz;
     NodoAVL nodoBuscadoAVL = new NodoAVL(-1, 0);
     NodoAVL nodoPadreEliminar = new NodoAVL(-1, 0);
-    int cantidad = 0, contador = 0, contadorAVL = 0, cantidadAVL = 0;
-    NodoBinario[] matriz;
     NodoAVL[] matrizImagen;
-    MatrizDispersa matrizImagenCompleta = new MatrizDispersa(-1);
-    public String textRecorrido = "", txtCapaHoja = "";
-    public int alturaAVL = 0, profundidadABB = 0;
     public NodoAVL[] topCapa = new NodoAVL[5];
+    MatrizDispersa matrizImagenCompleta = new MatrizDispersa(-1);
+    int cantidad = 0, contador = 0, contadorAVL = 0, cantidadAVL = 0;
+    public int alturaAVL = 0, profundidadABB = 0;
     public String dpiUsuario[];
+    public String textRecorrido = "", txtCapaHoja = "", contenidoAB = "", contenidoEnlaceAB = "";
 
     public void cantidad(ArbolBB abb) {
         this.cantidad = 0;
@@ -41,7 +40,6 @@ public class Utilidades {
         this.cantidadAVL = 0;
         this.contadorAVL = 0;
         this.cantidadAVL = avl.cantidadNodo;
-        System.out.println(cantidadAVL);
         this.matrizImagen = new NodoAVL[cantidadAVL];
     }
 

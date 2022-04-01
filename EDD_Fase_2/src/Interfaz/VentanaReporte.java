@@ -31,7 +31,7 @@ public class VentanaReporte extends JFrame implements ActionListener {
         this.usuarioActual = usuarioActual;
         this.registro = registro;
         this.tools = tools;
-        AjustarVentana();
+        this.AjustarVentana();
         this.componentes();
     }
 

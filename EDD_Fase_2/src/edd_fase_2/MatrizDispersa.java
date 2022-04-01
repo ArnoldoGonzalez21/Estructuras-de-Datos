@@ -23,13 +23,11 @@ public class MatrizDispersa {
         //buscar si ya existen encabezados
         NodoEncabezado nodo_X = this.filas.getEncabezado(posX);
         NodoEncabezado nodo_Y = this.columnas.getEncabezado(posY);
-
         //crearlos
         if (nodo_X == null) {
             nodo_X = new NodoEncabezado(posX);
             this.filas.insertarNodoEncabezado(nodo_X);
         }
-
         if (nodo_Y == null) {
             nodo_Y = new NodoEncabezado(posY);
             this.columnas.insertarNodoEncabezado(nodo_Y);
@@ -227,16 +225,15 @@ public class MatrizDispersa {
         String nodos = this.enlazarNodo();
         String final_graphviz = "\n\t}\n}";
         contenido += nodos + encabezados + final_graphviz;
-        System.out.println(contenido);
         return contenido;
     }
-    
-    public MatrizDispersa recorrerMatriz(Utilidades util) {
+
+    public MatrizDispersa recorrerMatriz(Utilidades util, ListaSimple pixel) {
         NodoEncabezado pivote = this.filas.primero;
         while (pivote != null) {
             NodoMatriz pivoteCelda = pivote.getAcceso();
             while (pivoteCelda != null) {
-                System.out.println(pivoteCelda.getX() + "_" + pivoteCelda.getY());
+                pixel.insertarImagenMatriz(pivoteCelda.getX(), pivoteCelda.getY(), pivoteCelda.getColor());
                 util.matrizImagenCompleta.insertar(-1, pivoteCelda.getX(), pivoteCelda.getY(), pivoteCelda.getColor());
                 pivoteCelda = pivoteCelda.getSiguiente();
             }
@@ -244,5 +241,4 @@ public class MatrizDispersa {
         }
         return util.matrizImagenCompleta;
     }
-
 }

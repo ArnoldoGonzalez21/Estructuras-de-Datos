@@ -31,7 +31,7 @@ public class VentanaCapa extends JFrame implements ActionListener {
         this.usuarioActual = usuarioActual;
         this.registro = registro;
         this.tools = tools;
-        AjustarVentana();
+        this.AjustarVentana();
         this.componentes();
     }
 
@@ -77,6 +77,7 @@ public class VentanaCapa extends JFrame implements ActionListener {
             String contenido = this.administracion.matrizNodo(this.usuarioActual, comboCapa.getSelectedItem().toString());
             this.administracion.crearGrafico(contenido, "Capa_" + this.usuarioActual.getDpi());
         }
+        
         if (AE.getSource() == this.btnMostrarImagen) {
             lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
             Image img = new ImageIcon("Capa_" + this.usuarioActual.getDpi() + ".png").getImage();

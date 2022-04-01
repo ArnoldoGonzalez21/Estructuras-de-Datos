@@ -36,9 +36,7 @@ public class Administrador {
             if (user != null) {
                 arbolB.insertar(numDpi);
             }
-            if (user != null) {
-                System.out.println("dpi: " + dpi + " nombre: " + nombre + " contrasena: " + contrasena);
-            } else {
+            if (user == null) {
                 System.out.println("El DPI " + dpi + " ya existe");
             }
         }
@@ -76,7 +74,7 @@ public class Administrador {
             for (JsonElement objt2 : capas) {
                 contador++;
             }
-            System.out.println("id: " + id + " capas: " + capas);
+//            System.out.println("id: " + id + " capas: " + capas);
             usuarioActual.getImagenesUser().insertar(id, capas, contador);
         }
         return true;
@@ -89,7 +87,7 @@ public class Administrador {
             JsonObject gsonObj = objt.getAsJsonObject();
             String nombreAlbum = gsonObj.get("nombre_album").getAsString();
             JsonArray imgs = gsonObj.get("imgs").getAsJsonArray();
-            System.out.println("nombreAlbum: " + nombreAlbum + " imgs: " + imgs);
+//            System.out.println("nombreAlbum: " + nombreAlbum + " imgs: " + imgs);
             for (JsonElement objt2 : imgs) {
                 int id = objt2.getAsInt();
                 this.imagenes.insertarImagen(id);
@@ -109,13 +107,12 @@ public class Administrador {
             while (actual != null) {
                 NodoBinario nodoABB = usuarioActual.getCapasUser().inordenBus(usuarioActual.getCapasUser().raiz, this.util, String.valueOf(actual.getIdCapa()));
                 if (nodoABB != null || !nodoABB.getValor().toString().equals("-1")) {
-                    nodoABB.pixeles.recorrerMatriz(this.util);
+                    nodoABB.pixeles.recorrerMatriz(this.util, usuarioActual.getImgPixel());
                 }
                 actual = actual.getSiguiente();
             }
         }
         contenido = this.util.matrizImagenCompleta.graficarMatriz();
-        System.out.println(contenido);
         return contenido;
     }
 
@@ -123,7 +120,7 @@ public class Administrador {
         this.util.cantidad(usuarioActual.getCapasUser());
         usuarioActual.getCapasUser().inorden(usuarioActual.getCapasUser().raiz, util);
         for (int i = 0; i < util.matriz().length; i++) {
-            util.matriz()[i].pixeles.recorrerMatriz(util);
+            util.matriz()[i].pixeles.recorrerMatriz(util, usuarioActual.getImgPixel());
         }
         String contenido = this.util.matrizImagenCompleta.graficarMatriz();
         return contenido;
@@ -135,7 +132,6 @@ public class Administrador {
         if (nodo != null || !nodo.getValor().toString().equals("-1")) {
             contenido = nodo.pixeles.graficarMatriz();
         }
-        System.out.println(contenido);
         return contenido;
     }
 
@@ -151,7 +147,7 @@ public class Administrador {
 
     public String[] imagenCombo(NodoB usuarioActual) {
         this.util.cantidadAVL(usuarioActual.getImagenesUser());
-        usuarioActual.getImagenesUser().inorden(usuarioActual.getImagenesUser().raiz, this.util);
+        usuarioActual.getImagenesUser().inorder(usuarioActual.getImagenesUser().raiz, this.util);
         System.out.println("lenght: " + util.matrizImagen().length);
         String[] matrizCompleta = new String[util.matrizImagen().length];
         for (int i = 0; i < util.matrizImagen().length; i++) {
@@ -248,6 +244,10 @@ public class Administrador {
         usuarioActual.graficar(nombre, this.util);
     }
 
+    public void crearImagenHTML(NodoB nodo, String nombre) {
+        nodo.getImgPixel().crearImagenHTML(nombre);
+    }
+
     public void crearGrafico(String contenidoGrafica, String nombre) {
         try {
             FileWriter archivo = new FileWriter(nombre + ".dot", false);
@@ -263,7 +263,6 @@ public class Administrador {
             } catch (Exception ex) {
                 System.err.println("Error al generar la imagen del archivo .dot");
             }
-
         } catch (IOException e) {
             System.out.println("Error Archivo: " + e.getMessage());
         }

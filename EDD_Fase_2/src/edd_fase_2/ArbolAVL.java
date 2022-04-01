@@ -126,8 +126,8 @@ public class ArbolAVL {
         raiz.graficar(path);
     }
 
-    public void inorden(NodoAVL nodo, Utilidades util) {
-//        System.out.println("Recorrido inorden del árbol avl:");
+    public void inorder(NodoAVL nodo, Utilidades util) {
+//        System.out.println("Recorrido inorder del árbol avl:");
         inordenMatriz(nodo, util);
         System.out.println();
     }

@@ -1,5 +1,8 @@
 package Interfaz;
 
+import Clases.NodoB;
+import edd_fase_2.Administrador;
+import edd_fase_2.Registro;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -16,18 +19,18 @@ import javax.swing.JTextField;
 public class Autenticacion extends JFrame implements ActionListener {
 
     Tools tools = new Tools();
+    Registro registro;
+    NodoB usuarioActual;
+    Administrador administracion;
     JTextField txtDpi;
     JPasswordField txtContrasena;
     JButton btnIniciarSesion;
     JLabel lblTitulo, lblDpi, lblContra;
-    edd_fase_2.Registro registro;
-    Clases.NodoB usuarioActual;
-    edd_fase_2.Administrador administracion;
 
-    public Autenticacion(edd_fase_2.Registro registro, edd_fase_2.Administrador administracion) {
+    public Autenticacion(Registro registro, Administrador administracion) {
         this.registro = registro;
         this.administracion = administracion;
-        AjustarVentana();
+        this.AjustarVentana();
         this.componentes();
     }
 
@@ -60,7 +63,7 @@ public class Autenticacion extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnIniciarSesion) {
-            Clases.NodoB user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());            
+            Clases.NodoB user = this.registro.validarUsuario(this.txtDpi.getText(), this.txtContrasena.getText());
             if (user == null) {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña inválida");
             }
@@ -68,7 +71,7 @@ public class Autenticacion extends JFrame implements ActionListener {
                 if (user.equals(registro.getAdministrador())) {
                     this.setVisible(true);
                     this.dispose();
-                    new VentanaAdministrador(this.administracion, user, this.registro);
+                    new VentanaAdministrador(this.administracion, user, this.registro, this.tools);
                     this.dispose();
                 } else {
                     Clases.NodoB actual = this.registro.getCabezaUsuario();
@@ -81,7 +84,7 @@ public class Autenticacion extends JFrame implements ActionListener {
                             break;
                         }
                         actual = actual.getSiguiente();
-                    }                    
+                    }
                 }
             }
         }

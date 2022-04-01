@@ -40,7 +40,6 @@ public class ArbolBB {
             return;
         }
         inorden(nodo.getIzquierdo(), util);
-//        System.out.print(nodo.getValor() + ",");
         util.matriz()[util.contador] = nodo;
         util.contador++;
         inorden(nodo.getDerecho(), util);
@@ -96,14 +95,15 @@ public class ArbolBB {
                 break;
         }
     }
-
-    private void inorderPrintRec(NodoBinario nodo, Utilidades util) { //utilizado para saber la cantidad de nodos del abb
+    
+    //utilizados para obtener el recorrido txt inorder
+    private void inorderPrintRec(NodoBinario nodo, Utilidades util) {
+        //hijoIzquierdo, raiz, hijoDerecho
         if (nodo == null) {
             return;
         }
         inorderPrintRec(nodo.getIzquierdo(), util);
         util.textRecorrido += " - " + nodo.getValor().toString();
-        System.out.print(nodo.getValor() + ",");
         inorderPrintRec(nodo.getDerecho(), util);
     }
 
@@ -115,7 +115,6 @@ public class ArbolBB {
         postOrderPrintRec(nodo.getIzquierdo(), util);
         postOrderPrintRec(nodo.getDerecho(), util);
         util.textRecorrido += " - " + nodo.getValor().toString();
-        System.out.print(nodo.getValor() + ", ");
     }
 
     public void preOrderPrintRec(NodoBinario nodo, Utilidades util) {
@@ -142,7 +141,6 @@ public class ArbolBB {
         inorderCapaHoja(nodo.getIzquierdo(), util);
         if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) {
             util.txtCapaHoja += " [" + nodo.getValor().toString() + "] ";
-//            System.out.print(nodo.getValor() + ",");
         }
         inorderCapaHoja(nodo.getDerecho(), util);
     }

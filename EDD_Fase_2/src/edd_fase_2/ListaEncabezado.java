@@ -99,9 +99,7 @@ public class ListaEncabezado {
         return contenido;
     }
     
-    
     public String graficaEncabezado2(boolean columna_grafica) {
-
         NodoEncabezado actual = this.primero;
         String contRank = "", contFila = "", contCol = "";
         if (columna_grafica) {
@@ -144,5 +142,4 @@ public class ListaEncabezado {
         }
         return null;
     }
-
 }

@@ -34,7 +34,7 @@ public class VentanaReporteAdmin extends JFrame implements ActionListener {
         this.usuarioActual = usuarioActual;
         this.registro = registro;
         this.tools = tools;
-        AjustarVentana();
+        this.AjustarVentana();
         this.componentes();
     }
 
@@ -175,7 +175,7 @@ public class VentanaReporteAdmin extends JFrame implements ActionListener {
 
         if (AE.getSource() == this.btnRegresar) {
             this.setVisible(false);
-            new VentanaAdministrador(this.administracion, this.usuarioActual, this.registro);
+            new VentanaAdministrador(this.administracion, this.usuarioActual, this.registro, this.tools);
             this.dispose();
         }
     }

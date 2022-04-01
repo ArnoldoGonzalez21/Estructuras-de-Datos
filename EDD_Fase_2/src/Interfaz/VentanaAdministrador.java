@@ -17,7 +17,7 @@ import javax.swing.JLabel;
  */
 public class VentanaAdministrador extends JFrame implements ActionListener {
 
-    Tools tools = new Tools();
+    Tools tools;
     Administrador administracion;
     NodoB usuarioActual;
     Registro registro;
@@ -25,12 +25,13 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
             btnMostrarImagen, btnGenerarImagen, btnReporte;
     JLabel lblTitulo, lblGrafica;
 
-    public VentanaAdministrador(Administrador administracion, NodoB usuarioActual, Registro registro) {
+    public VentanaAdministrador(Administrador administracion, NodoB usuarioActual, Registro registro, Tools tools) {
         this.administracion = administracion;
         this.usuarioActual = usuarioActual;
         this.registro = registro;
-        AjustarVentana();
-        componentes();
+        this.tools = tools;
+        this.AjustarVentana();
+        this.componentes();
     }
 
     public void AjustarVentana() {
@@ -40,7 +41,6 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     private void componentes() {
@@ -88,17 +88,23 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         }
 
         if (AE.getSource() == this.btnGenerarImagen) {
-            this.administracion.generarB(this.usuarioActual, "ArbolB");
+            if (this.usuarioActual.cargoCliente) {
+                this.administracion.generarB(this.usuarioActual, "ArbolB");
+                this.usuarioActual.genero = true;
+            }
         }
 
         if (AE.getSource() == this.btnMostrarImagen) {
-            lblGrafica = this.tools.addLabelImagen(275, 50, 850, 300);
-            Image img = new ImageIcon("ArbolB.png").getImage();
-            ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
-            lblGrafica.setIcon(img2);
-            add(lblGrafica);
-            repaint();
+            if (this.usuarioActual.cargoCliente && this.usuarioActual.genero) {
+                lblGrafica = this.tools.addLabelImagen(275, 50, 850, 300);
+                Image img = new ImageIcon("ArbolB.png").getImage();
+                ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
+                lblGrafica.setIcon(img2);
+                add(lblGrafica);
+                repaint();
+            }
         }
+        
         if (AE.getSource() == this.btnLogOut) {
             setVisible(false);
             new Autenticacion(this.registro, this.administracion);

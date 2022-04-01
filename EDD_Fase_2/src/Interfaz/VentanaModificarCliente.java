@@ -44,7 +44,6 @@ public class VentanaModificarCliente extends JFrame implements ActionListener {
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     private void componentes() {
@@ -86,7 +85,6 @@ public class VentanaModificarCliente extends JFrame implements ActionListener {
         String[] opciones = this.administracion.opcionesUser(this.registro);
         comboCliente = this.tools.addComboBox(opciones, 25, 90, 200, 25);
         add(comboCliente);
-        repaint();
     }
 
     @Override
@@ -130,7 +128,7 @@ public class VentanaModificarCliente extends JFrame implements ActionListener {
 
         if (AE.getSource() == this.btnRegresar) {
             setVisible(false);
-            new VentanaAdministrador(this.administracion, this.usuarioActual, this.registro);
+            new VentanaAdministrador(this.administracion, this.usuarioActual, this.registro, this.tools);
             this.dispose();
         }
     }

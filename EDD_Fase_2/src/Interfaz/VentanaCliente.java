@@ -24,7 +24,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
     Registro registro;
     JButton btnMostrarImagen, btnCargaAlbum, btnCargaCapa, btnCargaImagen, btnLogOut,
             btnGenerarImagen, btnVentanaEstructura, btnVentanaCapa, btnReporte;
-    JLabel lblTitulo, lblSubTitulo, lblGrafica;
+    JLabel lblTitulo, lblSubTitulo, lblGrafica, lblGraficaImg;
     JComboBox comboImagen;
 
     public VentanaCliente(Administrador administracion, NodoB usuarioActual, Registro registro) {
@@ -38,7 +38,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
     public void AjustarVentana() {
         setTitle("Ventana Cliente");
         setLayout(null);
-        setSize(650, 475);
+        setSize(1000, 475);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,9 +49,9 @@ public class VentanaCliente extends JFrame implements ActionListener {
         btnCargaCapa = this.tools.addButton("Cargar Capa", 25, 100, 200, 30);
         btnCargaAlbum = this.tools.addButton("Cargar Album", 25, 140, 200, 30);
         btnCargaImagen = this.tools.addButton("Cargar Imagen", 25, 180, 200, 30);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 265, 375, 150, 25);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 430, 375, 150, 25);
-        btnLogOut = tools.addButton("← Log Out", 485, 15, 117, 20);
+        btnGenerarImagen = this.tools.addButton("Generar Imagen", 415, 375, 150, 25);
+        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 580, 375, 150, 25);
+        btnLogOut = tools.addButton("← Log Out", 835, 15, 117, 20);
         btnVentanaEstructura = tools.addButton("Graficar Estructuras", 15, 15, 175, 20);
         btnVentanaCapa = tools.addButton("Graficar Capa", 200, 15, 117, 20);
         btnReporte = tools.addButton("Reportes", 328, 15, 117, 20);
@@ -86,26 +86,38 @@ public class VentanaCliente extends JFrame implements ActionListener {
         String[] opciones = this.administracion.imagenCombo(this.usuarioActual);
         comboImagen = this.tools.addComboBox(opciones, 25, 275, 200, 25);
         add(comboImagen);
-        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
-            System.out.println(comboImagen.getSelectedItem().toString());
-            String contenido = this.administracion.crearImagen(this.usuarioActual, comboImagen.getSelectedItem().toString());
-            this.administracion.crearGrafico(contenido, "Imagen_" + this.usuarioActual.getDpi());
-            this.setVisible(false);
-            new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
-            this.dispose();
+            if (this.usuarioActual.cargoCapa && this.usuarioActual.cargoImagen) {
+                System.out.println(comboImagen.getSelectedItem().toString());
+                String contenido = this.administracion.crearImagen(this.usuarioActual, comboImagen.getSelectedItem().toString());
+                this.administracion.crearGrafico(contenido, "Imagen_" + this.usuarioActual.getDpi());
+                this.administracion.crearImagenHTML(this.usuarioActual, "ImagenHTML_" + this.usuarioActual.getDpi());
+                this.usuarioActual.genero = true;
+                this.setVisible(false);
+                new VentanaCliente(this.administracion, this.usuarioActual, this.registro);
+                this.dispose();
+            }
         }
+        
         if (AE.getSource() == this.btnMostrarImagen) {
-            lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
-            Image img = new ImageIcon("Imagen_" + this.usuarioActual.getDpi() + ".png").getImage();
-            ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
-            lblGrafica.setIcon(img2);
-            add(lblGrafica);
-            repaint();
+            if (this.usuarioActual.cargoCapa && this.usuarioActual.cargoImagen && this.usuarioActual.genero) {
+                lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);
+                Image img = new ImageIcon("Imagen_" + this.usuarioActual.getDpi() + ".png").getImage();
+                ImageIcon img2 = new ImageIcon(img.getScaledInstance(lblGrafica.getWidth(), lblGrafica.getHeight(), Image.SCALE_SMOOTH));
+                lblGrafica.setIcon(img2);
+                add(lblGrafica);
+                /*Imagen HTML*/
+                lblGraficaImg = this.tools.addLabelImagen(625, 50, 500, 500);
+                Image imgHTML = new ImageIcon("ImagenHTML_" + this.usuarioActual.getDpi() + "_1.png").getImage();
+                ImageIcon imgHTML2 = new ImageIcon(imgHTML.getScaledInstance(lblGraficaImg.getWidth(), lblGraficaImg.getHeight(), Image.SCALE_SMOOTH));
+                lblGraficaImg.setIcon(imgHTML2);
+                add(lblGraficaImg);
+                repaint();
+            }
         }
 
         if (AE.getSource() == this.btnCargaAlbum) {
@@ -140,7 +152,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
             new VentanaCapa(this.administracion, this.usuarioActual, this.registro, this.tools);
             this.dispose();
         }
-        
+
         if (AE.getSource() == this.btnReporte) {
             this.setVisible(false);
             new VentanaReporte(this.administracion, this.usuarioActual, this.registro, this.tools);

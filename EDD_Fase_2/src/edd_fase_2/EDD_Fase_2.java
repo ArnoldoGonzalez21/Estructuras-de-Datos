@@ -12,7 +12,6 @@ public class EDD_Fase_2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        "admin", "EDD2022"
-        new Autenticacion(new Registro("a", "a"), new Administrador());        
+        new Autenticacion(new Registro("admin", "EDD2022"), new Administrador());        
     }
 }

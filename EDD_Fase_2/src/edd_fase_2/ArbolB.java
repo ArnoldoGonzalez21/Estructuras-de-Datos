@@ -29,7 +29,6 @@ public class ArbolB {
     }
 
     public void insertar(long key) {
-
         if (raiz == null) {
             raiz = new NodoB(grado, true);
             raiz.ClavesNodo[0] = key;

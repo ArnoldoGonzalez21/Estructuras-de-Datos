@@ -93,9 +93,7 @@ public class NodoB {
                 System.out.printf("El dpi %d no existe\n", key);
                 return;
             }
-
             boolean bandera = indice == numClavesNodo;//La clave existe en el subárbol hijo en su ultima pos del nodo
-
             if (hijos[indice].numClavesNodo < GradoMin) { //Llenar nodo hijo si no esta lleno
                 llenar(indice);
             }

@@ -54,9 +54,8 @@ public class NodoBinario {
             else {
                 getDerecho().insertar(val, pixeles);
             }
-        } else //Si no es mayor ni menor, significa que es igual, entonces se despliega
-        //un mensaje de error de que no se aceptan duplicados en el árbol.
-        {
+            //Si no es mayor ni menor, significa que es igual
+        } else {
             System.err.println("No se permiten los valores duplicados: \""
                     + String.valueOf(val) + "\".");
         }

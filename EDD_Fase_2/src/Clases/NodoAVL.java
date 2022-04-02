@@ -28,27 +28,19 @@ public class NodoAVL {
         this.capas = new ListaSimple();
     }
 
-    void insertar(Comparable val, int numCapas) {
-        //Si el valor a insertar es menor que el nodo actual, entonces debería
-        //insertarse a la izquierda de este. 
-        if (val.compareTo(getValor()) < 0) //Si la izquierda del nodo actual esta desocupada entonces se inserta.
-        {
+    public void insertar(Comparable val, int numCapas) {
+        //Si el valor a insertar es menor que el nodo actual insertar a la izquierda 
+        if (val.compareTo(getValor()) < 0) {
             if (getIzquierdo() == null) {
                 setIzquierdo(new NodoAVL(val, numCapas));
-            } //De lo contrario nos desplazamos al nodo izquierdo, en busca de un
-            //lugar para insertar el nuevo nodo.
-            else {
+            } else { //llamada recursiva a la izquierda
                 getIzquierdo().insertar(val, numCapas);
             }
-        } //Si el valor a insertar es mayor que el nodo actual, entonces debería
-        //insertarse a la derecha de este de este.
-        else if (val.compareTo(getValor()) > 0) //Si la derecha del nodo actual esta desocupada entonces se inserta.
-        {
+        } //Si el valor a insertar es mayor que el nodo actual insertar a la derecha 
+        else if (val.compareTo(getValor()) > 0) {
             if (getDerecho() == null) {
                 setDerecho(new NodoAVL(val, numCapas));
-            } //De lo contrario nos desplazamos al nodo derecho, en busca de un
-            //lugar para insertar el nuevo nodo.            
-            else {
+            } else {//llamada recursiva a la derecha     
                 getDerecho().insertar(val, numCapas);
             }
         } else {

@@ -1,7 +1,6 @@
 package edd_fase_2;
 
 import Clases.NodoAVL;
-import Clases.NodoBinario;
 import com.google.gson.JsonArray;
 
 /**
@@ -27,50 +26,27 @@ public class ArbolAVL {
             raiz = new NodoAVL(valor, numCapas);
             for (Object objt2 : capas) {
                 raiz.capas.insertarCapa(Integer.parseInt(objt2.toString()));
-//                System.out.println("id: " + raiz.getValor() + " no: " + Integer.parseInt(objt2.toString()));
             }
             //Si el nuevo valor es menor que el nodo actual
-        } else if (valor.compareTo(raiz.getValor()) < 0) {
-            //Se llama recursivamente al método para explorar el subarbol izquierdo porque el valor es menor
+        } else if (valor.compareTo(raiz.getValor()) < 0) { //Subarbol izquierdo
             raiz.setIzquierdo(insertar(valor, raiz.getIzquierdo(), capas, numCapas));
-            if (altura(raiz.getDerecho()) - altura(raiz.getIzquierdo()) == -2) //Si el factor de equilibrio esta desbalanceado, hay que hacer 
-            //rotación de nodos, como el factor de equilibrio = -2 hay dos posibilidades de 
-            //rotación dependiendo de:
-            {
-                if (valor.compareTo(raiz.getIzquierdo().getValor()) < 0) //Si el nuevo valor fuera menor que la izquierda del nodo des-balanceado, 
-                //se sabe que el nuevo nodo será insertado a la 
-                //izquierda de la actual izquierda, entonces tenemos una rotación 
-                //simple por la izquierda o sea una IzquierdaIzquierda.
-                {
+            //Si el factor de equilibrio == -2 esta desbalanceo y se hace la rotación
+            if (altura(raiz.getDerecho()) - altura(raiz.getIzquierdo()) == -2) {
+                if (valor.compareTo(raiz.getIzquierdo().getValor()) < 0) {//Si el valor es menor el valor será insertado a la izq.
+                    // realizar una rotación simple por la izquierda                
                     raiz = IzquierdaIzquierda(raiz);
-                } else //de lo contrario, se sabe que el nuevo nodo será insertado 
-                //a la derecha del la actual izquierda, por lo que se tiene 
-                //un caso de rotación doble por la izquierda 
-                //o sea una IzquierdaDerecha.
-                {
+                } else { //si se inserta a la derecha es una rotacion doble por la izquierda
                     raiz = IzquierdaDerecha(raiz);
                 }
             }
-        } else if (valor.compareTo(raiz.getValor()) > 0) //Si el nuevo valor fuera mayor que el nodo de la actual entonces:
-        {
-            //Se llama recursivamente al método para explorar el subarbol derecho
-            //porque el valor a insertar es mayor que el del nodo actual.            
+        } else if (valor.compareTo(raiz.getValor()) > 0) { //Subarbol derecho        
             raiz.setDerecho(insertar(valor, raiz.getDerecho(), capas, numCapas));
-            if (altura(raiz.getDerecho()) - altura(raiz.getIzquierdo()) == 2) //Si el factor de equilibrio esta desbalanceado, hay que hacer 
-            //rotación de nodos, como el fe=2 hay dos posibilidades de 
-            //rotación dependiendo de:                
-            {
-                if (valor.compareTo(raiz.getDerecho().getValor()) > 0) //Si el nuevo valor fuera mayor que la derecha del nodo des-
-                //balanceado, se sabe que el nuevo nodo será insertado a la 
-                //derecha de la actual derecha, entonces tenemos una rotación 
-                //simple por la derecha o sea una DerechaDerecha.                    
-                {
+            //Si el factor de equilibrio == -2 esta desbalanceo y se hace la rotación
+            if (altura(raiz.getDerecho()) - altura(raiz.getIzquierdo()) == 2) {
+                if (valor.compareTo(raiz.getDerecho().getValor()) > 0) {//Si el valor es menor el valor será insertado a la derecha.
+                    // realizar una rotación simple por la derecha         
                     raiz = DerechaDerecha(raiz);
-                } else //de lo contrario, se sabe que el nuevo nodo será insertado 
-                //a la izquierda del la actual derecha, por lo que se tiene 
-                //un caso de rotación doble por la derecha
-                //o sea una DerechaIzquierda.
-                {
+                } else {//si se inserta a la derecha es una rotacion doble por la derecha
                     raiz = DerechaIzquierda(raiz);
                 }
             }
@@ -81,46 +57,6 @@ public class ArbolAVL {
         //la altura, será la altura del hijo que tiene la altura más grande
         raiz.altura = mayor(altura(raiz.getIzquierdo()), altura(raiz.getDerecho())) + 1;
         return raiz;
-    }
-
-    private NodoAVL eliminar(NodoAVL nodo, NodoAVL raiz, Utilidades util, String valor) {
-        if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) { //es una hoja
-            nodo = null;
-        } else if (nodo.getDerecho() == null && nodo.getIzquierdo() != null) { //conectar el padre del nodo a eliminar con el hijo
-            encontrarPadre(nodo, raiz, util, valor);
-
-        } else if (nodo.getDerecho() != null && nodo.getIzquierdo() == null) { //conectar el padre del nodo a eliminar con el hijo
-            encontrarPadre(nodo, raiz, util, valor);
-        }
-        raiz.altura = mayor(altura(raiz.getIzquierdo()), altura(raiz.getDerecho())) + 1;
-        return raiz;
-    }
-
-    public void encontrarPadre(NodoAVL nodoEliminar, NodoAVL raiz, Utilidades util, String valor) {
-        encontrarNodoRecorrido(nodoEliminar, raiz, util, valor);
-    }
-
-    public void encontrarNodoRecorrido(NodoAVL nodoEliminar, NodoAVL nodoRaiz, Utilidades util, String valor) {
-        //hijoIzquierdo, hijoDerecho, raiz
-        if (nodoEliminar == null) {
-            return;
-        }
-        encontrarNodoRecorrido(nodoRaiz.getIzquierdo(), nodoRaiz, util, valor);
-        encontrarNodoRecorrido(nodoRaiz.getDerecho(), nodoRaiz, util, valor);
-        util.textRecorrido += " - " + nodoRaiz.getValor().toString();
-        if (nodoRaiz.getDerecho() != null) {
-            if (nodoRaiz.getDerecho().getValor().toString().equals(valor)) {
-                util.nodoPadreEliminar = nodoRaiz;
-                return;
-            }
-        }
-        if (nodoRaiz.getIzquierdo() != null) {
-            if (nodoRaiz.getIzquierdo().getValor().toString().equals(valor)) {
-                util.nodoPadreEliminar = nodoRaiz;
-                return;
-            }
-        }
-        System.out.print(nodoRaiz.getValor() + ", ");
     }
 
     public void graficar(String path) {

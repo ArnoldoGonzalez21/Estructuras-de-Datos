@@ -12,7 +12,6 @@ public class Utilidades {
     NodoBinario nodoBuscado = new NodoBinario();
     NodoBinario[] matriz;
     NodoAVL nodoBuscadoAVL = new NodoAVL(-1, 0);
-    NodoAVL nodoPadreEliminar = new NodoAVL(-1, 0);
     NodoAVL[] matrizImagen;
     public NodoAVL[] topCapa = new NodoAVL[5];
     MatrizDispersa matrizImagenCompleta = new MatrizDispersa(-1);

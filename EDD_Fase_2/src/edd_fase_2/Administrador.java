@@ -49,16 +49,21 @@ public class Administrador {
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
             int id_capa = gsonObj.get("id_capa").getAsInt();
-            JsonArray pixeles = gsonObj.get("pixeles").getAsJsonArray();
-            for (JsonElement objt2 : pixeles) {
-                JsonObject gsonObj2 = objt2.getAsJsonObject();
-                int fila = gsonObj2.get("fila").getAsInt();
-                int columna = gsonObj2.get("columna").getAsInt();
-                String color = gsonObj2.get("color").getAsString();
-                this.matrizPixeles.insertar(id_capa, fila, columna, color);
+            NodoBinario nodoVerificar = usuarioActual.getCapasUser().inorderBus(usuarioActual.getCapasUser().raiz, this.util, String.valueOf(id_capa));
+            if (nodoVerificar.getValor().equals(-1)) {
+                JsonArray pixeles = gsonObj.get("pixeles").getAsJsonArray();
+                for (JsonElement objt2 : pixeles) {
+                    JsonObject gsonObj2 = objt2.getAsJsonObject();
+                    int fila = gsonObj2.get("fila").getAsInt();
+                    int columna = gsonObj2.get("columna").getAsInt();
+                    String color = gsonObj2.get("color").getAsString();
+                    this.matrizPixeles.insertar(id_capa, fila, columna, color);
+                }
+                usuarioActual.getCapasUser().insertar(id_capa, this.matrizPixeles);//insertar en abb las capas            
+                this.matrizPixeles = new MatrizDispersa(1);
+            } else {
+                System.out.println("La Capa " + id_capa + " ya existe");
             }
-            usuarioActual.getCapasUser().insertar(id_capa, this.matrizPixeles);//insertar en abb las capas            
-            this.matrizPixeles = new MatrizDispersa(1);
         }
         return true;
     }
@@ -69,13 +74,17 @@ public class Administrador {
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
             int id = gsonObj.get("id").getAsInt();
-            JsonArray capas = gsonObj.get("capas").getAsJsonArray();
-            int contador = 0;
-            for (JsonElement objt2 : capas) {
-                contador++;
+            NodoAVL nodoVerificar = usuarioActual.getImagenesUser().inorderBus(usuarioActual.getImagenesUser().raiz, this.util, String.valueOf(id));
+            if (nodoVerificar.getValor().equals(-1)) {
+                JsonArray capas = gsonObj.get("capas").getAsJsonArray();
+                int contador = 0;
+                for (JsonElement objt2 : capas) {
+                    contador++;
+                }
+                usuarioActual.getImagenesUser().insertar(id, capas, contador);
+            } else {
+                System.out.println("La Imagen " + id + " ya existe");
             }
-//            System.out.println("id: " + id + " capas: " + capas);
-            usuarioActual.getImagenesUser().insertar(id, capas, contador);
         }
         return true;
     }
@@ -86,21 +95,24 @@ public class Administrador {
         for (JsonElement objt : gsonArr) {
             JsonObject gsonObj = objt.getAsJsonObject();
             String nombreAlbum = gsonObj.get("nombre_album").getAsString();
-            JsonArray imgs = gsonObj.get("imgs").getAsJsonArray();
-//            System.out.println("nombreAlbum: " + nombreAlbum + " imgs: " + imgs);
-            for (JsonElement objt2 : imgs) {
-                int id = objt2.getAsInt();
-                this.imagenes.insertarImagen(id);
+            if (!usuarioActual.getAlbumUser().existeAlbum(nombreAlbum)) {
+                JsonArray imgs = gsonObj.get("imgs").getAsJsonArray();
+                for (JsonElement objt2 : imgs) {
+                    int id = objt2.getAsInt();
+                    this.imagenes.insertarImagen(id);
+                }
+                usuarioActual.getAlbumUser().insertarAlbum(nombreAlbum, this.imagenes);
+                this.imagenes = new ListaSimple();
+            }else{
+                System.out.println("El Album con el nombre "+nombreAlbum+ " ya existe");
             }
-            usuarioActual.getAlbumUser().insertarAlbum(nombreAlbum, this.imagenes);
-            this.imagenes = new ListaSimple();
         }
         return true;
     }
 
     public String crearImagen(NodoB usuarioActual, String id) {
         this.util.matrizImagenCompleta = new MatrizDispersa(1);
-        NodoAVL nodo = usuarioActual.getImagenesUser().inordenBus(usuarioActual.getImagenesUser().raiz, this.util, id);
+        NodoAVL nodo = usuarioActual.getImagenesUser().inorderBus(usuarioActual.getImagenesUser().raiz, this.util, id);
         String contenido = "";
         if (nodo != null) {
             Capa actual = nodo.capas.getCabezaCapa();

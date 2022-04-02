@@ -55,7 +55,8 @@ public class ArbolBB {
     }
 
     public NodoBinario inorderBus(NodoBinario nodo, Utilidades util, String id) {
-        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
+//        System.out.println("Búsqueda inorden del árbol binario de búsqueda:");
+        util.nodoBuscado = new NodoBinario();
         inorderBusqueda(nodo, util, id);
         return util.nodoBuscado;
     }

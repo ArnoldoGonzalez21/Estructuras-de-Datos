@@ -1,6 +1,7 @@
 package edd_fase_2;
 
 import Clases.NodoAVL;
+import Clases.NodoBinario;
 import com.google.gson.JsonArray;
 
 /**
@@ -142,22 +143,23 @@ public class ArbolAVL {
         inordenMatriz(nodo.getDerecho(), util);
     }
 
-    public NodoAVL inordenBus(NodoAVL nodo, Utilidades util, String id) {
-        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
-        inordenBusqueda(nodo, util, id);
+    public NodoAVL inorderBus(NodoAVL nodo, Utilidades util, String id) {
+//        System.out.println("Busqueda inorder del árbol binario de búsqueda:");
+        util.nodoBuscadoAVL = new NodoAVL(-1, 0);
+        inorderBusqueda(nodo, util, id);
         return util.nodoBuscadoAVL;
     }
 
-    private void inordenBusqueda(NodoAVL nodo, Utilidades util, String id) { //utilizado para buscar un nodo
+    private void inorderBusqueda(NodoAVL nodo, Utilidades util, String id) { //utilizado para buscar un nodo
         if (nodo == null) {
             return;
         }
-        inordenBusqueda(nodo.getIzquierdo(), util, id);
+        inorderBusqueda(nodo.getIzquierdo(), util, id);
         if (nodo.getValor().toString().equals(id)) {
             System.out.println("NODO.GETVALOR: " + nodo.getValor());
             util.nodoBuscadoAVL = nodo;
         }
-        inordenBusqueda(nodo.getDerecho(), util, id);
+        inorderBusqueda(nodo.getDerecho(), util, id);
     }
 
     private int altura(NodoAVL nodo) {
@@ -273,7 +275,7 @@ public class ArbolAVL {
         if (nodo.altura > util.alturaAVL) {
             util.alturaAVL = nodo.altura;
         }
-        System.out.print(" ,Valor: "+nodo.getValor() + " - altura: " + nodo.altura);
+        System.out.print(" ,Valor: " + nodo.getValor() + " - altura: " + nodo.altura);
     }
 
     public NodoAVL[] TopCinco(NodoAVL nodo, Utilidades util) {

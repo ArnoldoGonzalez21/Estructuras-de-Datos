@@ -121,6 +121,17 @@ public class ListaSimple {
         }
     }
 
+    public boolean existeAlbum(String nombre) {
+        Album actual = this.getCabezaAlbum();
+        while (actual != null) {
+            if (actual.getNombre().equalsIgnoreCase(nombre)) {
+                return true;
+            }
+            actual = actual.getSiguiente();
+        }
+        return false;
+    }
+    
     public void imprimirAlbum() {
         Album actual = cabezaAlbum;
         while (actual != null) {

@@ -102,7 +102,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
                 this.dispose();
             }
         }
-        
+
         if (AE.getSource() == this.btnMostrarImagen) {
             if (this.usuarioActual.cargoCapa && this.usuarioActual.cargoImagen && this.usuarioActual.genero) {
                 lblGrafica = this.tools.addLabelImagen(275, 50, 300, 300);

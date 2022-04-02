@@ -47,7 +47,7 @@ public class VentanaModificarCliente extends JFrame implements ActionListener {
     }
 
     private void componentes() {
-        lblTitulo = this.tools.addLabelTitulo("Modificar / Elimnar Alumno", 20, 10, 300, 40, 15);
+        lblTitulo = this.tools.addLabelTitulo("Modificar / Elimnar Cliente", 20, 10, 300, 40, 15);
         lblSubTitulo = this.tools.addLabel("Seleccione el DPI del Cliente:", 25, 50, 300, 40, 13);
         lblDpi = this.tools.addLabel("DPI: ", 50, 140, 200, 30, 15);
         txtDpi = this.tools.addTextField("", 150, 140, 200, 25);

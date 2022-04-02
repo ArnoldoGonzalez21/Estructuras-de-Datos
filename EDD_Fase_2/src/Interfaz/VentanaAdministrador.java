@@ -48,8 +48,8 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
         btnCargaUsuario = this.tools.addButton("Cargar Clientes", 25, 70, 200, 30);
         btnModificar = this.tools.addButton("Modificar/Eliminar Cliente", 25, 110, 200, 30);
         btnReporte = tools.addButton("Reportes", 25, 150, 200, 30);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 680, 375, 150, 25);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 515, 375, 150, 25);
+        btnMostrarImagen = this.tools.addButton("Mostrar Árbol B", 680, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Árbol B", 515, 375, 150, 25);
         btnLogOut = tools.addButton("← Log Out", 1035, 15, 117, 20);
         add(lblTitulo);
         btnCargaUsuario.addActionListener(this);

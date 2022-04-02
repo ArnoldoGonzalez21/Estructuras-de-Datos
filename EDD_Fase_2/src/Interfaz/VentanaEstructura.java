@@ -52,8 +52,8 @@ public class VentanaEstructura extends JFrame implements ActionListener {
 
     private void componentes() {
         lblTitulo = this.tools.addLabelTitulo("Gráfica de las Estructuras", 25, 20, 300, 40, 20);
-        btnGenerarImagen = this.tools.addButton("Generar Imagen", 265, 375, 150, 25);
-        btnMostrarImagen = this.tools.addButton("Mostrar Imagen", 430, 375, 150, 25);
+        btnGenerarImagen = this.tools.addButton("Generar Estructura", 265, 375, 150, 25);
+        btnMostrarImagen = this.tools.addButton("Mostrar Estructura", 430, 375, 150, 25);
         btnRecorrido = this.tools.addButton("Mostrar Recorrido", 45, 310, 150, 25);
         btnAltura = this.tools.addButton("Mostrar", 130, 375, 98, 25);
         btnRegresar = tools.addButton("← Regresar", 485, 15, 117, 20);
@@ -71,7 +71,6 @@ public class VentanaEstructura extends JFrame implements ActionListener {
         orden.add(rbtnPostOrder);
         txtRecorrido = this.tools.addTextField("", 25, 270, 200, 25);
         txtAlturaAVL = this.tools.addTextField("", 25, 375, 98, 25);
-        txtAlturaAVL.setEnabled(false);
         add(lblTitulo);
         add(lblEstructuraGrafica);
         add(lblRecorrido);
@@ -98,12 +97,16 @@ public class VentanaEstructura extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent AE) {
         if (AE.getSource() == this.btnGenerarImagen) {
-            if (comboEstructura.getSelectedIndex() == 0) {
+            System.out.println("dpi usuario: " + this.usuarioActual.getDpi());
+            if (comboEstructura.getSelectedIndex() == 0 && this.usuarioActual.cargoCapa) {
                 this.administracion.generarAbb(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
-            } else if (comboEstructura.getSelectedIndex() == 1) {
+            } else if (comboEstructura.getSelectedIndex() == 1 && this.usuarioActual.cargoImagen) {
                 this.administracion.generarAVL(this.usuarioActual, "Grafica_" + this.usuarioActual.getDpi());
-            } else if (comboEstructura.getSelectedIndex() == 2) {
+            } else if (comboEstructura.getSelectedIndex() == 2 && this.usuarioActual.cargoAlbum) {
                 this.administracion.crearGrafico(this.administracion.generarListaAlbum(this.usuarioActual), "Grafica_" + this.usuarioActual.getDpi());
+            }
+            if (lblGrafica != null) {
+                lblGrafica.setIcon(null);
             }
         }
 
@@ -129,9 +132,9 @@ public class VentanaEstructura extends JFrame implements ActionListener {
         }
 
         if (AE.getSource() == this.btnAltura) {
-            txtRecorrido.setEnabled(true);
+            txtAlturaAVL.setEditable(true);
             txtAlturaAVL.setText(this.administracion.textAltura(this.usuarioActual));
-            txtRecorrido.setEnabled(false);
+            txtAlturaAVL.setEditable(false);
         }
 
         if (AE.getSource() == this.btnRegresar) {

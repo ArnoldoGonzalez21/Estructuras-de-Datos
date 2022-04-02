@@ -105,7 +105,7 @@ public class Administrador {
         if (nodo != null) {
             Capa actual = nodo.capas.getCabezaCapa();
             while (actual != null) {
-                NodoBinario nodoABB = usuarioActual.getCapasUser().inordenBus(usuarioActual.getCapasUser().raiz, this.util, String.valueOf(actual.getIdCapa()));
+                NodoBinario nodoABB = usuarioActual.getCapasUser().inorderBus(usuarioActual.getCapasUser().raiz, this.util, String.valueOf(actual.getIdCapa()));
                 if (nodoABB != null || !nodoABB.getValor().toString().equals("-1")) {
                     nodoABB.pixeles.recorrerMatriz(this.util, usuarioActual.getImgPixel());
                 }
@@ -118,7 +118,7 @@ public class Administrador {
 
     public String matrizCompleta(NodoB usuarioActual) {
         this.util.cantidad(usuarioActual.getCapasUser());
-        usuarioActual.getCapasUser().inorden(usuarioActual.getCapasUser().raiz, util);
+        usuarioActual.getCapasUser().inorderArregloNodo(usuarioActual.getCapasUser().raiz, util);
         for (int i = 0; i < util.matriz().length; i++) {
             util.matriz()[i].pixeles.recorrerMatriz(util, usuarioActual.getImgPixel());
         }
@@ -127,7 +127,7 @@ public class Administrador {
     }
 
     public String matrizNodo(NodoB usuarioActual, String id) {
-        NodoBinario nodo = usuarioActual.getCapasUser().inordenBus(usuarioActual.getCapasUser().raiz, this.util, id);
+        NodoBinario nodo = usuarioActual.getCapasUser().inorderBus(usuarioActual.getCapasUser().raiz, this.util, id);
         String contenido = "";
         if (nodo != null || !nodo.getValor().toString().equals("-1")) {
             contenido = nodo.pixeles.graficarMatriz();
@@ -137,7 +137,7 @@ public class Administrador {
 
     public String[] capaCombo(NodoB usuarioActual) {
         this.util.cantidad(usuarioActual.getCapasUser());
-        usuarioActual.getCapasUser().inorden(usuarioActual.getCapasUser().raiz, util);
+        usuarioActual.getCapasUser().inorderArregloNodo(usuarioActual.getCapasUser().raiz, util);
         String[] matrizCompleta = new String[util.matriz().length];
         for (int i = 0; i < util.matriz().length; i++) {
             matrizCompleta[i] = util.matriz()[i].getValor().toString();
@@ -169,7 +169,7 @@ public class Administrador {
 
     public String textAltura(NodoB usuarioActual) {//tipoArbol 0->ABB, 1->AVL
         usuarioActual.getImagenesUser().imprimirAltura(usuarioActual.getImagenesUser().raiz, this.util);
-        return String.valueOf("  " + util.alturaAVL + 1);
+        return String.valueOf("  " + (util.alturaAVL + 1));
     }
 
     public String textCapaHoja(NodoB usuarioActual) {

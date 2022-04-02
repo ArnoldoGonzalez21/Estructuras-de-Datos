@@ -235,7 +235,7 @@ public class ArbolAVL {
         inorderPrintRec(nodo.getDerecho(), util);
     }
 
-    public void postOrderPrintRec(NodoAVL nodo, Utilidades util) {
+    private void postOrderPrintRec(NodoAVL nodo, Utilidades util) {
         //hijoIzquierdo, hijoDerecho, raiz
         if (nodo == null) {
             return;
@@ -246,7 +246,7 @@ public class ArbolAVL {
         System.out.print(nodo.getValor() + ", ");
     }
 
-    public void preOrderPrintRec(NodoAVL nodo, Utilidades util) {
+    private void preOrderPrintRec(NodoAVL nodo, Utilidades util) {
         //raiz, hijoIzquierdo, hijoDerecho 
         if (nodo == null) {
             return;
@@ -263,17 +263,17 @@ public class ArbolAVL {
         postOrderAltura(nodo, util);
     }
 
-    public void postOrderAltura(NodoAVL nodo, Utilidades util) {
+    private void postOrderAltura(NodoAVL nodo, Utilidades util) {
         //hijoIzquierdo, hijoDerecho, raiz
         if (nodo == null) {
             return;
         }
         postOrderAltura(nodo.getIzquierdo(), util);
         postOrderAltura(nodo.getDerecho(), util);
-        if (util.alturaAVL < nodo.altura) {
+        if (nodo.altura > util.alturaAVL) {
             util.alturaAVL = nodo.altura;
         }
-        System.out.print(nodo.getValor() + " , - alt: " + nodo.altura);
+        System.out.print(" ,Valor: "+nodo.getValor() + " - altura: " + nodo.altura);
     }
 
     public NodoAVL[] TopCinco(NodoAVL nodo, Utilidades util) {

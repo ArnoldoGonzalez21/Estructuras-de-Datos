@@ -50,21 +50,6 @@ public class Registro {
         return nuevo;
     }
 
-    public void mostrarDatos() {
-        NodoB actual;
-        for (actual = this.getCabezaUsuario(); actual != null; actual = actual.getSiguiente()) {
-            System.out.println("Actual: " + actual.getDpi());
-            if (actual.getSiguiente() != null) {
-                System.out.println("Siguiente: " + actual.getSiguiente().getDpi());
-            }
-            if (actual.getAnterior() != null) {
-                System.out.println("Anterior: " + actual.getAnterior().getDpi());
-            }
-            System.out.println("------------------------");
-        }
-        System.out.println("\n");
-    }
-
     public void recorrerUser() {
         NodoB actual = this.getCabezaUsuario();
         while (actual != null) {

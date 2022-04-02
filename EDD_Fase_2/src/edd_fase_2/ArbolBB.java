@@ -29,53 +29,47 @@ public class ArbolBB {
         raiz.graficar(path);
     }
 
-    public void inorden() {
-        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
-        inorden(raiz);
-        System.out.println();
-    }
-
-    public void inorden(NodoBinario nodo, Utilidades util) { //se encargada de introducir los nodos en el arreglo
+    public void inorderArregloNodo(NodoBinario nodo, Utilidades util) { //se encargada de introducir los nodos en el arreglo
         if (nodo == null) {
             return;
         }
-        inorden(nodo.getIzquierdo(), util);
+        inorderArregloNodo(nodo.getIzquierdo(), util);
         util.matriz()[util.contador] = nodo;
         util.contador++;
-        inorden(nodo.getDerecho(), util);
-    }
-
-    private void inorden(NodoBinario nodo) { //utilizado para saber la cantidad de nodos del abb
-        if (nodo == null) {
-            return;
-        }
-        inorden(nodo.getIzquierdo());
-        this.cantidad++;
-        inorden(nodo.getDerecho());
+        inorderArregloNodo(nodo.getDerecho(), util);
     }
 
     public int cantidad() {
         this.cantidad = 0;
-        inorden(raiz);
+        inorderCantidad(raiz);
         return cantidad;
     }
-
-    public NodoBinario inordenBus(NodoBinario nodo, Utilidades util, String id) {
-        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
-        inordenBusqueda(nodo, util, id);
-        return util.nodoBuscado;
-    }
-
-    private void inordenBusqueda(NodoBinario nodo, Utilidades util, String id) { //utilizado para buscar un nodo
+    
+    private void inorderCantidad(NodoBinario nodo) { //utilizado para saber la cantidad de nodos del abb
         if (nodo == null) {
             return;
         }
-        inordenBusqueda(nodo.getIzquierdo(), util, id);
+        inorderCantidad(nodo.getIzquierdo());
+        this.cantidad++;
+        inorderCantidad(nodo.getDerecho());
+    }
+
+    public NodoBinario inorderBus(NodoBinario nodo, Utilidades util, String id) {
+        System.out.println("Recorrido inorden del árbol binario de búsqueda:");
+        inorderBusqueda(nodo, util, id);
+        return util.nodoBuscado;
+    }
+
+    private void inorderBusqueda(NodoBinario nodo, Utilidades util, String id) { //utilizado para buscar un nodo
+        if (nodo == null) {
+            return;
+        }
+        inorderBusqueda(nodo.getIzquierdo(), util, id);
         if (nodo.getValor().toString().equals(id)) {
-            System.out.println("NODO.GETVALOR: " + nodo.getValor());
+            System.out.println("Nodo Valor: " + nodo.getValor());
             util.nodoBuscado = nodo;
         }
-        inordenBusqueda(nodo.getDerecho(), util, id);
+        inorderBusqueda(nodo.getDerecho(), util, id);
     }
 
     public void imprimirRecorrido(NodoBinario nodo, Utilidades util, int tipo) { //tipo 0 -> preorder, 1 -> postorder, 2 -> inorder
@@ -107,7 +101,7 @@ public class ArbolBB {
         inorderPrintRec(nodo.getDerecho(), util);
     }
 
-    public void postOrderPrintRec(NodoBinario nodo, Utilidades util) {
+    private void postOrderPrintRec(NodoBinario nodo, Utilidades util) {
         //hijoIzquierdo, hijoDerecho, raiz
         if (nodo == null) {
             return;
@@ -117,13 +111,12 @@ public class ArbolBB {
         util.textRecorrido += " - " + nodo.getValor().toString();
     }
 
-    public void preOrderPrintRec(NodoBinario nodo, Utilidades util) {
+    private void preOrderPrintRec(NodoBinario nodo, Utilidades util) {
         //raiz, hijoIzquierdo, hijoDerecho 
         if (nodo == null) {
             return;
         }
         util.textRecorrido += " - " + nodo.getValor().toString();
-        System.out.print(nodo.getValor() + ", ");
         preOrderPrintRec(nodo.getIzquierdo(), util);
         preOrderPrintRec(nodo.getDerecho(), util);
     }

@@ -80,7 +80,6 @@ public class ListaSimple {
         PixelImg actual = this.getCabezaImgMatriz();
         while (actual != null) {
             if (actual.getX() > xMayor) {
-                System.out.println(xMayor);
                 xMayor = actual.getX();
             }
             if (actual.getY() > yMayor) {
@@ -99,7 +98,6 @@ public class ListaSimple {
             if (actual.getListaImagenes() != null) {
                 Imagen actualImg = actual.getListaImagenes().getCabezaImagen();
                 while (actualImg != null) {
-                    System.out.println(actualImg.getId());
                     cantidadImgAlbum++;
                     actualImg = actualImg.getSiguienteAlbum();
                 }

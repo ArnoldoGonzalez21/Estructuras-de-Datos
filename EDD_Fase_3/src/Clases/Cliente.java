@@ -5,7 +5,7 @@ package Clases;
  * @author Arnoldo González
  */
 public class Cliente {
-   
+
     private String dpi;
     private String nombre;
     private String usuario;
@@ -13,10 +13,12 @@ public class Cliente {
     private String contrasena;
     private String telefono;
     private String direccion;
-    private String idMunicipio;
+    private int idMunicipio;
     private Cliente siguiente;
+    private Cliente anterior;
+    public boolean cargoCliente;
 
-    public Cliente(String dpi, String nombre, String usuario, String correo, String contrasena, String telefono, String direccion, String idMunicipio) {
+    public Cliente(String dpi, String nombre, String usuario, String correo, String contrasena, String telefono, String direccion, int idMunicipio) {
         this.dpi = dpi;
         this.nombre = nombre;
         this.usuario = usuario;
@@ -26,6 +28,20 @@ public class Cliente {
         this.direccion = direccion;
         this.idMunicipio = idMunicipio;
         this.siguiente = null;
+        this.anterior = null;
+    }
+
+    public Cliente(String usuario, String contrasena) {
+        this.contrasena = contrasena;
+        this.usuario = usuario;
+        this.cargoCliente = false;
+    }
+
+    public boolean validarUsuario(String usuario, String password) {
+        boolean userUs = this.getUsuario().equalsIgnoreCase(usuario);
+        boolean contrasenaUs = this.getContrasena().equals(password);
+        boolean correcto = userUs && contrasenaUs; //los dos true correcto es true
+        return correcto;
     }
 
     /**
@@ -129,14 +145,14 @@ public class Cliente {
     /**
      * @return the idMunicipio
      */
-    public String getIdMunicipio() {
+    public int getIdMunicipio() {
         return idMunicipio;
     }
 
     /**
      * @param idMunicipio the idMunicipio to set
      */
-    public void setIdMunicipio(String idMunicipio) {
+    public void setIdMunicipio(int idMunicipio) {
         this.idMunicipio = idMunicipio;
     }
 
@@ -152,6 +168,20 @@ public class Cliente {
      */
     public void setSiguiente(Cliente siguiente) {
         this.siguiente = siguiente;
+    }
+
+    /**
+     * @return the anterior
+     */
+    public Cliente getAnterior() {
+        return anterior;
+    }
+
+    /**
+     * @param anterior the anterior to set
+     */
+    public void setAnterior(Cliente anterior) {
+        this.anterior = anterior;
     }
 
 }

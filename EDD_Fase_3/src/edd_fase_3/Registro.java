@@ -6,7 +6,7 @@ import Clases.Cliente;
  *
  * @author Arnoldo González
  */
-public class Registro {
+public class Registro { 
 
     private Cliente cabezaUsuario;
     private Cliente administrador;

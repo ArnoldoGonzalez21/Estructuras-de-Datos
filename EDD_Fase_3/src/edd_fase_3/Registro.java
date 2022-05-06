@@ -24,7 +24,7 @@ public class Registro {
             return null;
         }
         this.size++;
-        System.out.println(dpi + " " + nombre + " " + usuario + " " + correo + " " + contrasena + " " + telefono + " " + direccion + " " + idMunicipio);
+        //System.out.println(dpi + " " + nombre + " " + usuario + " " + correo + " " + contrasena + " " + telefono + " " + direccion + " " + idMunicipio);
         Cliente nuevo = new Cliente(dpi, nombre, usuario, correo, contrasena, telefono, direccion, idMunicipio);
         if (this.getCabezaUsuario() == null) {
             this.setCabezaUsuario(nuevo);
@@ -97,23 +97,6 @@ public class Registro {
             actual = actual.getSiguiente();
         }
         return nombreUsuario;
-    }
-
-    public Object[][] recorrerTablaUser() {
-        Object[][] tabla = new Object[this.getSize()][3];
-        int i = 0;
-        Cliente actual = this.getCabezaUsuario();
-        while (actual != null) {
-            if (tabla[i] == null) {
-                continue;
-            }
-            tabla[i][0] = actual.getDpi();
-            tabla[i][1] = actual.getNombre();
-//            tabla[i][2] = actual.getImagenesUser().cantidadAVL();
-            i++;
-            actual = actual.getSiguiente();
-        }
-        return tabla;
     }
 
     public Cliente validarUsuario(String usuario, String contrasena) {

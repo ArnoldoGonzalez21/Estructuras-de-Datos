@@ -43,7 +43,7 @@ public class VentanaAdministrador extends JFrame implements ActionListener {
     private void componentes() {
         lblTitulo = this.tools.addLabelTitulo("Ventana Administrador", 25, 20, 300, 40, 20);
         btnCargaUsuario = this.tools.addButton("Cargar Clientes", 25, 70, 200, 30);
-        btnModificar = this.tools.addButton("Crear/Modificar/Eliminar Cliente", 25, 110, 200, 30);
+        btnModificar = this.tools.addButton("Crear/Modificar/Eliminar", 25, 110, 200, 30);
         btnLogOut = tools.addButton("← Log Out", 335, 15, 117, 20);
         add(lblTitulo);
         btnCargaUsuario.addActionListener(this);
